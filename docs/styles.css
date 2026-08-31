@@ -318,6 +318,8 @@ a {
 .portal-stage.has-message .word:nth-child(4) { animation-delay: 1.95s; }
 .portal-stage.has-message .word:nth-child(5) { animation-delay: 2.55s; }
 .portal-stage.has-message .word:nth-child(6) { animation-delay: 3.15s; }
+.portal-stage.has-message .word:nth-child(7) { animation-delay: 3.75s; }
+.portal-stage.has-message .word:nth-child(8) { animation-delay: 4.35s; }
 
 .portal-stage.is-third-act .message--first {
   animation: primary-message-out 2.1s ease both;

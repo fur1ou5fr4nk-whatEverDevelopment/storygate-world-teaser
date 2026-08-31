@@ -45,6 +45,19 @@ test("homepage serves the teaser and two coming-soon links", async () => {
   assert.equal((html.match(/href="\.\/coming-soon\.html"/g) || []).length, 2);
 });
 
+test("homepage carries the approved suspense reveal copy", async () => {
+  const response = await fetch(baseUrl + "/");
+  const html = await response.text();
+  const visibleText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+  assert.match(visibleText, /Some things only reveal themselves when you stay/);
+  assert.match(visibleText, /Still tapping\?/);
+  assert.match(visibleText, /Good\. The first story has already begun/);
+  assert.match(visibleText, /The gate opens soon\./);
+  assert.doesNotMatch(visibleText, /friction included/);
+  assert.doesNotMatch(visibleText, /wild, wandering heart/);
+});
+
 test("coming-soon page has one route back to the homepage", async () => {
   const response = await fetch(baseUrl + "/coming-soon.html");
   assert.equal(response.status, 200);
