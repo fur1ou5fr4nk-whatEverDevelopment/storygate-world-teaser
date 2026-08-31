@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1718">
+  <meta name="description" content="StoryGate — the gate is opening soon.">
+  <title>StoryGate — Coming soon</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="portal-stage" id="portal" aria-label="StoryGate teaser">
+    <img class="portal-image portal-image--sharp" src="./assets/teaser-source-original.png" alt="A wooden StoryGate emblem beside the sea">
+    <img class="portal-image portal-image--blurred" src="./assets/teaser-source-original.png" alt="" aria-hidden="true">
+    <div class="veil" aria-hidden="true"></div>
+
+    <div class="wave" aria-hidden="true"></div>
+    <div class="wave" aria-hidden="true"></div>
+    <div class="wave" aria-hidden="true"></div>
+
+    <img class="wordmark" src="./assets/storygate-wordmark-white.png" alt="StoryGate">
+
+    <button class="gate" type="button" aria-label="Reveal StoryGate">
+      <span class="gate-core" aria-hidden="true"></span>
+    </button>
+
+    <p class="tap-hint" aria-hidden="true">tap the gate</p>
+
+    <section class="message message--first" aria-live="polite">
+      <span class="word">Explore</span>
+      <span class="word">the</span>
+      <span class="word">deeper</span>
+      <span class="word">story</span>
+      <span class="word">friction</span>
+      <span class="word">included</span>
+    </section>
+
+    <section class="message message--final" aria-live="polite">
+      <p class="still">Still tapping?</p>
+      <div class="final-copy">
+        <p class="wild">Your wild, wandering heart was born for this</p>
+        <p class="open">The gate is open. Explore.</p>
+        <nav class="actions" aria-label="Explore StoryGate">
+          <a href="./coming-soon.html">What is StoryGate?</a>
+          <a href="./coming-soon.html">simple demo</a>
+        </nav>
+      </div>
+    </section>
+  </main>
+  <script src="./script.js"></script>
+</body>
+</html>

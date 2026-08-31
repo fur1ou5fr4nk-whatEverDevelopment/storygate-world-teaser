@@ -1,0 +1,67 @@
+import assert from "node:assert/strict";
+import { after, before, test } from "node:test";
+import { createServer } from "node:http";
+import { readFile, stat } from "node:fs/promises";
+import { extname, join, resolve } from "node:path";
+
+const rootPath = resolve("docs");
+let server;
+let baseUrl;
+
+const mimeTypes = {
+  ".css": "text/css",
+  ".html": "text/html",
+  ".js": "text/javascript",
+  ".png": "image/png"
+};
+
+before(async () => {
+  server = createServer(async (request, response) => {
+    try {
+      const requestPath = new URL(request.url, "http://localhost").pathname;
+      const relativePath = (requestPath === "/" ? "index.html" : requestPath).replace(/^\/+/, "");
+      const filePath = join(rootPath, relativePath);
+      const fileStat = await stat(filePath);
+      if (!fileStat.isFile()) throw new Error("Not a file");
+      response.writeHead(200, { "content-type": mimeTypes[extname(filePath)] || "application/octet-stream" });
+      response.end(await readFile(filePath));
+    } catch {
+      response.writeHead(404);
+      response.end("Not found");
+    }
+  });
+  await new Promise((resolveReady) => server.listen(0, "127.0.0.1", resolveReady));
+  const address = server.address();
+  baseUrl = "http://127.0.0.1:" + address.port;
+});
+
+after(() => new Promise((resolveClosed) => server.close(resolveClosed)));
+
+test("homepage serves the teaser and two coming-soon links", async () => {
+  const response = await fetch(baseUrl + "/");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /StoryGate teaser/);
+  assert.equal((html.match(/href="\.\/coming-soon\.html"/g) || []).length, 2);
+});
+
+test("coming-soon page has one route back to the homepage", async () => {
+  const response = await fetch(baseUrl + "/coming-soon.html");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Coming soon/);
+  assert.match(html, /href="\.\/"/);
+});
+
+test("all referenced production assets are available", async () => {
+  const paths = [
+    "/styles.css",
+    "/script.js",
+    "/assets/teaser-source-original.png",
+    "/assets/storygate-wordmark-white.png"
+  ];
+  for (const path of paths) {
+    const response = await fetch(baseUrl + path);
+    assert.equal(response.status, 200, path);
+  }
+});
