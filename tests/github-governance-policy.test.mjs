@@ -77,6 +77,11 @@ test("deployment is main-only, least-privilege, and downstream of safeguards", a
   });
   assert.equal(job.environment?.name, "github-pages");
 
+  const configurePages = findStep(job, (step) =>
+    step.uses?.startsWith("actions/configure-pages@"),
+  );
+  assert.equal(configurePages?.uses, "actions/configure-pages@v6");
+
   const checkoutIndex = job.steps.findIndex((step) =>
     step.uses?.startsWith("actions/checkout@"),
   );
@@ -90,8 +95,10 @@ test("deployment is main-only, least-privilege, and downstream of safeguards", a
   assert.equal(job.steps[checkoutIndex].uses, "actions/checkout@v6");
   assert.equal(job.steps[checkoutIndex].with?.ref, "${{ github.sha }}");
   assert.ok(uploadIndex > checkoutIndex, "upload must follow checkout");
+  assert.equal(job.steps[uploadIndex].uses, "actions/upload-pages-artifact@v5");
   assert.equal(job.steps[uploadIndex].with?.path, "docs");
   assert.ok(deployIndex > uploadIndex, "deployment must follow artifact upload");
+  assert.equal(job.steps[deployIndex].uses, "actions/deploy-pages@v5");
 });
 
 test("committed ruleset protects main without bypass actors", async () => {
