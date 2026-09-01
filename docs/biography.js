@@ -5,19 +5,13 @@
   const cards = [...document.querySelectorAll("[data-layer-card]")];
   const popoverHost = document.querySelector("#layer-popover-host");
   const library = document.querySelector("#layer-library");
-  const responsiveQuery = window.matchMedia(
-    "(max-width: 719px), (hover: none), (pointer: coarse)",
-  );
+  const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
 
   let activeTrigger = null;
   let activeCard = null;
   let pinned = false;
   let openTimer = 0;
   let closeTimer = 0;
-
-  function usesInlineCard() {
-    return responsiveQuery.matches;
-  }
 
   function cardFor(trigger) {
     return cards.find((card) => card.dataset.layerCard === trigger.dataset.layer) || null;
@@ -30,8 +24,8 @@
     closeTimer = 0;
   }
 
-  function positionDesktopCard() {
-    if (!activeTrigger || !activeCard || usesInlineCard()) return;
+  function positionLayerCard() {
+    if (!activeTrigger || !activeCard) return;
 
     const edge = 16;
     const gap = 12;
@@ -56,25 +50,11 @@
   function moveActiveCard() {
     if (!activeTrigger || !activeCard) return;
 
-    if (usesInlineCard()) {
-      const slot = activeTrigger
-        .closest(".story-block")
-        ?.querySelector(".story-block__layer-slot");
-
-      if (slot) {
-        activeCard.style.position = "static";
-        activeCard.style.width = "100%";
-        activeCard.style.marginTop = "1.5rem";
-        slot.append(activeCard);
-      }
-      return;
-    }
-
     activeCard.style.removeProperty("position");
     activeCard.style.removeProperty("width");
     activeCard.style.removeProperty("margin-top");
     popoverHost.append(activeCard);
-    positionDesktopCard();
+    positionLayerCard();
   }
 
   function openLayer(trigger, { pin = false } = {}) {
@@ -133,12 +113,7 @@
       closeTimer = 0;
     }
 
-    if (
-      usesInlineCard()
-      || !window.matchMedia("(hover: hover) and (pointer: fine)").matches
-    ) {
-      return;
-    }
+    if (!hoverQuery.matches) return;
 
     window.clearTimeout(openTimer);
     openTimer = window.setTimeout(() => {
@@ -146,8 +121,7 @@
       if (
         !trigger.isConnected
         || !trigger.matches(":hover")
-        || usesInlineCard()
-        || !window.matchMedia("(hover: hover) and (pointer: fine)").matches
+        || !hoverQuery.matches
       ) {
         return;
       }
@@ -250,5 +224,6 @@
   });
 
   window.addEventListener("resize", moveActiveCard);
-  responsiveQuery.addEventListener("change", moveActiveCard);
+  window.addEventListener("scroll", moveActiveCard, { passive: true });
+  hoverQuery.addEventListener("change", moveActiveCard);
 })();
