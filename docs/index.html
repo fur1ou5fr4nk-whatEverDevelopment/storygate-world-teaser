@@ -42,13 +42,29 @@
       <div class="final-copy">
         <p class="wild">Good. The first story has already begun</p>
         <p class="open">The gate opens soon.</p>
-        <nav class="actions" aria-label="Explore StoryGate">
-          <a href="./coming-soon.html">What is StoryGate?</a>
-          <a href="./coming-soon.html">simple demo</a>
-        </nav>
+      </div>
+    </section>
+
+    <section class="discoveries" aria-label="Hidden StoryGate details">
+      <div class="discovery discovery--storygate" data-primary-discovery>
+        <button class="discovery-star" type="button" data-discovery-id="storygate" aria-label="Discover what StoryGate is" aria-controls="detail-storygate" aria-expanded="false" aria-hidden="true" disabled></button>
+        <a class="discovery-card" id="detail-storygate" data-discovery-card href="./coming-soon.html" aria-hidden="true" tabindex="-1">What is StoryGate?</a>
+      </div>
+
+      <div class="discovery discovery--demo" data-primary-discovery>
+        <button class="discovery-star" type="button" data-discovery-id="demo" aria-label="Discover the simple demo" aria-controls="detail-demo" aria-expanded="false" aria-hidden="true" disabled></button>
+        <a class="discovery-card" id="detail-demo" data-discovery-card href="./coming-soon.html" aria-hidden="true" tabindex="-1">simple demo</a>
+      </div>
+
+      <div class="discovery discovery--biography" data-biography-discovery aria-hidden="true">
+        <button class="discovery-star discovery-star--small" type="button" data-biography-star aria-label="Discover the person behind StoryGate" aria-controls="detail-biography" aria-expanded="false" aria-hidden="true" disabled></button>
+        <a class="discovery-card discovery-card--biography" id="detail-biography" data-discovery-card href="./frank-bodmann.html" aria-hidden="true" tabindex="-1">
+          <span class="discovery-card__question">Who left the gate open?</span>
+          <strong>Frank Bodmann</strong>
+        </a>
       </div>
     </section>
   </main>
-  <script src="./script.js"></script>
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
