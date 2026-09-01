@@ -45,12 +45,16 @@ before(async () => {
 
 after(() => new Promise((resolveClosed) => server.close(resolveClosed)));
 
-test("homepage serves the teaser and two coming-soon links", async () => {
+test("homepage routes the simple demo to the approved public simulator", async () => {
   const response = await fetch(baseUrl + "/");
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /StoryGate teaser/);
-  assert.equal((html.match(/href="\.\/coming-soon\.html"/g) || []).length, 2);
+  assert.match(
+    html,
+    /id="detail-demo"[^>]*href="https:\/\/storygate-immediate-benefit\.furiousfrank\.chatgpt\.site\/"/
+  );
+  assert.equal((html.match(/href="\.\/coming-soon\.html"/g) || []).length, 1);
 });
 
 test("homepage carries the approved suspense reveal copy", async () => {
@@ -88,7 +92,7 @@ test("biography candidate is available behind the third discovery", async () => 
   assert.match(homepage, /data-discovery-id="demo"/);
   assert.match(homepage, /data-biography-discovery/);
   assert.match(homepage, /href="\.\/frank-bodmann\.html"/i);
-  assert.equal((homepage.match(/href="\.\/coming-soon\.html"/g) || []).length, 2);
+  assert.equal((homepage.match(/href="\.\/coming-soon\.html"/g) || []).length, 1);
 });
 
 test("coming-soon page has one route back to the homepage", async () => {
