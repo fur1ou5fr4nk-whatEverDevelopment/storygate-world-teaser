@@ -1,32 +1,32 @@
 name: Verify and deploy StoryGate
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: storygate-pages
+  group: storygate-pages-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  verify-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  release-safeguards:
+    name: Release safeguards
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the exact release commit
-        uses: actions/checkout@v4
+      - name: Check out the exact candidate commit
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
@@ -36,6 +36,24 @@ jobs:
 
       - name: Run the release safeguards
         run: npm run release:check
+
+  deploy-verified-site:
+    name: Deploy verified site
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: release-safeguards
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the exact merged commit
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
