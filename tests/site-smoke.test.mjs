@@ -19,7 +19,8 @@ const mimeTypes = {
   ".jpeg": "image/jpeg",
   ".js": "text/javascript",
   ".mjs": "text/javascript",
-  ".png": "image/png"
+  ".png": "image/png",
+  ".webmanifest": "application/manifest+json"
 };
 
 before(async () => {
@@ -111,6 +112,56 @@ test("all referenced production assets are available", async () => {
   for (const path of paths) {
     const response = await fetch(baseUrl + path);
     assert.equal(response.status, 200, path);
+  }
+});
+
+test("homepage exposes an installable StoryGate manifest with correctly sized icons", async () => {
+  const { text: homepage } = await fetchText("/");
+  assert.match(homepage, /<link rel="manifest" href="\.\/manifest\.webmanifest">/);
+  assert.match(homepage, /<link rel="icon" type="image\/png" sizes="32x32" href="\.\/assets\/icons\/favicon-32\.png">/);
+  assert.match(homepage, /<link rel="apple-touch-icon" sizes="180x180" href="\.\/assets\/icons\/apple-touch-icon\.png">/);
+
+  const manifestResponse = await fetch(baseUrl + "/manifest.webmanifest");
+  assert.equal(manifestResponse.status, 200);
+  assert.match(manifestResponse.headers.get("content-type") || "", /^application\/manifest\+json/);
+
+  const manifest = await manifestResponse.json();
+  assert.equal(manifest.name, "StoryGate");
+  assert.equal(manifest.short_name, "StoryGate");
+  assert.equal(manifest.start_url, "./");
+  assert.equal(manifest.scope, "./");
+  assert.equal(manifest.display, "standalone");
+  assert.equal(manifest.theme_color, "#0a1718");
+  assert.equal(manifest.background_color, "#0a1718");
+  assert.deepEqual(manifest.icons, [
+    {
+      src: "./assets/icons/icon-192.png",
+      sizes: "192x192",
+      type: "image/png",
+      purpose: "any"
+    },
+    {
+      src: "./assets/icons/icon-512.png",
+      sizes: "512x512",
+      type: "image/png",
+      purpose: "any"
+    },
+    {
+      src: "./assets/icons/icon-maskable-512.png",
+      sizes: "512x512",
+      type: "image/png",
+      purpose: "maskable"
+    }
+  ]);
+
+  for (const icon of manifest.icons) {
+    const response = await fetch(baseUrl + "/" + icon.src.replace(/^\.\//, ""));
+    assert.equal(response.status, 200, icon.src);
+    assert.equal(response.headers.get("content-type"), "image/png");
+
+    const png = Buffer.from(await response.arrayBuffer());
+    assert.equal(png.toString("ascii", 1, 4), "PNG", icon.src);
+    assert.equal(png.readUInt32BE(16) + "x" + png.readUInt32BE(20), icon.sizes, icon.src);
   }
 });
 
