@@ -1,5 +1,6 @@
 import { createDiscoveryTracker } from "./discovery-state.mjs";
-import { getLowerCopyCenter } from "./teaser-layout.mjs";
+import { getNextRevealStep, getRevealTimings } from "./reveal-flow.mjs";
+import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
 
 (() => {
   const stage = document.getElementById("portal");
@@ -14,10 +15,12 @@ import { getLowerCopyCenter } from "./teaser-layout.mjs";
   const biographyButton = stage.querySelector("[data-biography-star]");
   const discoveryTracker = createDiscoveryTracker(primaryDiscoveryButtons.map((button) => button.dataset.discoveryId));
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const focusDuration = reducedMotion ? 40 : 2250;
-  const messageDuration = reducedMotion ? 40 : 10000;
-  const discoveryDelay = reducedMotion ? 80 : 13000;
-  const biographyDelay = reducedMotion ? 40 : 700;
+  const {
+    focusDuration,
+    messageDuration,
+    discoveryDelay,
+    biographyDelay,
+  } = getRevealTimings({ reducedMotion });
   let messageIdleTimer;
   let discoveryReadyTimer;
 
@@ -74,10 +77,10 @@ import { getLowerCopyCenter } from "./teaser-layout.mjs";
   }
 
   function advance() {
-    const phase = Number(stage.dataset.phase || "0");
+    const step = getNextRevealStep(stage.dataset.phase || "0");
+    stage.dataset.phase = String(step.phase);
 
-    if (phase === 0) {
-      stage.dataset.phase = "1";
+    if (step.action === "focus") {
       stage.classList.add("is-deblurring");
       window.setTimeout(() => {
         stage.classList.remove("is-deblurring");
@@ -88,8 +91,7 @@ import { getLowerCopyCenter } from "./teaser-layout.mjs";
       return;
     }
 
-    if (phase === 1) {
-      stage.dataset.phase = "2";
+    if (step.action === "message") {
       if (stage.dataset.ready === "true") {
         revealMessage();
       } else {
@@ -98,11 +100,15 @@ import { getLowerCopyCenter } from "./teaser-layout.mjs";
       return;
     }
 
-    if (phase === 2) {
-      stage.dataset.phase = "3";
+    if (step.action === "still") {
       window.clearTimeout(messageIdleTimer);
       stage.classList.remove("is-message-idle");
-      stage.classList.add("is-third-act");
+      stage.classList.add("is-still-prompt");
+      return;
+    }
+
+    if (step.action === "final") {
+      stage.classList.add("is-final-act");
       window.clearTimeout(discoveryReadyTimer);
       discoveryReadyTimer = window.setTimeout(preparePrimaryDiscoveries, discoveryDelay);
     }
@@ -113,11 +119,19 @@ import { getLowerCopyCenter } from "./teaser-layout.mjs";
 
     const stageWidth = stage.clientWidth;
     const stageHeight = stage.clientHeight;
-    const scale = Math.max(stageWidth / image.naturalWidth, stageHeight / image.naturalHeight);
-    const renderedWidth = image.naturalWidth * scale;
-    const renderedHeight = image.naturalHeight * scale;
-    const offsetX = (stageWidth - renderedWidth) / 2;
-    const offsetY = (stageHeight - renderedHeight) / 2;
+    const {
+      mode,
+      scale,
+      renderedWidth,
+      renderedHeight,
+      offsetX,
+      offsetY,
+    } = getImageLayout({
+      stageWidth,
+      stageHeight,
+      sourceWidth: image.naturalWidth,
+      sourceHeight: image.naturalHeight,
+    });
 
     const sourceCenterX = 511.54400637196335;
     const sourceCenterY = 449.95061728395063;
@@ -138,8 +152,14 @@ import { getLowerCopyCenter } from "./teaser-layout.mjs";
     stage.style.setProperty("--gate-x", gateX + "px");
     stage.style.setProperty("--gate-y", gateY + "px");
     stage.style.setProperty("--gate-size", gateSize + "px");
+    stage.style.setProperty("--sharp-image-left", offsetX + "px");
+    stage.style.setProperty("--sharp-image-top", offsetY + "px");
+    stage.style.setProperty("--sharp-image-width", renderedWidth + "px");
+    stage.style.setProperty("--sharp-image-height", renderedHeight + "px");
     stage.style.setProperty("--text-safe-top", gateY + gateSize / 2 + textSafetyGap + "px");
     stage.style.setProperty("--lower-copy-center", getLowerCopyCenter({ gateY, stageHeight }) + "px");
+    stage.classList.add("has-image-layout");
+    stage.classList.toggle("is-token-fit", mode === "token-fit");
     setImagePoint("storygate-detail", 690, 315);
     setImagePoint("demo-detail", 374, 625);
     stage.style.setProperty("--biography-detail-x", wordmarkRect.left - stageRect.left + wordmarkRect.width * .84 + "px");

@@ -4,16 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0a1718">
-  <meta name="description" content="StoryGate — the gate is opening soon.">
-  <title>StoryGate — Coming soon</title>
+  <meta name="description" content="StoryGate — the gate is opening soon." data-i18n-content="teaser.page.description">
+  <title data-i18n="teaser.page.title">StoryGate — Coming soon</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./language-control.css">
 </head>
 <body>
-  <main class="portal-stage" id="portal" aria-label="StoryGate teaser">
-    <img class="portal-image portal-image--sharp" src="./assets/teaser-source-original.png" alt="A wooden StoryGate emblem beside the sea">
+  <main class="portal-stage" id="portal" aria-label="StoryGate teaser" data-i18n-aria-label="teaser.stageLabel">
+    <img class="portal-image portal-image--sharp" src="./assets/teaser-source-original.png" alt="A wooden StoryGate emblem beside the sea" data-i18n-alt="teaser.imageAlt">
     <img class="portal-image portal-image--blurred" src="./assets/teaser-source-original.png" alt="" aria-hidden="true">
     <div class="veil" aria-hidden="true"></div>
 
@@ -21,15 +22,15 @@
     <div class="wave" aria-hidden="true"></div>
     <div class="wave" aria-hidden="true"></div>
 
-    <img class="wordmark" src="./assets/storygate-wordmark-white.png" alt="StoryGate">
+    <img class="wordmark" src="./assets/storygate-wordmark-white.png" alt="StoryGate" data-i18n-alt="common.wordmarkAlt">
 
-    <button class="gate" type="button" aria-label="Reveal StoryGate">
+    <button class="gate" type="button" aria-label="Reveal StoryGate" data-i18n-aria-label="teaser.gateLabel">
       <span class="gate-core" aria-hidden="true"></span>
     </button>
 
-    <p class="tap-hint" aria-hidden="true">tap the gate</p>
+    <p class="tap-hint" aria-hidden="true" data-i18n="teaser.tapHint">tap the gate</p>
 
-    <section class="message message--first" aria-live="polite">
+    <section class="message message--first" aria-live="polite" data-i18n-segments="teaser.firstReveal">
       <span class="word">Some</span>
       <span class="word">things</span>
       <span class="word">only</span>
@@ -41,33 +42,34 @@
     </section>
 
     <section class="message message--final" aria-live="polite">
-      <p class="still">Still tapping?</p>
+      <p class="still" data-i18n="teaser.still">Still tapping?</p>
       <div class="final-copy">
-        <p class="wild">Good. The first story has already begun</p>
-        <p class="open">The gate opens soon.</p>
+        <p class="wild" data-i18n="teaser.final.first">Good. The first story has already begun</p>
+        <p class="open" data-i18n="teaser.final.second">The gate opens soon</p>
       </div>
     </section>
 
-    <section class="discoveries" aria-label="Hidden StoryGate details">
+    <section class="discoveries" aria-label="Hidden StoryGate details" data-i18n-aria-label="teaser.discoveriesLabel">
       <div class="discovery discovery--storygate" data-primary-discovery>
-        <button class="discovery-star" type="button" data-discovery-id="storygate" aria-label="Discover what StoryGate is" aria-controls="detail-storygate" aria-expanded="false" aria-hidden="true" disabled></button>
-        <a class="discovery-card" id="detail-storygate" data-discovery-card href="./coming-soon.html" aria-hidden="true" tabindex="-1">What is StoryGate?</a>
+        <button class="discovery-star" type="button" data-discovery-id="storygate" aria-label="Discover what StoryGate is" data-i18n-aria-label="teaser.discovery.storygate.buttonLabel" aria-controls="detail-storygate" aria-expanded="false" aria-hidden="true" disabled></button>
+        <a class="discovery-card" id="detail-storygate" data-discovery-card href="./coming-soon.html" aria-hidden="true" tabindex="-1" data-i18n="teaser.discovery.storygate.card">What is StoryGate?</a>
       </div>
 
       <div class="discovery discovery--demo" data-primary-discovery>
-        <button class="discovery-star" type="button" data-discovery-id="demo" aria-label="Discover the simple demo" aria-controls="detail-demo" aria-expanded="false" aria-hidden="true" disabled></button>
-        <a class="discovery-card" id="detail-demo" data-discovery-card href="https://storygate-immediate-benefit.furiousfrank.chatgpt.site/" aria-hidden="true" tabindex="-1">simple demo</a>
+        <button class="discovery-star" type="button" data-discovery-id="demo" aria-label="Discover the simple demo" data-i18n-aria-label="teaser.discovery.demo.buttonLabel" aria-controls="detail-demo" aria-expanded="false" aria-hidden="true" disabled></button>
+        <a class="discovery-card" id="detail-demo" data-discovery-card href="https://storygate-immediate-benefit.furiousfrank.chatgpt.site/" aria-hidden="true" tabindex="-1" data-i18n="teaser.discovery.demo.card">simple demo</a>
       </div>
 
       <div class="discovery discovery--biography" data-biography-discovery aria-hidden="true">
-        <button class="discovery-star discovery-star--small" type="button" data-biography-star aria-label="Discover the person behind StoryGate" aria-controls="detail-biography" aria-expanded="false" aria-hidden="true" disabled></button>
+        <button class="discovery-star discovery-star--small" type="button" data-biography-star aria-label="Discover the person behind StoryGate" data-i18n-aria-label="teaser.discovery.biography.buttonLabel" aria-controls="detail-biography" aria-expanded="false" aria-hidden="true" disabled></button>
         <a class="discovery-card discovery-card--biography" id="detail-biography" data-discovery-card href="./frank-bodmann.html" aria-hidden="true" tabindex="-1">
-          <span class="discovery-card__question">Who left the gate open?</span>
-          <strong>Frank Bodmann</strong>
+          <span class="discovery-card__question" data-i18n="teaser.discovery.biography.question">Who left the gate open?</span>
+          <strong data-i18n="teaser.discovery.biography.name">Frank Bodmann</strong>
         </a>
       </div>
     </section>
   </main>
+  <script type="module" src="./localize-page.mjs"></script>
   <script type="module" src="./script.js"></script>
 </body>
 </html>

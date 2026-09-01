@@ -23,9 +23,10 @@ function appendTo(parent, child) {
   child.parentElement = parent;
 }
 
-test("a mobile tap opens its Layer card beside the trigger instead of after the paragraph", async () => {
+async function createBiographyHarness() {
   const listeners = new Map();
   const slot = { name: "inline-slot", append: (child) => appendTo(slot, child) };
+  let triggerRect = { left: 24, right: 92, top: 120, bottom: 148, width: 68, height: 28 };
   const trigger = {
     dataset: { layer: "demo" },
     isConnected: true,
@@ -49,7 +50,7 @@ test("a mobile tap opens its Layer card beside the trigger instead of after the 
       return false;
     },
     getBoundingClientRect() {
-      return { left: 24, right: 92, top: 120, bottom: 148, width: 68, height: 28 };
+      return triggerRect;
     },
     focus() {},
   };
@@ -105,10 +106,37 @@ test("a mobile tap opens its Layer card beside the trigger instead of after the 
 
   const script = await readFile(new URL("../docs/biography.js", import.meta.url), "utf8");
   vm.runInNewContext(script, { document, window, queueMicrotask });
+
+  return {
+    card,
+    documentListeners,
+    listeners,
+    trigger,
+    setTriggerRect(nextRect) {
+      triggerRect = nextRect;
+    },
+  };
+}
+
+test("a mobile tap opens its Layer card beside the trigger instead of after the paragraph", async () => {
+  const { card, listeners, trigger } = await createBiographyHarness();
   listeners.get("click")();
 
   assert.equal(card.parentElement?.name, "popover-host");
   assert.equal(trigger.attributes.get("aria-expanded"), "true");
   assert.equal(card.style.getPropertyValue("--layer-left"), "16px");
   assert.equal(card.style.getPropertyValue("--layer-top"), "160px");
+});
+
+test("an open Layer card follows its trigger after localization reflows the biography", async () => {
+  const { card, documentListeners, listeners, setTriggerRect } = await createBiographyHarness();
+  listeners.get("click")();
+  setTriggerRect({ left: 270, right: 370, top: 760, bottom: 788, width: 100, height: 28 });
+
+  const handleLocaleChange = documentListeners.get("storygate:localechange");
+  assert.equal(typeof handleLocaleChange, "function", "locale changes do not reposition an open Layer card");
+  handleLocaleChange();
+
+  assert.equal(card.style.getPropertyValue("--layer-left"), "74px");
+  assert.equal(card.style.getPropertyValue("--layer-top"), "568px");
 });
