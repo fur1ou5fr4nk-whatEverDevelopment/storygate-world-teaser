@@ -4,6 +4,7 @@
 
   const gate = stage.querySelector(".gate");
   const image = stage.querySelector(".portal-image--sharp");
+  const finalCopy = stage.querySelector(".final-copy");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const focusDuration = reducedMotion ? 40 : 2250;
   const messageDuration = reducedMotion ? 40 : 10000;
@@ -73,11 +74,13 @@
     const gateY = offsetY + sourceCenterY * scale;
     const gateSize = sourceDiameter * scale;
     const textSafetyGap = Math.max(24, Math.min(38, stageWidth * .03));
+    const finalCopyTop = finalCopy.getBoundingClientRect().top - stage.getBoundingClientRect().top;
 
     stage.style.setProperty("--gate-x", gateX + "px");
     stage.style.setProperty("--gate-y", gateY + "px");
     stage.style.setProperty("--gate-size", gateSize + "px");
     stage.style.setProperty("--text-safe-top", gateY + gateSize / 2 + textSafetyGap + "px");
+    stage.style.setProperty("--message-anchor-top", finalCopyTop + "px");
   }
 
   gate.addEventListener("click", advance);
