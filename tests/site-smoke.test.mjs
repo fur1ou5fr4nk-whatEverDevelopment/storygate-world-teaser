@@ -3,6 +3,7 @@ import { after, before, test } from "node:test";
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, resolve } from "node:path";
+import englishCatalogue from "../docs/locales/en.mjs";
 
 const rootPath = resolve("docs");
 let server;
@@ -65,7 +66,8 @@ test("homepage carries the approved suspense reveal copy", async () => {
   assert.match(visibleText, /Some things only reveal themselves when you stay/);
   assert.match(visibleText, /Still tapping\?/);
   assert.match(visibleText, /Good\. The first story has already begun/);
-  assert.match(visibleText, /The gate opens soon\./);
+  assert.match(visibleText, /The gate opens soon(?:\s|$)/);
+  assert.doesNotMatch(visibleText, /The gate opens soon\./);
   assert.doesNotMatch(visibleText, /friction included/);
   assert.doesNotMatch(visibleText, /wild, wandering heart/);
 });
@@ -77,6 +79,85 @@ test("the teaser stage cannot become an internal scroll container", async () => 
     css,
     /\.portal-stage\s*\{[^}]*overflow:\s*clip;/s,
     "focused discovery points must not scroll the fixed teaser composition"
+  );
+});
+
+test("all three discovery cards inherit one glass material", async () => {
+  const { text: css } = await fetchText("/styles.css");
+  const sharedRule = css.match(/\.discovery-card\s*\{([^}]*)\}/s)?.[1] || "";
+  const positionalRules = [...css.matchAll(/\.discovery--(?:storygate|demo|biography) \.discovery-card\s*\{([^}]*)\}/gs)]
+    .map((match) => match[1]);
+
+  assert.match(sharedRule, /background:\s*rgba\(/);
+  assert.match(sharedRule, /backdrop-filter:\s*blur\(/);
+  assert.match(sharedRule, /border:\s*1px solid/);
+  assert.match(sharedRule, /box-shadow:/);
+  assert.ok(positionalRules.length >= 3);
+  for (const declarations of positionalRules) {
+    assert.doesNotMatch(declarations, /(?:background|border|box-shadow|backdrop-filter|color)\s*:/);
+  }
+});
+
+test("mobile StoryGate discovery card opens above its sparkle and away from the tap point", async () => {
+  const { text: css } = await fetchText("/styles.css");
+  const mobileRules = css.slice(
+    css.indexOf("@media (max-width: 680px)"),
+    css.indexOf("@media (prefers-reduced-motion: reduce)"),
+  );
+  const declarations = mobileRules.match(
+    /\.discovery--storygate \.discovery-card\s*\{([^}]*)\}/s,
+  )?.[1] || "";
+
+  assert.match(declarations, /top:\s*auto;/);
+  assert.match(declarations, /right:\s*auto;/);
+  assert.match(declarations, /bottom:\s*24px;/);
+  assert.match(
+    declarations,
+    /left:\s*calc\(50vw - var\(--storygate-detail-x\) - 110px\);/,
+  );
+});
+
+test("reduced-motion final copy stays static until discoveries become ready", async () => {
+  const { text: css } = await fetchText("/styles.css");
+  const reducedMotionRules = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
+  const visibleDeclarations = reducedMotionRules.match(
+    /\.portal-stage\.is-final-act \.final-copy\s*\{([^}]*)\}/s,
+  )?.[1] || "";
+  const hiddenDeclarations = reducedMotionRules.match(
+    /\.portal-stage\.is-final-act\.is-discovery-ready \.final-copy\s*\{([^}]*)\}/s,
+  )?.[1] || "";
+
+  assert.match(visibleDeclarations, /opacity:\s*1;/);
+  assert.match(visibleDeclarations, /animation:\s*none\s*!important;/);
+  assert.match(visibleDeclarations, /filter:\s*none;/);
+  assert.match(visibleDeclarations, /transform:\s*translateY\(-50%\);/);
+  assert.match(hiddenDeclarations, /opacity:\s*0;/);
+});
+
+test("Thai and Chinese use explicit UI and story font candidates", async () => {
+  const { text: teaserCss } = await fetchText("/styles.css");
+  const { text: biographyCss } = await fetchText("/biography.css");
+  const { text: controlCss } = await fetchText("/language-control.css");
+  const combined = `${teaserCss}\n${biographyCss}\n${controlCss}`;
+
+  for (const font of [
+    "Noto Sans Thai",
+    "Noto Serif Thai",
+    "Noto Sans SC",
+    "Noto Serif SC",
+    "Noto Sans TC",
+    "Noto Serif TC",
+  ]) {
+    assert.match(combined, new RegExp(`font-family:[^;]*${font}`));
+  }
+});
+
+test("Thai and Chinese reveal phrases without artificial segment gaps", async () => {
+  const { text: css } = await fetchText("/styles.css");
+
+  assert.match(
+    css,
+    /html\[lang="th"\] \.message--first,\s*html\[lang="zh-Hans"\] \.message--first,\s*html\[lang="zh-Hant"\] \.message--first\s*\{[^}]*gap:\s*0;/s,
   );
 });
 
@@ -103,11 +184,45 @@ test("coming-soon page has one route back to the homepage", async () => {
   assert.match(html, /href="\.\/"/);
 });
 
+test("all three pages bind every English source string to the shared localizer", async () => {
+  const pages = ["/", "/coming-soon.html", "/frank-bodmann.html"];
+  const boundMessages = new Set();
+  const boundSegments = new Set();
+
+  for (const path of pages) {
+    const { response, text: html } = await fetchText(path);
+    assert.equal(response.status, 200, path);
+    assert.match(html, /<script type="module" src="\.\/localize-page\.mjs"><\/script>/, path);
+    assert.match(html, /<link rel="stylesheet" href="\.\/language-control\.css">/, path);
+
+    for (const match of html.matchAll(/data-i18n(?:-aria-label|-alt|-content)?="([^"]+)"/g)) {
+      boundMessages.add(match[1]);
+    }
+    for (const match of html.matchAll(/data-i18n-segments="([^"]+)"/g)) {
+      boundSegments.add(match[1]);
+    }
+  }
+
+  const intentionallyRuntimeOnly = new Set(["language.buttonLabel", "language.menuLabel"]);
+  const missingMessages = Object.keys(englishCatalogue.messages)
+    .filter((key) => !intentionallyRuntimeOnly.has(key) && !boundMessages.has(key));
+  const missingSegments = Object.keys(englishCatalogue.segments)
+    .filter((key) => !boundSegments.has(key));
+
+  assert.deepEqual(missingMessages, []);
+  assert.deepEqual(missingSegments, []);
+});
+
 test("all referenced production assets are available", async () => {
   const paths = [
     "/styles.css",
     "/script.js",
+    "/i18n.mjs",
+    "/localize-page.mjs",
+    "/language-control.css",
+    "/locales/en.mjs",
     "/discovery-state.mjs",
+    "/reveal-flow.mjs",
     "/teaser-layout.mjs",
     "/assets/teaser-source-original.png",
     "/assets/storygate-wordmark-white.png",
@@ -227,4 +342,11 @@ test("biography references are separate, public, and absent from Layer cards", a
     "https://www.tripadvisor.com/Restaurant_Review-g661285-d2099980-Reviews-Rice_Paddy-Ko_Yao_Noi_Phang_Nga_Province.html",
     "./"
   ]);
+
+  const externalLinks = [...references.matchAll(/<a\b[^>]*href="https:[^"]+"[^>]*>/g)];
+  assert.equal(externalLinks.length, 4);
+  for (const [tag] of externalLinks) {
+    assert.match(tag, /target="_blank"/);
+    assert.match(tag, /rel="noopener noreferrer"/);
+  }
 });

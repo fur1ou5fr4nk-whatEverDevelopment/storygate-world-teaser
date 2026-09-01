@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { test } from "node:test";
+import { pathToFileURL } from "node:url";
 import { parse } from "parse5";
 
 const publicRoot = resolve("docs");
@@ -184,4 +185,30 @@ test("public pages expose only Frank-approved external destinations", async () =
       `Unapproved public destination in ${link.file}: ${link.url}`
     );
   }
+});
+
+test("GitHub Pages ships only locale catalogues approved for public release", async () => {
+  const localeRoot = join(publicRoot, "locales");
+  const localeFiles = (await readdir(localeRoot))
+    .filter((file) => file.endsWith(".mjs"))
+    .sort();
+  const unpublished = [];
+
+  assert.deepEqual(
+    localeFiles,
+    ["en.mjs"],
+    `public locale allowlist changed: ${localeFiles.join(", ")}`,
+  );
+
+  for (const file of localeFiles) {
+    const { default: catalogue } = await import(pathToFileURL(join(localeRoot, file)));
+    if (catalogue?.meta?.public !== true) unpublished.push(file);
+  }
+
+  assert.ok(localeFiles.includes("en.mjs"), "the English source catalogue must ship");
+  assert.deepEqual(
+    unpublished,
+    [],
+    `unpublished locale catalogues are inside the Pages artifact: ${unpublished.join(", ")}`,
+  );
 });

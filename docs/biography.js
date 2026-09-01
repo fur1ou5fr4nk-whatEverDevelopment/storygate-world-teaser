@@ -226,4 +226,5 @@
   window.addEventListener("resize", moveActiveCard);
   window.addEventListener("scroll", moveActiveCard, { passive: true });
   hoverQuery.addEventListener("change", moveActiveCard);
+  document.addEventListener("storygate:localechange", moveActiveCard);
 })();
