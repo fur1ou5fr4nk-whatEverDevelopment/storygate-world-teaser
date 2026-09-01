@@ -39,9 +39,13 @@ test("Release safeguards is a stable, read-only required-check job", async () =>
   assert.ok(job, "release-safeguards job must exist");
   assert.equal(job.name, "Release safeguards");
   assert.equal(job.permissions, undefined);
-  assert.match(
-    findStep(job, (step) => step.uses?.startsWith("actions/checkout@"))?.uses ?? "",
-    /^actions\/checkout@v\d+$/,
+  const checkout = findStep(job, (step) =>
+    step.uses?.startsWith("actions/checkout@"),
+  );
+  assert.match(checkout?.uses ?? "", /^actions\/checkout@v\d+$/);
+  assert.equal(
+    checkout?.with?.ref,
+    "${{ github.event.pull_request.head.sha || github.sha }}",
   );
   assert.equal(findStep(job, (step) => step.run === "npm ci")?.run, "npm ci");
   assert.equal(
@@ -68,13 +72,18 @@ test("deployment is main-only, least-privilege, and downstream of safeguards", a
   });
   assert.equal(job.environment?.name, "github-pages");
 
+  const checkoutIndex = job.steps.findIndex((step) =>
+    step.uses?.startsWith("actions/checkout@"),
+  );
   const uploadIndex = job.steps.findIndex((step) =>
     step.uses?.startsWith("actions/upload-pages-artifact@"),
   );
   const deployIndex = job.steps.findIndex((step) =>
     step.uses?.startsWith("actions/deploy-pages@"),
   );
-  assert.ok(uploadIndex >= 0, "verified site must be uploaded");
+  assert.ok(checkoutIndex >= 0, "merged commit must be checked out");
+  assert.equal(job.steps[checkoutIndex].with?.ref, "${{ github.sha }}");
+  assert.ok(uploadIndex > checkoutIndex, "upload must follow checkout");
   assert.equal(job.steps[uploadIndex].with?.path, "docs");
   assert.ok(deployIndex > uploadIndex, "deployment must follow artifact upload");
 });

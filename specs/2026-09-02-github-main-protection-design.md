@@ -1,8 +1,8 @@
 # StoryGate GitHub Main Protection Design
 
-**Status:** Approved design  
-**Approved by:** Frank  
-**Approval date:** 2026-09-02  
+**Status:** Approved design
+**Approved by:** Frank
+**Approval date:** 2026-09-02
 **Repository:** `fur1ou5fr4nk-whatEverDevelopment/storygate-world-teaser`
 
 ## Decision
