@@ -217,7 +217,7 @@ test("biography references are separate, public, and absent from Layer cards", a
 
   const hrefs = [...references.matchAll(/href="([^"]+)"/g)].map((match) => match[1]);
   assert.deepEqual(hrefs, [
-    "https://www.facebook.com/frank.bodmann/",
+    "https://www.google.com/maps/place/Rice+Paddy+Restaurant/@8.1045234,98.6226284,17z/data=!4m8!3m7!1s0x3051b702b24bde97:0x601d622116dcc8d8!8m2!3d8.1045234!4d98.6226284!9m1!1b1!16s%2Fg%2F11bbrg_r0p",
     "https://designaustraliagroup.com.au/news/where-every-meal-tells-a-story/",
     "https://www.ricepaddy.website/",
     "https://www.tripadvisor.com/Restaurant_Review-g661285-d2099980-Reviews-Rice_Paddy-Ko_Yao_Noi_Phang_Nga_Province.html",
