@@ -11,8 +11,9 @@ This repository is the sole deployable source for `storygate.world`.
 ## Mandatory working rules
 
 - Never develop directly in the shared `main` checkout. Create an isolated Git worktree and task branch from current `origin/main`.
+- Run `npm install` once in every fresh checkout. It automatically installs the committed pre-push safeguard.
 - Never mix files from concurrent tasks into one commit. Preserve every unrelated or unfinished change.
-- Never push while any tracked or untracked repository change remains outside the release commit. The committed pre-push hook and `npm run release:check` enforce this.
+- Never push while any staged, unstaged, or untracked repository change remains outside the release commit. The installed pre-push hook and `npm run release:check` enforce this locally; the gated GitHub workflow is authoritative.
 - Run `npm run release:check` on the exact clean commit before every push.
 - GitHub Pages must deploy through `.github/workflows/pages.yml`; do not restore branch-folder auto-deployment.
 - Public external destinations are allowlisted by `tests/public-content-policy.test.mjs`. Adding or replacing a destination requires Frank's explicit approval. Never weaken or bypass that policy to make a test pass.

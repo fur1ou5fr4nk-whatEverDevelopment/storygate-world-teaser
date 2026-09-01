@@ -14,7 +14,11 @@ Then open http://localhost:8000.
 
 Run:
 
+    npm install
     npm test
+
+`npm install` activates the repository's committed pre-push safeguard in a
+fresh checkout.
 
 ## Publishing
 
@@ -23,8 +27,10 @@ Every task must use an isolated worktree and branch. Before pushing, run:
 
     npm run release:check
 
-The check refuses a dirty checkout and runs the complete test suite, including
-the approved-public-link policy. The committed pre-push hook runs the same gate.
+The check refuses staged, unstaged, and untracked release dirt and runs the
+complete test suite, including the exact approved-public-link policy. The
+automatically installed pre-push hook runs the same gate locally; the GitHub
+workflow remains the authoritative release gate.
 
 GitHub Pages deploys only through `.github/workflows/pages.yml` after the exact
 commit passes the release gate. Do not re-enable direct branch-folder deployment.
