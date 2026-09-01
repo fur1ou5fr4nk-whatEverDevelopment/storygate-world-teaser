@@ -42,11 +42,16 @@ test("Release safeguards is a stable, read-only required-check job", async () =>
   const checkout = findStep(job, (step) =>
     step.uses?.startsWith("actions/checkout@"),
   );
-  assert.match(checkout?.uses ?? "", /^actions\/checkout@v\d+$/);
+  assert.equal(checkout?.uses, "actions/checkout@v6");
   assert.equal(
     checkout?.with?.ref,
     "${{ github.event.pull_request.head.sha || github.sha }}",
   );
+  const setupNode = findStep(job, (step) =>
+    step.uses?.startsWith("actions/setup-node@"),
+  );
+  assert.equal(setupNode?.uses, "actions/setup-node@v6");
+  assert.equal(setupNode?.with?.["node-version"], 22);
   assert.equal(findStep(job, (step) => step.run === "npm ci")?.run, "npm ci");
   assert.equal(
     findStep(job, (step) => step.run === "npm run release:check")?.run,
@@ -82,6 +87,7 @@ test("deployment is main-only, least-privilege, and downstream of safeguards", a
     step.uses?.startsWith("actions/deploy-pages@"),
   );
   assert.ok(checkoutIndex >= 0, "merged commit must be checked out");
+  assert.equal(job.steps[checkoutIndex].uses, "actions/checkout@v6");
   assert.equal(job.steps[checkoutIndex].with?.ref, "${{ github.sha }}");
   assert.ok(uploadIndex > checkoutIndex, "upload must follow checkout");
   assert.equal(job.steps[uploadIndex].with?.path, "docs");
