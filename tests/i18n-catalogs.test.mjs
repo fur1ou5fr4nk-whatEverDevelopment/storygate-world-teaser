@@ -69,6 +69,60 @@ test("biography cue explains hover, keyboard selection, and tap in every languag
   }
 });
 
+test("biography chapter controls and closing line are localized in every language", () => {
+  const keys = [
+    "bio.section.about.title",
+    "bio.section.origin.title",
+    "bio.section.thread.title",
+    "bio.section.about.more",
+    "bio.section.origin.more",
+    "bio.section.thread.more",
+    "bio.section.less",
+    "bio.story.3.closing",
+  ];
+  const expected = {
+    en: ["About me", "How StoryGate came to be", "The common thread", "More about me", "More about the road to StoryGate", "More about the common thread", "Show less", "That little bit of chaos in between still comes straight from the source."],
+    de: ["Über mich", "Wie es zu StoryGate kam", "Der rote Faden", "Mehr über mich", "Mehr über den Weg zu StoryGate", "Mehr über den roten Faden", "Weniger anzeigen", "Das bisschen Chaos dazwischen stammt also weiterhin aus erster Hand."],
+    th: ["เกี่ยวกับผม", "StoryGate เกิดขึ้นได้อย่างไร", "สายใยที่เชื่อมทุกอย่าง", "อ่านเรื่องของผมเพิ่มเติม", "อ่านเพิ่มเติมเกี่ยวกับเส้นทางสู่ StoryGate", "อ่านเพิ่มเติมเกี่ยวกับสายใยที่เชื่อมทุกอย่าง", "แสดงน้อยลง", "ความยุ่งเหยิงเล็ก ๆ น้อย ๆ ระหว่างทางจึงยังมาจากเจ้าตัวโดยตรง"],
+    fr: ["À propos de moi", "Comment StoryGate a vu le jour", "Le fil rouge", "En savoir plus sur moi", "En savoir plus sur le chemin vers StoryGate", "En savoir plus sur le fil rouge", "Afficher moins", "Le peu de chaos qui subsiste entre les deux vient donc toujours directement de la source."],
+    es: ["Sobre mí", "Cómo surgió StoryGate", "El hilo conductor", "Más sobre mí", "Más sobre el camino hacia StoryGate", "Más sobre el hilo conductor", "Mostrar menos", "Así que el pequeño caos que queda entre medias sigue viniendo directamente de la fuente."],
+    ru: ["Обо мне", "Как появился StoryGate", "Связующая нить", "Подробнее обо мне", "Подробнее о пути к StoryGate", "Подробнее о связующей нити", "Скрыть подробности", "Так что немного оставшегося между строк хаоса по-прежнему исходит непосредственно от первоисточника."],
+    "zh-Hans": ["关于我", "StoryGate 从何而来", "贯穿始终的线索", "进一步了解我", "进一步了解通往 StoryGate 的过程", "进一步了解贯穿始终的线索", "收起", "所以，夹在其中的那一点混乱，依然是第一手出品。"],
+    "zh-Hant": ["關於我", "StoryGate 從何而來", "貫穿始終的線索", "進一步了解我", "進一步了解通往 StoryGate 的過程", "進一步了解貫穿始終的線索", "收起", "所以，夾在其中的那一點混亂，依然是第一手出品。"],
+  };
+  const catalogues = { en: englishCatalogue, ...loadedTargets };
+
+  for (const locale of SUPPORTED_LOCALES) {
+    assert.deepEqual(keys.map((key) => catalogues[locale].messages[key]), expected[locale], locale);
+  }
+});
+
+test("biography brigade positions follow the approved six-step progression in every language", () => {
+  const positionKeys = [
+    "bio.layer.career.position.kochazubi",
+    "bio.layer.career.position.halbkoch",
+    "bio.layer.career.position.kochkaspa",
+    "bio.layer.career.position.rudelfuehrer",
+    "bio.layer.career.position.depp",
+    "bio.layer.career.position.obadepp",
+  ];
+  const expected = {
+    en: ["Culinary apprenticeship", "Commis de Cuisine / junior cook", "Demi-Chef de Partie / deputy station chef", "Chef de Partie / station chef", "Sous-Chef / deputy head chef", "Chef de Cuisine / head chef"],
+    de: ["Kochausbildung", "Jungkoch / Commis de Cuisine", "Demi-Chef de Partie", "Chef de Partie / Postenchef", "Sous-Chef / stellvertretender Küchenchef", "Küchenchef / Chef de Cuisine"],
+    th: ["การฝึกงานเป็นพ่อครัว", "Commis de Cuisine / พ่อครัวรุ่นใหม่", "Demi-Chef de Partie / ผู้ช่วยหัวหน้าประจำสถานี", "Chef de Partie / หัวหน้าประจำสถานี", "Sous-Chef / รองหัวหน้าเชฟ", "Chef de Cuisine / หัวหน้าเชฟ"],
+    fr: ["Apprentissage en cuisine", "Commis de cuisine / jeune cuisinier", "Demi-chef de partie / adjoint au chef de partie", "Chef de partie / responsable de poste", "Sous-chef / second de cuisine", "Chef de cuisine"],
+    es: ["Formación como cocinero", "Commis de Cuisine / cocinero júnior", "Demi-Chef de Partie / ayudante de jefe de partida", "Chef de Partie / jefe de partida", "Sous-Chef / segundo de cocina", "Chef de Cuisine / jefe de cocina"],
+    ru: ["Обучение на повара", "Commis de Cuisine / младший повар", "Demi-Chef de Partie / помощник начальника участка", "Chef de Partie / начальник участка", "Sous-Chef / заместитель шеф-повара", "Chef de Cuisine / шеф-повар"],
+    "zh-Hans": ["厨师学徒培训", "Commis de Cuisine / 初级厨师", "Demi-Chef de Partie / 副档口主管", "Chef de Partie / 档口主管", "Sous-Chef / 副主厨", "Chef de Cuisine / 主厨"],
+    "zh-Hant": ["廚師學徒訓練", "Commis de Cuisine / 初級廚師", "Demi-Chef de Partie / 副崗位主管", "Chef de Partie / 崗位主管", "Sous-Chef / 副主廚", "Chef de Cuisine / 主廚"],
+  };
+  const catalogues = { en: englishCatalogue, ...loadedTargets };
+
+  for (const locale of SUPPORTED_LOCALES) {
+    assert.deepEqual(positionKeys.map((key) => catalogues[locale].messages[key]), expected[locale], locale);
+  }
+});
+
 test("each target contains translated narrative and deliberate reveal segments", () => {
   for (const locale of targetLocales) {
     assert.ok(loadedTargets[locale], `${locale} catalogue is missing`);

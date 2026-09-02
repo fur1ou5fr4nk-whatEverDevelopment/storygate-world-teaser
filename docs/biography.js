@@ -3,6 +3,7 @@
 
   const triggers = [...document.querySelectorAll(".layer-trigger")];
   const cards = [...document.querySelectorAll("[data-layer-card]")];
+  const disclosures = [...document.querySelectorAll(".story-block__details")];
   const popoverHost = document.querySelector("#layer-popover-host");
   const library = document.querySelector("#layer-library");
   const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -205,6 +206,17 @@
       closeTimer = 0;
     });
     card.addEventListener("pointerleave", scheduleClose);
+  });
+
+  disclosures.forEach((disclosure) => {
+    disclosure.addEventListener("toggle", () => {
+      if (!disclosure.open && activeTrigger && disclosure.contains(activeTrigger)) {
+        closeLayer();
+        return;
+      }
+
+      if (activeCard) queueMicrotask(positionLayerCard);
+    });
   });
 
   document.addEventListener("pointerdown", (event) => {
