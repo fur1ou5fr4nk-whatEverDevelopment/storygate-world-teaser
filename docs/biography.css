@@ -174,14 +174,6 @@ svg { max-width: 100%; }
   line-height: 1.35;
 }
 
-.bio-hero__cue {
-  max-width: 42rem;
-  margin: 1.25rem 0 0;
-  color: var(--muted);
-  font-size: clamp(0.8rem, 1vw, 0.92rem);
-  line-height: 1.5;
-}
-
 .bio-hero__portrait {
   grid-area: portrait;
   align-self: center;
@@ -292,6 +284,10 @@ svg { max-width: 100%; }
 
 .story-block__expanded {
   padding-top: 1.4rem;
+}
+
+.story-block__expanded p + p {
+  margin-top: 1.15em;
 }
 
 .story-block__motif {
@@ -574,11 +570,6 @@ svg { max-width: 100%; }
   }
 
   .bio-hero__introduction { font-size: clamp(1.3rem, 6.3vw, 1.65rem); }
-
-  .bio-hero__cue {
-    margin-top: 1rem;
-    font-size: 0.8rem;
-  }
 
   .bio-hero__portrait {
     justify-self: center;

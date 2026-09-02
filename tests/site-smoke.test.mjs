@@ -403,9 +403,10 @@ test("biography starts as three compact chapters with the full story behind inli
   const { text: html } = await fetchText("/frank-bodmann.html");
 
   assert.equal((html.match(/class="story-block__title"/g) || []).length, 3);
-  assert.match(html, /data-i18n="bio\.section\.about\.title">About me</);
+  assert.match(html, /data-i18n="bio\.section\.about\.title">About Frank</);
   assert.match(html, /data-i18n="bio\.section\.origin\.title">How StoryGate came to be</);
   assert.match(html, /data-i18n="bio\.section\.thread\.title">The common thread</);
+  assert.doesNotMatch(html, /bio\.cue|bio-hero__cue|Hover over highlighted terms/);
 
   const detailsTags = [...html.matchAll(/<details\b[^>]*class="story-block__details"[^>]*>/g)];
   assert.equal(detailsTags.length, 3);
@@ -413,13 +414,16 @@ test("biography starts as three compact chapters with the full story behind inli
   assert.equal((html.match(/class="story-block__intro"/g) || []).length, 3);
   assert.equal((html.match(/class="story-block__summary"/g) || []).length, 3);
   assert.equal((html.match(/class="story-block__expanded"/g) || []).length, 3);
+  const expandedChapters = [...html.matchAll(/<div class="story-block__expanded">([\s\S]*?)<\/div>/g)];
+  assert.deepEqual(expandedChapters.map(([, chapter]) => (chapter.match(/<p(?:\s|>)/g) || []).length), [2, 3, 3]);
   assert.match(html, /data-i18n="bio\.section\.about\.more">More about me</);
   assert.match(html, /data-i18n="bio\.section\.origin\.more">More about the road to StoryGate</);
   assert.match(html, /data-i18n="bio\.section\.thread\.more">More about the common thread</);
   assert.equal((html.match(/data-i18n="bio\.section\.less">Show less</g) || []).length, 3);
 
   assert.match(html, /class="story-block__expanded"[\s\S]*It begins in 1981 at the Ratskeller/);
-  assert.match(html, /class="story-block__expanded"[\s\S]*His early restaurant experiments were digital/);
+  assert.match(html, /class="story-block__expanded"[\s\S]*His first attempts to make restaurant stories and additional information available digitally were cumbersome/);
+  assert.doesNotMatch(html, /His early restaurant experiments were digital/);
   assert.match(html, /class="story-block__expanded"[\s\S]*Its aim is to give very different material/);
   assert.match(html, /data-i18n="bio\.story\.3\.closing">That little bit of chaos in between still comes straight from the source\.<\/span>/);
 });
@@ -446,7 +450,7 @@ test("biography translates Frank's kitchen nicknames into the real brigade progr
 test("biography keeps the restaurant information experiment separate from Blackbone", async () => {
   const { text: html } = await fetchText("/frank-bodmann.html");
   const visibleText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-  const restaurantExperiment = visibleText.indexOf("His early restaurant experiments were digital");
+  const restaurantExperiment = visibleText.indexOf("His first attempts to make restaurant stories and additional information available digitally were cumbersome");
   const blackboneBoundary = visibleText.indexOf("Blackbone was a separate project—and almost the opposite");
 
   assert.ok(restaurantExperiment >= 0);

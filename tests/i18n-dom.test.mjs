@@ -143,7 +143,7 @@ test("the English source catalogue covers every StoryGate surface", () => {
   assert.equal(englishCatalogue.meta.public, true);
   assert.equal(englishCatalogue.messages["teaser.page.title"], "StoryGate — Coming soon");
   assert.equal(englishCatalogue.messages["coming.back"], "Back to StoryGate");
-  assert.match(englishCatalogue.messages["bio.story.1.afterWhatever"], /Customer service had become part of the menu\./);
+  assert.match(englishCatalogue.messages["bio.story.1.review"], /Customer service had become part of the menu\./);
   assert.equal(englishCatalogue.messages["bio.layer.aiCrew.title"], "The digital crew");
   assert.deepEqual(englishCatalogue.segments["teaser.firstReveal"], [
     "Some",
