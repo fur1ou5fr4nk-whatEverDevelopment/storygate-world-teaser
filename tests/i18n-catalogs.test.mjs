@@ -51,6 +51,24 @@ test("AI-reviewed targets keep truthful human-review metadata and are public", (
   }
 });
 
+test("biography cue explains hover, keyboard selection, and tap in every language", () => {
+  const expectedCues = {
+    en: "Hover over highlighted terms, select them with your keyboard, or tap them to reveal more context.",
+    de: "Fahre über hervorgehobene Begriffe, wähle sie per Tastatur an oder tippe darauf, um mehr Kontext zu erhalten.",
+    th: "เลื่อนเมาส์เหนือคำที่ไฮไลต์ เลือกด้วยแป้นพิมพ์ หรือแตะเพื่อดูบริบทเพิ่มเติม",
+    fr: "Survole les termes mis en évidence, sélectionne-les au clavier ou touche-les pour obtenir plus de contexte.",
+    es: "Pasa el cursor sobre los términos destacados, selecciónalos con el teclado o tócalos para obtener más contexto.",
+    ru: "Наведите указатель на выделенные термины, выберите их с клавиатуры или коснитесь, чтобы получить больше контекста.",
+    "zh-Hans": "将鼠标悬停在高亮词语上，用键盘选中它们，或轻触以查看更多背景信息。",
+    "zh-Hant": "將游標停在醒目標示的詞語上，用鍵盤選取它們，或輕觸以查看更多背景資訊。",
+  };
+  const catalogues = { en: englishCatalogue, ...loadedTargets };
+
+  for (const locale of SUPPORTED_LOCALES) {
+    assert.equal(catalogues[locale].messages["bio.cue"], expectedCues[locale], locale);
+  }
+});
+
 test("each target contains translated narrative and deliberate reveal segments", () => {
   for (const locale of targetLocales) {
     assert.ok(loadedTargets[locale], `${locale} catalogue is missing`);

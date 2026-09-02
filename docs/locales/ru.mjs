@@ -1,7 +1,7 @@
 const catalogue = {
   "meta": {
     "locale": "ru",
-    "sourceVersion": "2026-09-02.4",
+    "sourceVersion": "2026-09-03.1",
     "status": "ai-reviewed",
     "generatedBy": "codex-translation-worker-2026-09-02",
     "qaReviewedBy": "codex-locale-qa-2026-09-02",
@@ -75,7 +75,7 @@ const catalogue = {
     "bio.back": "Вернуться к воротам",
     "bio.name": "Frank Bodmann",
     "bio.introduction": "Биография, в которую при желании можно углубиться.",
-    "bio.cue": "Наведите курсор, установите фокус или коснитесь выделенных слов, чтобы узнать контекст.",
+    "bio.cue": "Наведите указатель на выделенные термины, выберите их с клавиатуры или коснитесь, чтобы получить больше контекста.",
     "bio.portraitAlt": "Коллаж портретов Frank Bodmann в тёмной строгой одежде, включая чёрно-белые студийные снимки.",
     "bio.articleLabel": "Биография Frank Bodmann",
     "bio.term.kochazubi": "Kochazubi",
