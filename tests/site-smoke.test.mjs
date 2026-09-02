@@ -399,6 +399,50 @@ test("biography exposes three story blocks and complete Layer structure", async 
   assert.doesNotMatch(html, /(?:file:|\/Users\/)/);
 });
 
+test("biography starts as three compact chapters with the full story behind inline disclosures", async () => {
+  const { text: html } = await fetchText("/frank-bodmann.html");
+
+  assert.equal((html.match(/class="story-block__title"/g) || []).length, 3);
+  assert.match(html, /data-i18n="bio\.section\.about\.title">About me</);
+  assert.match(html, /data-i18n="bio\.section\.origin\.title">How StoryGate came to be</);
+  assert.match(html, /data-i18n="bio\.section\.thread\.title">The common thread</);
+
+  const detailsTags = [...html.matchAll(/<details\b[^>]*class="story-block__details"[^>]*>/g)];
+  assert.equal(detailsTags.length, 3);
+  for (const [tag] of detailsTags) assert.doesNotMatch(tag, /\sopen(?:\s|=|>)/);
+  assert.equal((html.match(/class="story-block__intro"/g) || []).length, 3);
+  assert.equal((html.match(/class="story-block__summary"/g) || []).length, 3);
+  assert.equal((html.match(/class="story-block__expanded"/g) || []).length, 3);
+  assert.match(html, /data-i18n="bio\.section\.about\.more">More about me</);
+  assert.match(html, /data-i18n="bio\.section\.origin\.more">More about the road to StoryGate</);
+  assert.match(html, /data-i18n="bio\.section\.thread\.more">More about the common thread</);
+  assert.equal((html.match(/data-i18n="bio\.section\.less">Show less</g) || []).length, 3);
+
+  assert.match(html, /class="story-block__expanded"[\s\S]*It begins in 1981 at the Ratskeller/);
+  assert.match(html, /class="story-block__expanded"[\s\S]*His early restaurant experiments were digital/);
+  assert.match(html, /class="story-block__expanded"[\s\S]*Its aim is to give very different material/);
+  assert.match(html, /data-i18n="bio\.story\.3\.closing">That little bit of chaos in between still comes straight from the source\.<\/span>/);
+});
+
+test("biography translates Frank's kitchen nicknames into the real brigade progression", async () => {
+  const { text: html } = await fetchText("/frank-bodmann.html");
+  const careerLayer = html.match(/<aside\b[^>]*id="layer-career"[\s\S]*?<\/aside>/)?.[0] || "";
+
+  assert.match(careerLayer, /<table\b[^>]*class="career-table"[^>]*aria-labelledby="layer-career-title"/);
+  assert.equal((careerLayer.match(/scope="col"/g) || []).length, 3);
+  assert.equal((careerLayer.match(/class="career-table__row"/g) || []).length, 6);
+  for (const position of [
+    "Culinary apprenticeship",
+    "Commis de Cuisine / junior cook",
+    "Demi-Chef de Partie / deputy station chef",
+    "Chef de Partie / station chef",
+    "Sous-Chef / deputy head chef",
+    "Chef de Cuisine / head chef",
+  ]) {
+    assert.match(careerLayer, new RegExp(position.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+});
+
 test("biography keeps the restaurant information experiment separate from Blackbone", async () => {
   const { text: html } = await fetchText("/frank-bodmann.html");
   const visibleText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();

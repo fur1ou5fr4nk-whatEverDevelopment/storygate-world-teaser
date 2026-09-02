@@ -25,6 +25,7 @@ function appendTo(parent, child) {
 
 async function createBiographyHarness() {
   const listeners = new Map();
+  const detailsListeners = new Map();
   const slot = { name: "inline-slot", append: (child) => appendTo(slot, child) };
   let triggerRect = { left: 24, right: 92, top: 120, bottom: 148, width: 68, height: 28 };
   const trigger = {
@@ -54,6 +55,15 @@ async function createBiographyHarness() {
     },
     focus() {},
   };
+  const details = {
+    open: true,
+    addEventListener(type, listener) {
+      detailsListeners.set(type, listener);
+    },
+    contains(candidate) {
+      return candidate === trigger;
+    },
+  };
   const card = {
     dataset: { layerCard: "demo" },
     hidden: true,
@@ -80,6 +90,7 @@ async function createBiographyHarness() {
     querySelectorAll(selector) {
       if (selector === ".layer-trigger") return [trigger];
       if (selector === "[data-layer-card]") return [card];
+      if (selector === ".story-block__details") return [details];
       return [];
     },
     querySelector(selector) {
@@ -109,6 +120,8 @@ async function createBiographyHarness() {
 
   return {
     card,
+    details,
+    detailsListeners,
     documentListeners,
     listeners,
     trigger,
@@ -139,4 +152,18 @@ test("an open Layer card follows its trigger after localization reflows the biog
 
   assert.equal(card.style.getPropertyValue("--layer-left"), "74px");
   assert.equal(card.style.getPropertyValue("--layer-top"), "568px");
+});
+
+test("collapsing a biography chapter closes a Layer card opened inside it", async () => {
+  const { card, details, detailsListeners, listeners, trigger } = await createBiographyHarness();
+  listeners.get("click")();
+  details.open = false;
+
+  const handleToggle = detailsListeners.get("toggle");
+  assert.equal(typeof handleToggle, "function", "chapter disclosures do not guard open Layer cards");
+  handleToggle();
+
+  assert.equal(trigger.attributes.get("aria-expanded"), "false");
+  assert.equal(card.hidden, true);
+  assert.equal(card.parentElement?.name, "layer-library");
 });
