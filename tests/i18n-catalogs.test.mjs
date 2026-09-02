@@ -51,21 +51,11 @@ test("AI-reviewed targets keep truthful human-review metadata and are public", (
   }
 });
 
-test("biography cue explains hover, keyboard selection, and tap in every language", () => {
-  const expectedCues = {
-    en: "Hover over highlighted terms, select them with your keyboard, or tap them to reveal more context.",
-    de: "Fahre über hervorgehobene Begriffe, wähle sie per Tastatur an oder tippe darauf, um mehr Kontext zu erhalten.",
-    th: "เลื่อนเมาส์เหนือคำที่ไฮไลต์ เลือกด้วยแป้นพิมพ์ หรือแตะเพื่อดูบริบทเพิ่มเติม",
-    fr: "Survole les termes mis en évidence, sélectionne-les au clavier ou touche-les pour obtenir plus de contexte.",
-    es: "Pasa el cursor sobre los términos destacados, selecciónalos con el teclado o tócalos para obtener más contexto.",
-    ru: "Наведите указатель на выделенные термины, выберите их с клавиатуры или коснитесь, чтобы получить больше контекста.",
-    "zh-Hans": "将鼠标悬停在高亮词语上，用键盘选中它们，或轻触以查看更多背景信息。",
-    "zh-Hant": "將游標停在醒目標示的詞語上，用鍵盤選取它們，或輕觸以查看更多背景資訊。",
-  };
+test("biography omits the redundant interaction cue in every language", () => {
   const catalogues = { en: englishCatalogue, ...loadedTargets };
 
   for (const locale of SUPPORTED_LOCALES) {
-    assert.equal(catalogues[locale].messages["bio.cue"], expectedCues[locale], locale);
+    assert.equal(catalogues[locale].messages["bio.cue"], undefined, locale);
   }
 });
 
@@ -81,14 +71,14 @@ test("biography chapter controls and closing line are localized in every languag
     "bio.story.3.closing",
   ];
   const expected = {
-    en: ["About me", "How StoryGate came to be", "The common thread", "More about me", "More about the road to StoryGate", "More about the common thread", "Show less", "That little bit of chaos in between still comes straight from the source."],
-    de: ["Über mich", "Wie es zu StoryGate kam", "Der rote Faden", "Mehr über mich", "Mehr über den Weg zu StoryGate", "Mehr über den roten Faden", "Weniger anzeigen", "Das bisschen Chaos dazwischen stammt also weiterhin aus erster Hand."],
-    th: ["เกี่ยวกับผม", "StoryGate เกิดขึ้นได้อย่างไร", "สายใยที่เชื่อมทุกอย่าง", "อ่านเรื่องของผมเพิ่มเติม", "อ่านเพิ่มเติมเกี่ยวกับเส้นทางสู่ StoryGate", "อ่านเพิ่มเติมเกี่ยวกับสายใยที่เชื่อมทุกอย่าง", "แสดงน้อยลง", "ความยุ่งเหยิงเล็ก ๆ น้อย ๆ ระหว่างทางจึงยังมาจากเจ้าตัวโดยตรง"],
-    fr: ["À propos de moi", "Comment StoryGate a vu le jour", "Le fil rouge", "En savoir plus sur moi", "En savoir plus sur le chemin vers StoryGate", "En savoir plus sur le fil rouge", "Afficher moins", "Le peu de chaos qui subsiste entre les deux vient donc toujours directement de la source."],
-    es: ["Sobre mí", "Cómo surgió StoryGate", "El hilo conductor", "Más sobre mí", "Más sobre el camino hacia StoryGate", "Más sobre el hilo conductor", "Mostrar menos", "Así que el pequeño caos que queda entre medias sigue viniendo directamente de la fuente."],
-    ru: ["Обо мне", "Как появился StoryGate", "Связующая нить", "Подробнее обо мне", "Подробнее о пути к StoryGate", "Подробнее о связующей нити", "Скрыть подробности", "Так что немного оставшегося между строк хаоса по-прежнему исходит непосредственно от первоисточника."],
-    "zh-Hans": ["关于我", "StoryGate 从何而来", "贯穿始终的线索", "进一步了解我", "进一步了解通往 StoryGate 的过程", "进一步了解贯穿始终的线索", "收起", "所以，夹在其中的那一点混乱，依然是第一手出品。"],
-    "zh-Hant": ["關於我", "StoryGate 從何而來", "貫穿始終的線索", "進一步了解我", "進一步了解通往 StoryGate 的過程", "進一步了解貫穿始終的線索", "收起", "所以，夾在其中的那一點混亂，依然是第一手出品。"],
+    en: ["About Frank", "How StoryGate came to be", "The common thread", "More about me", "More about the road to StoryGate", "More about the common thread", "Show less", "That little bit of chaos in between still comes straight from the source."],
+    de: ["Über Frank", "Wie es zu StoryGate kam", "Der rote Faden", "Mehr über mich", "Mehr über den Weg zu StoryGate", "Mehr über den roten Faden", "Weniger anzeigen", "Das bisschen Chaos dazwischen stammt also weiterhin aus erster Hand."],
+    th: ["เกี่ยวกับ Frank", "StoryGate เกิดขึ้นได้อย่างไร", "สายใยที่เชื่อมทุกอย่าง", "อ่านเรื่องของผมเพิ่มเติม", "อ่านเพิ่มเติมเกี่ยวกับเส้นทางสู่ StoryGate", "อ่านเพิ่มเติมเกี่ยวกับสายใยที่เชื่อมทุกอย่าง", "แสดงน้อยลง", "ความยุ่งเหยิงเล็ก ๆ น้อย ๆ ระหว่างทางจึงยังมาจากเจ้าตัวโดยตรง"],
+    fr: ["À propos de Frank", "Comment StoryGate a vu le jour", "Le fil rouge", "En savoir plus sur moi", "En savoir plus sur le chemin vers StoryGate", "En savoir plus sur le fil rouge", "Afficher moins", "Le peu de chaos qui subsiste entre les deux vient donc toujours directement de la source."],
+    es: ["Sobre Frank", "Cómo surgió StoryGate", "El hilo conductor", "Más sobre mí", "Más sobre el camino hacia StoryGate", "Más sobre el hilo conductor", "Mostrar menos", "Así que el pequeño caos que queda entre medias sigue viniendo directamente de la fuente."],
+    ru: ["О Frank", "Как появился StoryGate", "Связующая нить", "Подробнее обо мне", "Подробнее о пути к StoryGate", "Подробнее о связующей нити", "Скрыть подробности", "Так что немного оставшегося между строк хаоса по-прежнему исходит непосредственно от первоисточника."],
+    "zh-Hans": ["关于 Frank", "StoryGate 从何而来", "贯穿始终的线索", "进一步了解我", "进一步了解通往 StoryGate 的过程", "进一步了解贯穿始终的线索", "收起", "所以，夹在其中的那一点混乱，依然是第一手出品。"],
+    "zh-Hant": ["關於 Frank", "StoryGate 從何而來", "貫穿始終的線索", "進一步了解我", "進一步了解通往 StoryGate 的過程", "進一步了解貫穿始終的線索", "收起", "所以，夾在其中的那一點混亂，依然是第一手出品。"],
   };
   const catalogues = { en: englishCatalogue, ...loadedTargets };
 
