@@ -1,7 +1,7 @@
 const catalogue = {
   "meta": {
     "locale": "fr",
-    "sourceVersion": "2026-09-02.4",
+    "sourceVersion": "2026-09-03.1",
     "status": "ai-reviewed",
     "generatedBy": "codex-translation-worker-2026-09-02",
     "qaReviewedBy": "codex-locale-qa-2026-09-02",
@@ -75,7 +75,7 @@ const catalogue = {
     "bio.back": "Retour à la porte",
     "bio.name": "Frank Bodmann",
     "bio.introduction": "Une biographie dont on peut explorer les profondeurs.",
-    "bio.cue": "Survole les termes en évidence, sélectionne-les au clavier ou touche-les pour afficher leur contexte.",
+    "bio.cue": "Survole les termes mis en évidence, sélectionne-les au clavier ou touche-les pour obtenir plus de contexte.",
     "bio.portraitAlt": "Collage de portraits de Frank Bodmann en tenue formelle sombre, comprenant des portraits de studio en noir et blanc.",
     "bio.articleLabel": "Biographie de Frank Bodmann",
     "bio.term.kochazubi": "Kochazubi",

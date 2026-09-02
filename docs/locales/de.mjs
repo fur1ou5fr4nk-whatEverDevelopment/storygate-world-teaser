@@ -1,7 +1,7 @@
 const catalogue = {
   "meta": {
     "locale": "de",
-    "sourceVersion": "2026-09-02.4",
+    "sourceVersion": "2026-09-03.1",
     "status": "ai-reviewed",
     "generatedBy": "codex-translation-worker-2026-09-02",
     "qaReviewedBy": "codex-locale-qa-2026-09-02",

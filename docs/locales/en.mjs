@@ -1,7 +1,7 @@
 const catalogue = {
   meta: {
     locale: "en",
-    sourceVersion: "2026-09-02.4",
+    sourceVersion: "2026-09-03.1",
     status: "source",
     generatedBy: "approved-existing-copy",
     qaReviewedBy: null,
@@ -78,7 +78,7 @@ const catalogue = {
     "bio.back": "Back to the Gate",
     "bio.name": "Frank Bodmann",
     "bio.introduction": "A biography with optional depth.",
-    "bio.cue": "Hover, focus or tap highlighted terms for context.",
+    "bio.cue": "Hover over highlighted terms, select them with your keyboard, or tap them to reveal more context.",
     "bio.portraitAlt": "Portrait collage of Frank Bodmann in dark formalwear, including black-and-white studio portraits.",
     "bio.articleLabel": "Biography of Frank Bodmann",
 

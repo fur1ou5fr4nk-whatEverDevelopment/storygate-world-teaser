@@ -1,7 +1,7 @@
 const catalogue = {
   "meta": {
     "locale": "th",
-    "sourceVersion": "2026-09-02.4",
+    "sourceVersion": "2026-09-03.1",
     "status": "ai-reviewed",
     "generatedBy": "codex-translation-worker-2026-09-02",
     "qaReviewedBy": "codex-locale-qa-2026-09-02",
@@ -75,7 +75,7 @@ const catalogue = {
     "bio.back": "กลับไปที่ประตู",
     "bio.name": "Frank Bodmann",
     "bio.introduction": "ชีวประวัติที่เลือกลงลึกได้",
-    "bio.cue": "เลื่อนเมาส์ โฟกัส หรือแตะคำที่ไฮไลต์เพื่อดูบริบทเพิ่มเติม",
+    "bio.cue": "เลื่อนเมาส์เหนือคำที่ไฮไลต์ เลือกด้วยแป้นพิมพ์ หรือแตะเพื่อดูบริบทเพิ่มเติม",
     "bio.portraitAlt": "ภาพคอลลาจพอร์ตเทรตของ Frank Bodmann ในชุดทางการสีเข้ม รวมถึงภาพสตูดิโอขาวดำ",
     "bio.articleLabel": "ชีวประวัติของ Frank Bodmann",
     "bio.term.kochazubi": "Kochazubi",

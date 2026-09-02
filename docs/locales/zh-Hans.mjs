@@ -1,7 +1,7 @@
 const catalogue = {
   "meta": {
     "locale": "zh-Hans",
-    "sourceVersion": "2026-09-02.4",
+    "sourceVersion": "2026-09-03.1",
     "status": "ai-reviewed",
     "generatedBy": "codex-translation-worker-2026-09-02",
     "qaReviewedBy": "codex-locale-qa-2026-09-02",
@@ -75,7 +75,7 @@ const catalogue = {
     "bio.back": "返回大门",
     "bio.name": "Frank Bodmann",
     "bio.introduction": "一篇可以选择深入阅读的传记。",
-    "bio.cue": "将鼠标悬停、聚焦或轻触高亮词语，即可查看相关背景。",
+    "bio.cue": "将鼠标悬停在高亮词语上，用键盘选中它们，或轻触以查看更多背景信息。",
     "bio.portraitAlt": "Frank Bodmann 身着深色正装的肖像拼贴，其中包括黑白影棚肖像。",
     "bio.articleLabel": "Frank Bodmann 的传记",
     "bio.term.kochazubi": "Kochazubi",
