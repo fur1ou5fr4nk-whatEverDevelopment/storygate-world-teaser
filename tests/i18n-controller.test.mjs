@@ -160,7 +160,7 @@ function minimalCatalogues() {
     ["en", "de", "th", "fr", "es", "ru", "zh-Hans", "zh-Hant"].map((locale) => [
       locale,
       {
-        meta: { public: locale === "en" },
+        meta: { public: true },
         messages: { ...labels },
         segments: {},
       },
@@ -257,16 +257,24 @@ test("Escape closes the language menu and returns focus to its trigger", () => {
   assert.equal(trigger.focusCount, 1);
 });
 
-test("production hides the picker when English is the only public locale", () => {
+test("production detects the browser language on first visit and exposes every language", () => {
   const document = createDocument();
+  const window = createWindow({ protocol: "https:", hostname: "storygate.world" });
+  window.navigator.languages = ["de-DE", "en"];
+  const storage = createStorage();
   const controller = initialize({
     document,
-    window: createWindow({ protocol: "https:", hostname: "storygate.world" }),
-    storage: createStorage({ "storygate.locale": "de" }),
+    window,
+    storage,
     catalogMap: minimalCatalogues(),
   });
 
-  assert.equal(controller.locale, "en");
-  assert.equal(controller.element, null);
-  assert.equal(document.body.children.length, 0);
+  assert.equal(controller.locale, "de");
+  assert.equal(document.documentElement.lang, "de");
+  assert.equal(storage.value("storygate.locale"), "de");
+  assert.equal(document.body.children.length, 1);
+  assert.deepEqual(
+    controller.element.children[1].children.map((option) => option.textContent),
+    ["EN", "DE", "ไทย", "FR", "ES", "RU", "简", "繁"],
+  );
 });

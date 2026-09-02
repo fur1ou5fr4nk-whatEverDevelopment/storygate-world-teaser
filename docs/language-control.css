@@ -1,3 +1,7 @@
+html[data-localization="pending"] body {
+  visibility: hidden;
+}
+
 .language-picker {
   position: fixed;
   top: max(1rem, env(safe-area-inset-top));

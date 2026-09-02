@@ -186,7 +186,7 @@ test("public pages expose only Frank-approved external destinations", async () =
   }
 });
 
-test("GitHub Pages ships only locale catalogues approved for public release", async () => {
+test("GitHub Pages ships every approved public locale catalogue", async () => {
   const localeRoot = join(publicRoot, "locales");
   const localeFiles = (await readdir(localeRoot))
     .filter((file) => file.endsWith(".mjs"))
@@ -195,7 +195,7 @@ test("GitHub Pages ships only locale catalogues approved for public release", as
 
   assert.deepEqual(
     localeFiles,
-    ["en.mjs"],
+    ["de.mjs", "en.mjs", "es.mjs", "fr.mjs", "ru.mjs", "th.mjs", "zh-Hans.mjs", "zh-Hant.mjs"],
     `public locale allowlist changed: ${localeFiles.join(", ")}`,
   );
 

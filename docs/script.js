@@ -16,13 +16,13 @@ import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
   const discoveryTracker = createDiscoveryTracker(primaryDiscoveryButtons.map((button) => button.dataset.discoveryId));
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const {
-    focusDuration,
     messageDuration,
     discoveryDelay,
     biographyDelay,
   } = getRevealTimings({ reducedMotion });
   let messageIdleTimer;
   let discoveryReadyTimer;
+  let rippleTimer;
 
   function setDiscoveryReady(discovery) {
     const button = discovery.querySelector(".discovery-star");
@@ -65,38 +65,41 @@ import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
   }
 
   function revealMessage() {
-    stage.classList.remove("is-clear", "is-message-idle");
+    stage.classList.remove("is-message-idle");
     stage.classList.add("has-message");
-    stage.dataset.pendingMessage = "false";
     window.clearTimeout(messageIdleTimer);
     messageIdleTimer = window.setTimeout(() => {
-      if (stage.dataset.phase === "2" && stage.classList.contains("has-message")) {
+      if (stage.dataset.phase === "1" && stage.classList.contains("has-message")) {
         stage.classList.add("is-message-idle");
       }
     }, messageDuration);
   }
 
+  function triggerRipple() {
+    window.clearTimeout(rippleTimer);
+    stage.classList.remove("is-rippling");
+    void stage.offsetWidth;
+    stage.classList.add("is-rippling");
+    rippleTimer = window.setTimeout(() => stage.classList.remove("is-rippling"), 1700);
+  }
+
   function advance() {
     const step = getNextRevealStep(stage.dataset.phase || "0");
     stage.dataset.phase = String(step.phase);
+    if (step.ripple) triggerRipple();
 
-    if (step.action === "focus") {
-      stage.classList.add("is-deblurring");
-      window.setTimeout(() => {
-        stage.classList.remove("is-deblurring");
-        stage.classList.add("is-clear");
-        stage.dataset.ready = "true";
-        if (stage.dataset.pendingMessage === "true") revealMessage();
-      }, focusDuration);
+    if (step.action === "message") {
+      revealMessage();
       return;
     }
 
-    if (step.action === "message") {
-      if (stage.dataset.ready === "true") {
-        revealMessage();
-      } else {
-        stage.dataset.pendingMessage = "true";
-      }
+    if (step.action === "focus-partial") {
+      stage.classList.add("is-partial-focus");
+      return;
+    }
+
+    if (step.action === "focus-full") {
+      stage.classList.add("is-full-focus", "is-wild-prompt");
       return;
     }
 

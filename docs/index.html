@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="./locale-boot.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0a1718">
@@ -41,11 +42,15 @@
       <span class="word">stay</span>
     </section>
 
+    <section class="message message--wild" aria-live="polite">
+      <p class="wild" data-i18n="teaser.wild">Your wild, wandering heart was born for this</p>
+    </section>
+
     <section class="message message--final" aria-live="polite">
-      <p class="still" data-i18n="teaser.still">Still tapping?</p>
+      <p class="still" data-i18n="teaser.still">Still tapping? Good!</p>
       <div class="final-copy">
-        <p class="wild" data-i18n="teaser.final.first">Good. The first story has already begun</p>
-        <p class="open" data-i18n="teaser.final.second">The gate opens soon</p>
+        <p class="earned" data-i18n="teaser.final.first">You earned it:</p>
+        <p class="open" data-i18n="teaser.final.second">Gate is open: Find the demo story</p>
       </div>
     </section>
 
