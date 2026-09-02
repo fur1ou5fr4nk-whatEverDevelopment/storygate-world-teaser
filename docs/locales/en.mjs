@@ -1,7 +1,7 @@
 const catalogue = {
   meta: {
     locale: "en",
-    sourceVersion: "2026-09-01.1",
+    sourceVersion: "2026-09-02.3",
     status: "source",
     generatedBy: "approved-existing-copy",
     qaReviewedBy: null,
@@ -19,9 +19,10 @@ const catalogue = {
     "teaser.imageAlt": "A wooden StoryGate emblem beside the sea",
     "teaser.gateLabel": "Reveal StoryGate",
     "teaser.tapHint": "tap the gate",
-    "teaser.still": "Still tapping?",
-    "teaser.final.first": "Good. The first story has already begun",
-    "teaser.final.second": "The gate opens soon",
+    "teaser.wild": "Your wild, wandering heart was born for this",
+    "teaser.still": "Still tapping? Good!",
+    "teaser.final.first": "You earned it:",
+    "teaser.final.second": "Gate is open: Find the demo story",
     "teaser.discoveriesLabel": "Hidden StoryGate details",
     "teaser.discovery.storygate.buttonLabel": "Discover what StoryGate is",
     "teaser.discovery.storygate.card": "What is StoryGate?",

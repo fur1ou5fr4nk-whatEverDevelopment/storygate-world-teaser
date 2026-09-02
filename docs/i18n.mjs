@@ -1,4 +1,11 @@
 import englishCatalogue from "./locales/en.mjs";
+import germanCatalogue from "./locales/de.mjs";
+import thaiCatalogue from "./locales/th.mjs";
+import frenchCatalogue from "./locales/fr.mjs";
+import spanishCatalogue from "./locales/es.mjs";
+import russianCatalogue from "./locales/ru.mjs";
+import simplifiedChineseCatalogue from "./locales/zh-Hans.mjs";
+import traditionalChineseCatalogue from "./locales/zh-Hant.mjs";
 
 export const SUPPORTED_LOCALES = Object.freeze([
   "en",
@@ -35,6 +42,13 @@ export const LOCALE_LABELS = Object.freeze({
 
 export const CATALOGUES = Object.freeze({
   en: englishCatalogue,
+  de: germanCatalogue,
+  th: thaiCatalogue,
+  fr: frenchCatalogue,
+  es: spanishCatalogue,
+  ru: russianCatalogue,
+  "zh-Hans": simplifiedChineseCatalogue,
+  "zh-Hant": traditionalChineseCatalogue,
 });
 
 function isPreviewLocation({ protocol = "", hostname = "" } = {}) {
@@ -325,6 +339,7 @@ export function initializeLocalization({
   });
 
   applyLocale(documentLike, currentLocale, catalogMap);
+  writeStoredLocale(availableStorage, currentLocale);
 
   if (selectableLocales.length <= 1) {
     return {

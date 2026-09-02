@@ -11,20 +11,25 @@ try {
   getRevealTimings = undefined;
 }
 
-test("third tap holds the Still tapping prompt and fourth tap starts the final reveal", () => {
+test("five taps separate blurred copy, focus stages, prompts, and small ripples", () => {
   assert.equal(typeof getNextRevealStep, "function", "reveal flow is not implemented");
 
   let phase = 0;
   const actions = [];
 
-  for (let tap = 0; tap < 4; tap += 1) {
+  const ripples = [];
+
+  for (let tap = 0; tap < 5; tap += 1) {
     const step = getNextRevealStep(phase);
     phase = step.phase;
     actions.push(step.action);
+    ripples.push(step.ripple);
   }
 
-  assert.deepEqual(actions, ["focus", "message", "still", "final"]);
-  assert.equal(phase, 4);
+  assert.deepEqual(actions, ["message", "focus-partial", "still", "focus-full", "final"]);
+  assert.deepEqual(ripples, [false, false, true, false, true]);
+  assert.equal(phase, 5);
+  assert.deepEqual(getNextRevealStep(phase), { phase: 5, action: "done", ripple: false });
 });
 
 test("reduced-motion users get a readable final-message interval before discoveries replace it", () => {
