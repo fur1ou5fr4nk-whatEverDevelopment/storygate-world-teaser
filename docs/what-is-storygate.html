@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script src="./locale-boot.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0a1718">
+    <meta name="description" content="StoryGate connects Stories made by people with the places, objects and moments they belong to." data-i18n-content="about.page.description">
+    <title data-i18n="about.page.title">What is StoryGate?</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
+    <link rel="stylesheet" href="./biography.css">
+    <link rel="stylesheet" href="./about.css">
+    <link rel="stylesheet" href="./language-control.css">
+  </head>
+  <body class="biography-page about-page">
+    <main class="bio-page">
+      <header class="bio-hero">
+        <div class="bio-hero__masthead">
+          <img class="bio-hero__wordmark" src="./assets/storygate-wordmark-white.png" alt="StoryGate" data-i18n-alt="common.wordmarkAlt">
+          <a class="bio-hero__back" href="./" data-i18n="about.back">Back to the Gate</a>
+        </div>
+
+        <div class="bio-hero__copy">
+          <h1 data-i18n="about.heading">What is StoryGate?</h1>
+          <p class="bio-hero__introduction" data-i18n="about.introduction">StoryGate connects Stories made by people with the places, objects and moments they belong to.</p>
+        </div>
+      </header>
+
+      <article class="biography" aria-label="What is StoryGate?" data-i18n-aria-label="about.articleLabel">
+        <section class="story-block">
+          <p><span data-i18n="about.story.1.beforeGate">A </span><button class="layer-trigger" type="button" data-layer="gate" aria-expanded="false" aria-controls="layer-gate" data-i18n="about.term.gate">Gate</button><span data-i18n="about.story.1.afterGateBeforeWorld"> invites one simple action: tap. You do not arrive at a feed or a wall of information. You step straight into an experience created for where you are—hear a voice, notice what others miss, follow a clue, make a choice or discover why something matters. The </span><button class="layer-trigger" type="button" data-layer="world" aria-expanded="false" aria-controls="layer-world" data-i18n="about.term.world">world around you</button><span data-i18n="about.story.1.afterWorld"> is not background to the Story. It becomes part of it.</span></p>
+        </section>
+
+        <section class="story-block">
+          <p><span data-i18n="about.story.2.beforeHumanPerspective">What you find is not a disposable answer generated for the moment. StoryGate does not invent these Stories. People do—individuals and communities who have lived them, learned them, researched them or imagined them. Their </span><button class="layer-trigger" type="button" data-layer="human-perspective" aria-expanded="false" aria-controls="layer-human-perspective" data-i18n="about.term.humanPerspective">human perspective</button><span data-i18n="about.story.2.afterHumanPerspective"> gives each Story context, character and depth.</span></p>
+        </section>
+
+        <section class="story-block">
+          <p><span data-i18n="about.story.3.beforeCuriosity">The first layer gives you what matters now. Then </span><button class="layer-trigger" type="button" data-layer="curiosity" aria-expanded="false" aria-controls="layer-curiosity" data-i18n="about.term.curiosity">curiosity takes over</button><span data-i18n="about.story.3.afterCuriosity">. Tap or hover selected words to reveal a memory, a source, another voice, a hidden connection or the next chapter. Go deeper when you want to. The Story never makes you dig when you do not.</span></p>
+        </section>
+
+        <section class="story-block">
+          <p data-i18n="about.story.4">For the people and communities behind a Story, one creation can welcome, explain, teach or inspire again and again. For everyone entering, a familiar place can become something worth seeing anew.</p>
+        </section>
+
+        <section class="story-block story-block--status">
+          <p data-i18n="about.story.status">StoryGate is an early-stage startup, currently under development and testing. The first experiences are taking shape. The larger Story is still ahead.</p>
+        </section>
+      </article>
+
+      <div id="layer-popover-host"></div>
+
+      <div id="layer-library" hidden>
+        <aside class="layer-card" id="layer-gate" data-layer-card="gate" role="note" aria-labelledby="layer-gate-title" aria-hidden="true" hidden>
+          <h2 class="layer-card__title" id="layer-gate-title" data-i18n="about.layer.gate.title">Gate</h2>
+          <p class="layer-card__copy" data-i18n="about.layer.gate.copy">A StoryGate marks the point where a place, object or moment opens into its Story. It can begin something brief—or the first step of a much larger journey.</p>
+        </aside>
+
+        <aside class="layer-card" id="layer-world" data-layer-card="world" role="note" aria-labelledby="layer-world-title" aria-hidden="true" hidden>
+          <h2 class="layer-card__title" id="layer-world-title" data-i18n="about.layer.world.title">World around you</h2>
+          <p class="layer-card__copy" data-i18n="about.layer.world.copy">The room, street, landscape, object and people around you are not scenery. They are part of what the Story asks you to notice.</p>
+        </aside>
+
+        <aside class="layer-card" id="layer-human-perspective" data-layer-card="human-perspective" role="note" aria-labelledby="layer-human-perspective-title" aria-hidden="true" hidden>
+          <h2 class="layer-card__title" id="layer-human-perspective-title" data-i18n="about.layer.humanPerspective.title">Human perspective</h2>
+          <p class="layer-card__copy" data-i18n="about.layer.humanPerspective.copy">Facts can be assembled. Perspective comes from the person who decides what matters, what connects and how the Story should unfold.</p>
+        </aside>
+
+        <aside class="layer-card" id="layer-curiosity" data-layer-card="curiosity" role="note" aria-labelledby="layer-curiosity-title" aria-hidden="true" hidden>
+          <h2 class="layer-card__title" id="layer-curiosity-title" data-i18n="about.layer.curiosity.title">Curiosity takes over</h2>
+          <p class="layer-card__copy" data-i18n="about.layer.curiosity.copy">One person may find what they need in a minute. Another can open sources, voices, clues or entire new chapters—without losing the thread.</p>
+        </aside>
+      </div>
+    </main>
+
+    <script type="module" src="./localize-page.mjs"></script>
+    <script src="./biography.js" defer></script>
+  </body>
+</html>
