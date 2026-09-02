@@ -28,7 +28,13 @@ before(async () => {
   server = createServer(async (request, response) => {
     try {
       const requestPath = new URL(request.url, "http://localhost").pathname;
-      const relativePath = (requestPath === "/" ? "index.html" : requestPath).replace(/^\/+/, "");
+      const relativePath = (
+        requestPath === "/"
+          ? "index.html"
+          : requestPath.endsWith("/")
+            ? requestPath + "index.html"
+            : requestPath
+      ).replace(/^\/+/, "");
       const filePath = join(rootPath, relativePath);
       const fileStat = await stat(filePath);
       if (!fileStat.isFile()) throw new Error("Not a file");
@@ -46,16 +52,32 @@ before(async () => {
 
 after(() => new Promise((resolveClosed) => server.close(resolveClosed)));
 
-test("homepage routes the simple demo to the approved public simulator", async () => {
+test("homepage routes the simple demo to StoryGate's internal detection experience", async () => {
   const response = await fetch(baseUrl + "/");
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /StoryGate teaser/);
   assert.match(
     html,
-    /id="detail-demo"[^>]*href="https:\/\/storygate-immediate-benefit\.furiousfrank\.chatgpt\.site\/"/
+    /id="detail-demo"[^>]*href="\.\/simple-demo\/"/
   );
+  assert.doesNotMatch(html, /storygate-immediate-benefit\.furiousfrank\.chatgpt\.site/);
   assert.equal((html.match(/href="\.\/coming-soon\.html"/g) || []).length, 1);
+
+  const { response: demoResponse, text: demoHtml } = await fetchText("/simple-demo/");
+  assert.equal(demoResponse.status, 200);
+  assert.match(demoHtml, /data-demo-stage/);
+  assert.match(demoHtml, />StoryGate detected</);
+
+  for (const path of [
+    "/simple-demo/simple-demo.css",
+    "/simple-demo/simple-demo.js",
+    "/simple-demo/demo-proximity.mjs",
+    "/assets/storygate-demo-phone.png",
+  ]) {
+    const assetResponse = await fetch(baseUrl + path);
+    assert.equal(assetResponse.status, 200, path);
+  }
 });
 
 test("homepage carries the approved suspense reveal copy", async () => {
