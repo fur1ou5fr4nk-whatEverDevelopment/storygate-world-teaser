@@ -1,27 +1,27 @@
 const catalogue = {
-  meta: {
-    locale: "zh-Hant",
-    sourceVersion: "2026-09-02.2",
-    status: "ai-reviewed",
-    generatedBy: "codex-translation-worker-2026-09-02",
-    qaReviewedBy: "codex-locale-qa-2026-09-02",
-    nativeReviewed: false,
-    public: true,
+  "meta": {
+    "locale": "zh-Hant",
+    "sourceVersion": "2026-09-02.4",
+    "status": "ai-reviewed",
+    "generatedBy": "codex-translation-worker-2026-09-02",
+    "qaReviewedBy": "codex-locale-qa-2026-09-02",
+    "nativeReviewed": false,
+    "public": true
   },
-  messages: {
+  "messages": {
     "common.wordmarkAlt": "StoryGate",
     "language.buttonLabel": "選擇語言",
     "language.menuLabel": "可用語言",
-
     "teaser.page.title": "StoryGate — 即將開啟",
     "teaser.page.description": "StoryGate — 大門即將開啟。",
     "teaser.stageLabel": "StoryGate 預告",
     "teaser.imageAlt": "海邊的一枚木製 StoryGate 徽記",
     "teaser.gateLabel": "揭開 StoryGate",
     "teaser.tapHint": "輕觸大門",
-    "teaser.still": "還在輕觸？",
-    "teaser.final.first": "很好。第一個故事已經開始",
-    "teaser.final.second": "大門即將開啟",
+    "teaser.wild": "你那顆狂野、漂泊的心正為此而生",
+    "teaser.still": "還在輕觸？很好！",
+    "teaser.final.first": "這是你贏得的：",
+    "teaser.final.second": "門已打開：找到示範故事",
     "teaser.discoveriesLabel": "StoryGate 的隱藏細節",
     "teaser.discovery.storygate.buttonLabel": "了解 StoryGate 是什麼",
     "teaser.discovery.storygate.card": "StoryGate 是什麼？",
@@ -30,12 +30,10 @@ const catalogue = {
     "teaser.discovery.biography.buttonLabel": "認識 StoryGate 背後的人",
     "teaser.discovery.biography.question": "是誰沒關上大門？",
     "teaser.discovery.biography.name": "Frank Bodmann",
-
     "coming.page.title": "即將開啟 — StoryGate",
     "coming.page.description": "更多 StoryGate 內容即將到來。",
     "coming.heading": "即將開啟",
     "coming.back": "返回 StoryGate",
-
     "about.page.title": "StoryGate 是什麼？",
     "about.page.description": "StoryGate 將人們創作的故事，與它們所屬的地點、物件和時刻連結起來。",
     "about.back": "返回大門",
@@ -80,7 +78,6 @@ const catalogue = {
     "bio.cue": "將滑鼠游標停留、聚焦或輕觸醒目詞語，即可查看相關背景。",
     "bio.portraitAlt": "Frank Bodmann 身穿深色正式服裝的肖像拼貼，其中包括黑白攝影棚肖像。",
     "bio.articleLabel": "Frank Bodmann 的傳記",
-
     "bio.term.kochazubi": "Kochazubi",
     "bio.term.halbkoch": "Halbkoch",
     "bio.term.kochkaspa": "Kochkaspa",
@@ -94,7 +91,6 @@ const catalogue = {
     "bio.term.storygate": "StoryGate",
     "bio.term.littleHead": "für mein kleines Köpfchen schon ein bisschen viel",
     "bio.term.aiCrew": "AI 代理",
-
     "bio.story.1.beforeCareer": "Frank Bodmann 公開的工作履歷有點不同尋常：年份不斷向前，職稱卻越來越不體面。故事始於1981年，他在 Hann. Münden 的 Ratskeller 擔任 ",
     "bio.story.1.afterCareerBeforeHalfCook": "。之後，他曾在 Steigenberger 擔任 ",
     "bio.story.1.afterHalfCookBeforeCareerList": "。然後到了 Berlin：",
@@ -102,21 +98,17 @@ const catalogue = {
     "bio.story.1.afterCareerBeforeRicePaddy": "。從2007年起，他在 Thailand 的 Niramaya 負責專案管理和綜合管理，之後又有了 ",
     "bio.story.1.betweenBusinesses": " 和 ",
     "bio.story.1.afterWhatever": "。烹飪並不是這段故事的主線；真正留下來的是一種習慣：仔細看，直接答，把紀錄訂正過來。當一位 Rice Paddy 評論者公布了 Frank 不認同的價格說法時，他的回覆遠不只質疑數字。他還談到驅蚊噴霧、稻田裡的青蛙、用來對付幼蟲的孔雀魚，以及——既然都說到這個份上了——屋頂其實是棕櫚葉做的，不是竹子。後來有位客人寫道，正是 Frank 的回覆吸引了他們一家來到 Rice Paddy。他們又來了三次。顧客服務已經成了菜單的一部分。",
-
     "bio.story.2.afterCameronBeforeBlackbone": " 描寫一道道菜如何通往更深的故事：種下稻米的雙手、香料交易的市場，以及坐在桌邊那個人的喜好。Frank 希望，即使餐桌上的交談結束，人們仍能接觸到其中一些有深度的內容。他早期的餐廳實驗採用數位方式：掃描 QR Code，打開餐廳網站，找到正確頁面，然後面對一大段文字。背後則是 Frank 必須維護的一套笨拙資料庫。資訊在。優雅不在。",
     "bio.story.2.afterBlackbone": " 是另一個獨立專案——而且幾乎走向了相反的方向。Frank 的海盜尋寶冒險發生在真實原址。客人穿越真實地貌；自然是參與者，而不是布景。Blackbone 不是戴上眼罩的 StoryGate。Blackbone 就是 Blackbone。它的脆弱來自實體部分：道具會損壞，也會消失。隨後疫情叫停了活動，許多實體內容也隨之消失。在 Blackbone，尋寶本身就是目的；在餐廳網站上，同樣的過程卻是使用體驗上的缺陷。Blackbone 過度依賴實體道具，餐廳實驗則同時給客人和維護者添了太多負擔。很久以後，這兩種相反的局限讓 StoryGate 如今所檢驗的問題變得更清楚：一個故事怎樣才能與某個地點、物件或時刻相遇，既不讓螢幕取代現實，也不迫使講故事的人維護背後的整套機器？",
-
     "bio.story.3.afterStoryGateBeforeLittleHead": " 仍是 Frank 正在實踐的答案，而不是一個已經完成的答案。它處於 Phase 0：打地基和紙面測試。它的目標，是讓一道菜、一段島嶼記憶、一次冒險這些截然不同的材料擁有共同結構，卻不把它們壓扁。規則很簡單：平台、應用程式和機器都應隱去；內容、體驗和易用性始終置於首位。StoryGate 與 LumenAI、ReStock、MaBeBo 以及各種更小的實驗共同占據 Frank 的工作台——「",
     "bio.story.3.afterLittleHeadBeforeAi": "」，這是他自己的說法。在忙碌的日子裡，他的「員工」是一支不斷變動的 ",
     "bio.story.3.afterAi": "團隊。他們研究、梳理、質疑、寫程式和核驗；隊伍會變，責任不會。Frank 始終負責定方向、作判斷，並對最終落地的成果承擔責任。最能說明問題的工作方式，恰恰也最不光鮮：他會繞回去，再補充一件事，偶爾還會說著說著丟了主線。AI 把這些材料整理成可用的東西，而不是逼他變成資料庫管理員。這篇傳記也是這樣做出來的。Frank 提供了親身經歷，包括所有繞路。機器的任務是找到那條線——不是取代握著線另一端的那個人。",
-
     "bio.references.heading": "資料來源，以及兔子洞更深處",
     "bio.references.google": "Rice Paddy - Google Maps 評論",
     "bio.references.cameron": "Where Every Meal Tells a Story - Cameron / Design Australia Group",
     "bio.references.ricePaddy": "Rice Paddy - 官方網站",
     "bio.references.tripadvisor": "Rice Paddy - Tripadvisor 評論及管理方回覆",
     "bio.references.storygate": "StoryGate - 公開預告頁",
-
     "bio.layer.type.translation": "翻譯",
     "bio.layer.type.context": "背景",
     "bio.layer.type.source": "來源",
@@ -140,16 +132,16 @@ const catalogue = {
     "bio.layer.littleHead.title": "一個腦袋要裝的事有點多",
     "bio.layer.littleHead.copy": "「對我的小腦袋來說有點太多了」，Frank 用這句話形容自己同時周旋於多個專案。",
     "bio.layer.aiCrew.title": "數位團隊",
-    "bio.layer.aiCrew.copy": "一支不斷變動的數位團隊，幫助 Frank 研究、梳理、質疑、核驗和建構。方向與責任始終屬於人。",
+    "bio.layer.aiCrew.copy": "一支不斷變動的數位團隊，幫助 Frank 研究、梳理、質疑、核驗和建構。方向與責任始終屬於人。"
   },
-  segments: {
+  "segments": {
     "teaser.firstReveal": [
       "有些事物",
       "只有當你",
       "停留下來",
-      "才會顯露",
-    ],
-  },
+      "才會顯露"
+    ]
+  }
 };
 
 export default catalogue;

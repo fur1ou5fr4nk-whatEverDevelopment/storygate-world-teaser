@@ -1,27 +1,27 @@
 const catalogue = {
-  meta: {
-    locale: "es",
-    sourceVersion: "2026-09-02.2",
-    status: "ai-reviewed",
-    generatedBy: "codex-translation-worker-2026-09-02",
-    qaReviewedBy: "codex-locale-qa-2026-09-02",
-    nativeReviewed: false,
-    public: true,
+  "meta": {
+    "locale": "es",
+    "sourceVersion": "2026-09-02.4",
+    "status": "ai-reviewed",
+    "generatedBy": "codex-translation-worker-2026-09-02",
+    "qaReviewedBy": "codex-locale-qa-2026-09-02",
+    "nativeReviewed": false,
+    "public": true
   },
-  messages: {
+  "messages": {
     "common.wordmarkAlt": "StoryGate",
     "language.buttonLabel": "Elegir idioma",
     "language.menuLabel": "Idiomas disponibles",
-
     "teaser.page.title": "StoryGate — Muy pronto",
     "teaser.page.description": "StoryGate — la puerta se abrirá pronto.",
     "teaser.stageLabel": "Avance de StoryGate",
     "teaser.imageAlt": "Un emblema de madera de StoryGate junto al mar",
     "teaser.gateLabel": "Revelar StoryGate",
     "teaser.tapHint": "toca la puerta",
-    "teaser.still": "¿Sigues tocando?",
-    "teaser.final.first": "Bien. La primera historia ya ha comenzado",
-    "teaser.final.second": "La puerta se abrirá pronto",
+    "teaser.wild": "Tu corazón salvaje y errante nació para esto",
+    "teaser.still": "¿Sigues tocando? ¡Bien!",
+    "teaser.final.first": "Te lo has ganado:",
+    "teaser.final.second": "La puerta está abierta: encuentra la historia de demostración",
     "teaser.discoveriesLabel": "Detalles ocultos de StoryGate",
     "teaser.discovery.storygate.buttonLabel": "Descubre qué es StoryGate",
     "teaser.discovery.storygate.card": "¿Qué es StoryGate?",
@@ -30,12 +30,10 @@ const catalogue = {
     "teaser.discovery.biography.buttonLabel": "Descubre a la persona detrás de StoryGate",
     "teaser.discovery.biography.question": "¿Quién dejó abierta la puerta?",
     "teaser.discovery.biography.name": "Frank Bodmann",
-
     "coming.page.title": "Muy pronto — StoryGate",
     "coming.page.description": "Muy pronto habrá más de StoryGate.",
     "coming.heading": "Muy pronto",
     "coming.back": "Volver a StoryGate",
-
     "about.page.title": "¿Qué es StoryGate?",
     "about.page.description": "StoryGate conecta historias creadas por personas con los lugares, objetos y momentos a los que pertenecen.",
     "about.back": "Volver a la puerta",
@@ -80,7 +78,6 @@ const catalogue = {
     "bio.cue": "Pasa el cursor por los términos destacados, selecciónalos con el teclado o tócalos para ver su contexto.",
     "bio.portraitAlt": "Collage de retratos de Frank Bodmann con atuendo formal oscuro, incluidos retratos de estudio en blanco y negro.",
     "bio.articleLabel": "Biografía de Frank Bodmann",
-
     "bio.term.kochazubi": "Kochazubi",
     "bio.term.halbkoch": "Halbkoch",
     "bio.term.kochkaspa": "Kochkaspa",
@@ -94,7 +91,6 @@ const catalogue = {
     "bio.term.storygate": "StoryGate",
     "bio.term.littleHead": "für mein kleines Köpfchen schon ein bisschen viel",
     "bio.term.aiCrew": "agentes de IA",
-
     "bio.story.1.beforeCareer": "La cronología pública del trabajo de Frank Bodmann hace algo poco habitual: las fechas avanzan mientras los cargos pierden dignidad. Comienza en 1981, en el Ratskeller de Hann. Münden, como ",
     "bio.story.1.afterCareerBeforeHalfCook": ". Después llega una etapa en Steigenberger como ",
     "bio.story.1.afterHalfCookBeforeCareerList": ". Luego, Berlin: ",
@@ -102,21 +98,17 @@ const catalogue = {
     "bio.story.1.afterCareerBeforeRicePaddy": ". A partir de 2007, en Thailand, se sumaron la dirección de proyectos y la gerencia general en Niramaya, seguidas de ",
     "bio.story.1.betweenBusinesses": " y ",
     "bio.story.1.afterWhatever": ". Cocinar no es la trama; el hábito que perdura es otro: mirar de cerca, responder de frente y rectificar lo publicado. Cuando una persona que reseñó Rice Paddy publicó afirmaciones sobre los precios que Frank cuestionaba, su respuesta hizo más que rebatir las cifras. También habló de repelente de mosquitos, ranas en el arrozal, guppys para combatir las larvas y, ya puestos, del hecho de que el tejado era de hoja de palmera y no de bambú. Más tarde, un cliente escribió que las respuestas de Frank habían ayudado a atraer a su familia a Rice Paddy. Volvieron tres veces. La atención al cliente se había convertido en parte del menú.",
-
     "bio.story.2.afterCameronBeforeBlackbone": " describe platos que se abren a historias sobre las manos que plantaron el arroz, los mercados donde se comerciaban especias y las preferencias de quien está sentado a la mesa. Frank quería que algo de esa profundidad siguiera disponible más allá de una conversación durante la comida. Sus primeros experimentos en el restaurante fueron digitales: escanear un código QR, abrir la web del restaurante, encontrar la página correcta y toparse con un bloque de texto. Detrás de todo, Frank tenía que mantener una base de datos engorrosa. La información estaba ahí. La elegancia, no. ",
     "bio.story.2.afterBlackbone": " era un proyecto independiente y casi todo lo contrario. La aventura pirata de búsqueda del tesoro de Frank transcurría en los lugares reales. Los visitantes atravesaban el paisaje real; la naturaleza seguía siendo participante, no decorado. Blackbone no era StoryGate con un parche en el ojo. Era Blackbone. Su fragilidad era física: el atrezo se dañaba o desaparecía. Después, la pandemia detuvo el recorrido y gran parte de su dimensión física se perdió. En Blackbone, buscar el tesoro era el propósito. En la web del restaurante, era un defecto de usabilidad. Blackbone exigía demasiado de su atrezo físico. El experimento del restaurante exigía demasiado tanto al visitante como a quien debía mantenerlo. Mucho después, estos límites opuestos afinaron la pregunta que StoryGate pone hoy a prueba: ¿cómo puede una historia encontrarse con un lugar, un objeto o un momento sin sustituir la realidad por una pantalla ni obligar a quien la cuenta a mantener la maquinaria que hay detrás?",
-
     "bio.story.3.afterStoryGateBeforeLittleHead": " sigue siendo la respuesta de trabajo de Frank, no una respuesta terminada. Está en Phase 0: fundamentos y pruebas sobre papel. Su propósito es dar a materiales muy distintos —un plato, un recuerdo de una isla, una aventura— una estructura compartida sin aplanarlos. Su regla es sencilla: la plataforma, la aplicación y la maquinaria deben desaparecer; el contenido, la experiencia y la facilidad de uso se mantienen en primer plano. StoryGate comparte el banco de trabajo de Frank con LumenAI, ReStock, MaBeBo y otros experimentos más pequeños —«",
     "bio.story.3.afterLittleHeadBeforeAi": "», como él mismo lo expresó. En los días intensos, su «personal» es un equipo cambiante de ",
     "bio.story.3.afterAi": ". Investigan, estructuran, cuestionan, programan y verifican; el equipo cambia, pero la responsabilidad no. Frank conserva la dirección, el criterio y la responsabilidad final sobre aquello que se hace realidad. El flujo de trabajo más revelador es también el menos glamuroso: habla, vuelve atrás, añade una cosa más y, a veces, pierde el hilo. La IA convierte ese material en algo útil en vez de obligarlo a convertirse en cuidador de una base de datos. Esta biografía también se está haciendo así. Frank aportó lo vivido, desvíos incluidos. La tarea de la maquinaria fue encontrar el hilo, no sustituir al hombre que sujeta el otro extremo.",
-
     "bio.references.heading": "Fuentes y más adentro de la madriguera",
     "bio.references.google": "Rice Paddy - reseñas en Google Maps",
     "bio.references.cameron": "Where Every Meal Tells a Story - Cameron / Design Australia Group",
     "bio.references.ricePaddy": "Rice Paddy - sitio web oficial",
     "bio.references.tripadvisor": "Rice Paddy - reseñas y respuestas de la dirección en Tripadvisor",
     "bio.references.storygate": "StoryGate - avance público",
-
     "bio.layer.type.translation": "Traducción",
     "bio.layer.type.context": "Contexto",
     "bio.layer.type.source": "Fuente",
@@ -140,9 +132,9 @@ const catalogue = {
     "bio.layer.littleHead.title": "Un poco demasiado para una sola cabeza",
     "bio.layer.littleHead.copy": "«Un poco demasiado para mi cabecita», la descripción que hace Frank de compaginar varios proyectos a la vez.",
     "bio.layer.aiCrew.title": "El equipo digital",
-    "bio.layer.aiCrew.copy": "Un equipo digital cambiante que ayuda a Frank a investigar, estructurar, cuestionar, verificar y construir. La dirección y la responsabilidad siguen siendo humanas.",
+    "bio.layer.aiCrew.copy": "Un equipo digital cambiante que ayuda a Frank a investigar, estructurar, cuestionar, verificar y construir. La dirección y la responsabilidad siguen siendo humanas."
   },
-  segments: {
+  "segments": {
     "teaser.firstReveal": [
       "Algunas",
       "cosas",
@@ -151,9 +143,9 @@ const catalogue = {
       "revelan",
       "cuando",
       "te",
-      "quedas",
-    ],
-  },
+      "quedas"
+    ]
+  }
 };
 
 export default catalogue;

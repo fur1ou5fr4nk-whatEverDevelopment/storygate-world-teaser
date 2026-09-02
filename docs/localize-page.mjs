@@ -1,8 +1,7 @@
-import { initializeLocalization, loadPreviewCatalogues } from "./i18n.mjs";
+import { initializeLocalization } from "./i18n.mjs";
 
 try {
-  const catalogMap = await loadPreviewCatalogues(window.location);
-  initializeLocalization({ document, window, catalogMap });
+  initializeLocalization({ document, window });
 } finally {
   document.documentElement.removeAttribute("data-localization");
 }

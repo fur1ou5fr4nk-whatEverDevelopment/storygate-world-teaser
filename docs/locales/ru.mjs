@@ -1,27 +1,27 @@
 const catalogue = {
-  meta: {
-    locale: "ru",
-    sourceVersion: "2026-09-02.2",
-    status: "ai-reviewed",
-    generatedBy: "codex-translation-worker-2026-09-02",
-    qaReviewedBy: "codex-locale-qa-2026-09-02",
-    nativeReviewed: false,
-    public: true,
+  "meta": {
+    "locale": "ru",
+    "sourceVersion": "2026-09-02.4",
+    "status": "ai-reviewed",
+    "generatedBy": "codex-translation-worker-2026-09-02",
+    "qaReviewedBy": "codex-locale-qa-2026-09-02",
+    "nativeReviewed": false,
+    "public": true
   },
-  messages: {
+  "messages": {
     "common.wordmarkAlt": "StoryGate",
     "language.buttonLabel": "Выбрать язык",
     "language.menuLabel": "Доступные языки",
-
     "teaser.page.title": "StoryGate — Скоро",
     "teaser.page.description": "StoryGate — ворота скоро откроются.",
     "teaser.stageLabel": "Тизер StoryGate",
     "teaser.imageAlt": "Деревянная эмблема StoryGate у моря",
     "teaser.gateLabel": "Открыть StoryGate",
     "teaser.tapHint": "коснитесь ворот",
-    "teaser.still": "Всё ещё касаешься?",
-    "teaser.final.first": "Хорошо. Первая история уже началась",
-    "teaser.final.second": "Ворота скоро откроются",
+    "teaser.wild": "Твоё дикое, странствующее сердце рождено для этого",
+    "teaser.still": "Всё ещё касаешься? Хорошо!",
+    "teaser.final.first": "Ты это заслужил:",
+    "teaser.final.second": "Врата открыты: найди демо-историю",
     "teaser.discoveriesLabel": "Скрытые детали StoryGate",
     "teaser.discovery.storygate.buttonLabel": "Узнать, что такое StoryGate",
     "teaser.discovery.storygate.card": "Что такое StoryGate?",
@@ -30,12 +30,10 @@ const catalogue = {
     "teaser.discovery.biography.buttonLabel": "Узнать, кто стоит за StoryGate",
     "teaser.discovery.biography.question": "Кто оставил ворота открытыми?",
     "teaser.discovery.biography.name": "Frank Bodmann",
-
     "coming.page.title": "Скоро — StoryGate",
     "coming.page.description": "Скоро появится больше материалов от StoryGate.",
     "coming.heading": "Скоро",
     "coming.back": "Вернуться к StoryGate",
-
     "about.page.title": "Что такое StoryGate?",
     "about.page.description": "StoryGate связывает истории, созданные людьми, с местами, предметами и моментами, к которым они принадлежат.",
     "about.back": "Вернуться к воротам",
@@ -80,7 +78,6 @@ const catalogue = {
     "bio.cue": "Наведите курсор, установите фокус или коснитесь выделенных слов, чтобы узнать контекст.",
     "bio.portraitAlt": "Коллаж портретов Frank Bodmann в тёмной строгой одежде, включая чёрно-белые студийные снимки.",
     "bio.articleLabel": "Биография Frank Bodmann",
-
     "bio.term.kochazubi": "Kochazubi",
     "bio.term.halbkoch": "Halbkoch",
     "bio.term.kochkaspa": "Kochkaspa",
@@ -94,7 +91,6 @@ const catalogue = {
     "bio.term.storygate": "StoryGate",
     "bio.term.littleHead": "für mein kleines Köpfchen schon ein bisschen viel",
     "bio.term.aiCrew": "ИИ-агентов",
-
     "bio.story.1.beforeCareer": "В опубликованной хронологии работы Frank Bodmann есть одна необычная черта: годы идут вперёд, а названия должностей становятся всё менее почтенными. Всё начинается в 1981 году в Ratskeller в Hann. Münden с должности ",
     "bio.story.1.afterCareerBeforeHalfCook": ". Затем — период в Steigenberger в должности ",
     "bio.story.1.afterHalfCookBeforeCareerList": ". Потом Berlin: ",
@@ -102,21 +98,17 @@ const catalogue = {
     "bio.story.1.afterCareerBeforeRicePaddy": ". С 2007 года в Thailand к списку добавились управление проектами и общее руководство в Niramaya, а затем — ",
     "bio.story.1.betweenBusinesses": " и ",
     "bio.story.1.afterWhatever": ". Кулинария здесь не сюжет; важно другое, сохранившееся как привычка: смотреть внимательно, отвечать прямо и исправлять неточности. Когда автор отзыва о Rice Paddy опубликовал утверждения о ценах, с которыми Frank не согласился, его ответ не ограничился спором о цифрах. Там нашлось место и спрею от комаров, и лягушкам на рисовом поле, и гуппи, которых использовали против личинок, и — раз уж пошла такая подробность — уточнению, что крыша была из пальмовых листьев, а не из бамбука. Позже один из гостей написал, что именно ответы Frank помогли привести его семью в Rice Paddy. Они вернулись три раза. Обслуживание гостей стало частью меню.",
-
     "bio.story.2.afterCameronBeforeBlackbone": " описывает блюда, которые раскрываются историями о руках, высаживавших рис, о рынках, где торговали специями, и о предпочтениях человека за столом. Frank хотел сохранить хотя бы часть этой глубины и за пределами разговора во время еды. Его первые ресторанные эксперименты были цифровыми: отсканировать QR-код, открыть сайт ресторана, найти нужную страницу и наткнуться там на сплошной блок текста. За кулисами Frank приходилось обслуживать неудобную базу данных. Информация была. Изящество — нет. ",
     "bio.story.2.afterBlackbone": " был отдельным проектом — и почти полной противоположностью. Пиратское приключение Frank с поиском сокровищ разворачивалось в настоящих местах. Гости пересекали реальный ландшафт; природа оставалась участником, а не декорацией. Blackbone не был StoryGate с повязкой на глазу. Он был Blackbone. Его уязвимость была физической: реквизит ломался или исчезал. Затем пандемия остановила маршрут, и значительная часть его материального слоя пропала. В Blackbone поиск сокровищ был самой сутью. На сайте ресторана он создавал проблему с удобством использования. Blackbone требовал слишком многого от физического реквизита. Ресторанный эксперимент требовал слишком многого и от гостя, и от того, кто его поддерживал. Намного позже эти противоположные ограничения заострили вопрос, который сегодня проверяет StoryGate: как истории встретиться с местом, предметом или моментом, не подменяя реальность экраном и не вынуждая рассказчика обслуживать скрытую за ней машинерию?",
-
     "bio.story.3.afterStoryGateBeforeLittleHead": " остаётся рабочим, а не окончательным ответом, который предлагает Frank. Проект находится в Phase 0: закладываются основы и проводятся испытания на бумаге. Его цель — дать очень разному материалу — блюду, воспоминанию об острове, приключению — общую структуру, не лишая его объёма. Правило просто: платформа, приложение и вся техническая часть должны исчезнуть; содержание, впечатления и удобство остаются на первом плане. На рабочем столе Frank StoryGate соседствует с LumenAI, ReStock, MaBeBo и разными небольшими экспериментами — «",
     "bio.story.3.afterLittleHeadBeforeAi": "», как он сам выразился. В особенно напряжённые дни его «штат» — это меняющаяся команда из ",
     "bio.story.3.afterAi": ". Они исследуют, структурируют, критически оценивают, пишут код и проверяют; состав меняется, ответственность — нет. Frank по-прежнему задаёт направление, выносит суждения и несёт окончательную ответственность за то, что становится реальностью. Самый показательный рабочий процесс — одновременно и самый негламурный: он говорит, возвращается назад, добавляет ещё одну деталь и порой теряет нить. ИИ превращает этот материал во что-то пригодное, вместо того чтобы заставлять Frank становиться смотрителем базы данных. Эта биография создаётся так же. Frank предоставил материал из собственного опыта, включая все отступления. Задачей машины было найти нить — а не заменить человека, который держит другой её конец.",
-
     "bio.references.heading": "Источники и дальше в кроличью нору",
     "bio.references.google": "Rice Paddy - отзывы в Google Maps",
     "bio.references.cameron": "Where Every Meal Tells a Story - Cameron / Design Australia Group",
     "bio.references.ricePaddy": "Rice Paddy - официальный сайт",
     "bio.references.tripadvisor": "Rice Paddy - отзывы и ответы руководства на Tripadvisor",
     "bio.references.storygate": "StoryGate - публичный тизер",
-
     "bio.layer.type.translation": "Перевод",
     "bio.layer.type.context": "Контекст",
     "bio.layer.type.source": "Источник",
@@ -140,9 +132,9 @@ const catalogue = {
     "bio.layer.littleHead.title": "Многовато для одной головы",
     "bio.layer.littleHead.copy": "«Немного многовато для моей маленькой головы» — так Frank описывает попытку жонглировать несколькими проектами сразу.",
     "bio.layer.aiCrew.title": "Цифровая команда",
-    "bio.layer.aiCrew.copy": "Меняющаяся цифровая команда, которая помогает Frank с исследованиями, структурированием, критической оценкой, проверкой и разработкой. Направление и ответственность остаются за человеком.",
+    "bio.layer.aiCrew.copy": "Меняющаяся цифровая команда, которая помогает Frank с исследованиями, структурированием, критической оценкой, проверкой и разработкой. Направление и ответственность остаются за человеком."
   },
-  segments: {
+  "segments": {
     "teaser.firstReveal": [
       "Некоторые",
       "вещи",
@@ -150,9 +142,9 @@ const catalogue = {
       "лишь",
       "тем,",
       "кто",
-      "остаётся",
-    ],
-  },
+      "остаётся"
+    ]
+  }
 };
 
 export default catalogue;

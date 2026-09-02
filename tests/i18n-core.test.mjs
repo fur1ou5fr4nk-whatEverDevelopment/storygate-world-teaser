@@ -145,7 +145,7 @@ test("local pages use the same complete catalogue set as production", async () =
   assert.deepEqual(Object.keys(defaultLocalCatalogues), SUPPORTED_LOCALES);
 });
 
-test("legacy preview mode uses the already complete public catalogue set", async () => {
+test("explicit local preview mode loads all available private catalogues", async () => {
   assert.equal(typeof loadPreviewCatalogues, "function", "preview catalogue loading is not implemented");
   const imported = [];
   const previewCatalogues = await loadPreviewCatalogues(
@@ -157,7 +157,7 @@ test("legacy preview mode uses the already complete public catalogue set", async
     },
   );
 
-  assert.equal(imported.length, 0);
+  assert.equal(imported.length, 7);
   assert.deepEqual(Object.keys(previewCatalogues), SUPPORTED_LOCALES);
 });
 

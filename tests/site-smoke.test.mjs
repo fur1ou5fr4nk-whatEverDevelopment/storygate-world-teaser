@@ -92,12 +92,28 @@ test("homepage carries the approved suspense reveal copy", async () => {
   const visibleText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
   assert.match(visibleText, /Some things only reveal themselves when you stay/);
-  assert.match(visibleText, /Still tapping\?/);
-  assert.match(visibleText, /Good\. The first story has already begun/);
-  assert.match(visibleText, /The gate opens soon(?:\s|$)/);
-  assert.doesNotMatch(visibleText, /The gate opens soon\./);
+  assert.match(visibleText, /Still tapping\? Good!/);
+  assert.match(visibleText, /Your wild, wandering heart was born for this/);
+  assert.match(visibleText, /You earned it:/);
+  assert.match(visibleText, /Gate is open: Find the demo story/);
+  assert.doesNotMatch(visibleText, /The gate opens soon/);
+  assert.doesNotMatch(visibleText, /The first story has already begun/);
   assert.doesNotMatch(visibleText, /friction included/);
-  assert.doesNotMatch(visibleText, /wild, wandering heart/);
+});
+
+test("localization hides every teaser page until the preferred language is applied", async () => {
+  for (const path of ["/", "/coming-soon.html", "/frank-bodmann.html"]) {
+    const { text: html } = await fetchText(path);
+    assert.match(html, /<script src="\.\/locale-boot\.js"><\/script>/, path);
+  }
+
+  const { response, text: boot } = await fetchText("/locale-boot.js");
+  assert.equal(response.status, 200);
+  assert.match(boot, /dataset\.localization\s*=\s*"pending"/);
+  assert.match(boot, /removeAttribute\("data-localization"\)/);
+
+  const { text: css } = await fetchText("/language-control.css");
+  assert.match(css, /html\[data-localization="pending"\] body\s*\{[^}]*visibility:\s*hidden;/s);
 });
 
 test("the teaser stage cannot become an internal scroll container", async () => {

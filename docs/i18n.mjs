@@ -19,6 +19,15 @@ export const SUPPORTED_LOCALES = Object.freeze([
 ]);
 
 const PREVIEW_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
+const PREVIEW_CATALOGUE_IMPORTS = Object.freeze({
+  de: "./locales/de.mjs",
+  th: "./locales/th.mjs",
+  fr: "./locales/fr.mjs",
+  es: "./locales/es.mjs",
+  ru: "./locales/ru.mjs",
+  "zh-Hans": "./locales/zh-Hans.mjs",
+  "zh-Hant": "./locales/zh-Hant.mjs",
+});
 
 export const LOCALE_LABELS = Object.freeze({
   en: "EN",
@@ -46,8 +55,33 @@ function isPreviewLocation({ protocol = "", hostname = "" } = {}) {
   return protocol === "file:" || PREVIEW_HOSTS.has(hostname.toLowerCase());
 }
 
-export async function loadPreviewCatalogues() {
-  return CATALOGUES;
+function requestsPrivateLocalePreview({ search = "" } = {}) {
+  try {
+    return new URLSearchParams(search).get("previewLocales") === "all";
+  } catch {
+    return false;
+  }
+}
+
+export async function loadPreviewCatalogues(
+  locationLike = {},
+  importer = (specifier) => import(specifier),
+) {
+  if (!isPreviewLocation(locationLike) || !requestsPrivateLocalePreview(locationLike)) {
+    return CATALOGUES;
+  }
+
+  const catalogues = { ...CATALOGUES };
+  await Promise.all(Object.entries(PREVIEW_CATALOGUE_IMPORTS).map(async ([locale, specifier]) => {
+    try {
+      const module = await importer(specifier);
+      if (module?.default?.meta?.locale === locale) catalogues[locale] = module.default;
+    } catch {
+      // Preview catalogues are intentionally absent from the public release.
+    }
+  }));
+
+  return Object.freeze(catalogues);
 }
 
 export function normalizeLocale(value) {

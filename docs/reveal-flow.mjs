@@ -1,8 +1,9 @@
 const revealSteps = [
-  { phase: 1, action: "focus" },
-  { phase: 2, action: "message" },
-  { phase: 3, action: "still" },
-  { phase: 4, action: "final" }
+  { phase: 1, action: "message", ripple: false },
+  { phase: 2, action: "focus-partial", ripple: false },
+  { phase: 3, action: "still", ripple: true },
+  { phase: 4, action: "focus-full", ripple: false },
+  { phase: 5, action: "final", ripple: true }
 ];
 
 const standardTimings = Object.freeze({
@@ -20,7 +21,7 @@ const reducedMotionTimings = Object.freeze({
 });
 
 export function getNextRevealStep(currentPhase) {
-  return revealSteps[Number(currentPhase)] || { phase: 4, action: "done" };
+  return revealSteps[Number(currentPhase)] || { phase: 5, action: "done", ripple: false };
 }
 
 export function getRevealTimings({ reducedMotion = false } = {}) {

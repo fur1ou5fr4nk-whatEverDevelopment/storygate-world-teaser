@@ -220,18 +220,6 @@ test("changing language persists it and updates the URL without reloading", () =
   assert.deepEqual(document.dispatchedEvents.at(-1).detail, { locale: "de" });
 });
 
-test("the initially detected language persists across following teaser pages", () => {
-  const document = createDocument();
-  const window = createWindow();
-  window.navigator.languages = ["fr-FR", "en"];
-  const storage = createStorage();
-
-  const controller = initialize({ document, window, storage, catalogMap: minimalCatalogues() });
-
-  assert.equal(controller.locale, "fr");
-  assert.equal(storage.value("storygate.locale"), "fr");
-});
-
 test("localization still initializes when browser storage access is blocked", () => {
   const document = createDocument();
   const window = createWindow();
@@ -269,17 +257,24 @@ test("Escape closes the language menu and returns focus to its trigger", () => {
   assert.equal(trigger.focusCount, 1);
 });
 
-test("production detects a saved supported language and exposes all language choices", () => {
+test("production detects the browser language on first visit and exposes every language", () => {
   const document = createDocument();
+  const window = createWindow({ protocol: "https:", hostname: "storygate.world" });
+  window.navigator.languages = ["de-DE", "en"];
+  const storage = createStorage();
   const controller = initialize({
     document,
-    window: createWindow({ protocol: "https:", hostname: "storygate.world" }),
-    storage: createStorage({ "storygate.locale": "de" }),
+    window,
+    storage,
     catalogMap: minimalCatalogues(),
   });
 
   assert.equal(controller.locale, "de");
-  assert.ok(controller.element);
+  assert.equal(document.documentElement.lang, "de");
+  assert.equal(storage.value("storygate.locale"), "de");
   assert.equal(document.body.children.length, 1);
-  assert.equal(controller.element.children[1].children.length, 8);
+  assert.deepEqual(
+    controller.element.children[1].children.map((option) => option.textContent),
+    ["EN", "DE", "ไทย", "FR", "ES", "RU", "简", "繁"],
+  );
 });

@@ -1,27 +1,27 @@
 const catalogue = {
-  meta: {
-    locale: "th",
-    sourceVersion: "2026-09-02.2",
-    status: "ai-reviewed",
-    generatedBy: "codex-translation-worker-2026-09-02",
-    qaReviewedBy: "codex-locale-qa-2026-09-02",
-    nativeReviewed: false,
-    public: true,
+  "meta": {
+    "locale": "th",
+    "sourceVersion": "2026-09-02.4",
+    "status": "ai-reviewed",
+    "generatedBy": "codex-translation-worker-2026-09-02",
+    "qaReviewedBy": "codex-locale-qa-2026-09-02",
+    "nativeReviewed": false,
+    "public": true
   },
-  messages: {
+  "messages": {
     "common.wordmarkAlt": "StoryGate",
     "language.buttonLabel": "เลือกภาษา",
     "language.menuLabel": "ภาษาที่มีให้เลือก",
-
     "teaser.page.title": "StoryGate — เร็ว ๆ นี้",
     "teaser.page.description": "StoryGate — ประตูกำลังจะเปิดในไม่ช้า",
     "teaser.stageLabel": "ตัวอย่าง StoryGate",
     "teaser.imageAlt": "ตรา StoryGate ทำจากไม้ริมทะเล",
     "teaser.gateLabel": "เปิดเผย StoryGate",
     "teaser.tapHint": "แตะที่ประตู",
-    "teaser.still": "ยังแตะอยู่เหรอ?",
-    "teaser.final.first": "ดี เรื่องราวแรกได้เริ่มต้นขึ้นแล้ว",
-    "teaser.final.second": "ประตูกำลังจะเปิดในไม่ช้า",
+    "teaser.wild": "หัวใจอิสระที่รักการเดินทางของคุณเกิดมาเพื่อสิ่งนี้",
+    "teaser.still": "ยังแตะอยู่เหรอ? ดี!",
+    "teaser.final.first": "คุณคู่ควรกับมัน:",
+    "teaser.final.second": "ประตูเปิดแล้ว: ค้นหาเรื่องราวสาธิต",
     "teaser.discoveriesLabel": "รายละเอียด StoryGate ที่ซ่อนอยู่",
     "teaser.discovery.storygate.buttonLabel": "ค้นพบว่า StoryGate คืออะไร",
     "teaser.discovery.storygate.card": "StoryGate คืออะไร?",
@@ -30,12 +30,10 @@ const catalogue = {
     "teaser.discovery.biography.buttonLabel": "ค้นพบคนที่อยู่เบื้องหลัง StoryGate",
     "teaser.discovery.biography.question": "ใครเปิดประตูทิ้งไว้?",
     "teaser.discovery.biography.name": "Frank Bodmann",
-
     "coming.page.title": "เร็ว ๆ นี้ — StoryGate",
     "coming.page.description": "เรื่องราวอีกมากจาก StoryGate กำลังจะมาเร็ว ๆ นี้",
     "coming.heading": "เร็ว ๆ นี้",
     "coming.back": "กลับไปที่ StoryGate",
-
     "about.page.title": "StoryGate คืออะไร?",
     "about.page.description": "StoryGate เชื่อมโยงเรื่องราวที่ผู้คนสร้างขึ้นกับสถานที่ สิ่งของ และช่วงเวลาที่เรื่องราวเหล่านั้นเป็นส่วนหนึ่ง",
     "about.back": "กลับไปที่ Gate",
@@ -80,7 +78,6 @@ const catalogue = {
     "bio.cue": "เลื่อนเมาส์ โฟกัส หรือแตะคำที่ไฮไลต์เพื่อดูบริบทเพิ่มเติม",
     "bio.portraitAlt": "ภาพคอลลาจพอร์ตเทรตของ Frank Bodmann ในชุดทางการสีเข้ม รวมถึงภาพสตูดิโอขาวดำ",
     "bio.articleLabel": "ชีวประวัติของ Frank Bodmann",
-
     "bio.term.kochazubi": "Kochazubi",
     "bio.term.halbkoch": "Halbkoch",
     "bio.term.kochkaspa": "Kochkaspa",
@@ -94,7 +91,6 @@ const catalogue = {
     "bio.term.storygate": "StoryGate",
     "bio.term.littleHead": "für mein kleines Köpfchen schon ein bisschen viel",
     "bio.term.aiCrew": "เอเจนต์ AI",
-
     "bio.story.1.beforeCareer": "ลำดับประวัติการทำงานที่ Frank Bodmann เปิดเผยต่อสาธารณะมีสิ่งหนึ่งที่ไม่ธรรมดา คือปีต่าง ๆ เดินหน้าไปเรื่อย ๆ ขณะที่ชื่อตำแหน่งกลับสง่างามน้อยลงทุกที เรื่องเริ่มขึ้นในปี 1981 ที่ Ratskeller ใน Hann. Münden ด้วยตำแหน่ง ",
     "bio.story.1.afterCareerBeforeHalfCook": " จากนั้นไปทำงานช่วงหนึ่งกับ Steigenberger ในฐานะ ",
     "bio.story.1.afterHalfCookBeforeCareerList": " แล้วจึงถึง Berlin: ",
@@ -102,21 +98,17 @@ const catalogue = {
     "bio.story.1.afterCareerBeforeRicePaddy": " ตั้งแต่ปี 2007 เขารับหน้าที่บริหารโครงการและจัดการทั่วไปที่ Niramaya ใน Thailand ก่อนจะตามมาด้วย ",
     "bio.story.1.betweenBusinesses": " และ ",
     "bio.story.1.afterWhatever": " การทำอาหารไม่ใช่แก่นของเรื่อง นิสัยที่ติดตัวมาต่างหากคือ มองให้ละเอียด ตอบให้ตรง และแก้ข้อมูลให้ถูกต้อง เมื่อผู้รีวิว Rice Paddy เผยแพร่ข้อมูลราคาที่ Frank ไม่เห็นด้วย คำตอบของเขาไม่ได้โต้แย้งแค่ตัวเลข แต่ยังพูดถึงสเปรย์กันยุง กบในนาข้าว ปลาหางนกยูงที่ใช้กำจัดลูกน้ำ และเพื่อให้ครบถ้วนเสียหน่อย ข้อเท็จจริงที่ว่าหลังคาทำจากใบปาล์ม ไม่ใช่ไม้ไผ่ ต่อมามีแขกคนหนึ่งเขียนว่า คำตอบของ Frank เป็นสิ่งที่ดึงดูดให้ครอบครัวของเขามาที่ Rice Paddy พวกเขากลับมาอีกสามครั้ง การบริการลูกค้ากลายเป็นส่วนหนึ่งของเมนูไปแล้ว",
-
     "bio.story.2.afterCameronBeforeBlackbone": " บรรยายถึงอาหารที่เปิดทางไปสู่เรื่องราวของมือที่ปลูกข้าว ตลาดที่มีการค้าขายเครื่องเทศ และความชอบของคนที่นั่งอยู่ตรงโต๊ะ Frank อยากให้ความลึกบางส่วนนี้ยังเข้าถึงได้แม้การสนทนาที่โต๊ะจะจบลง การทดลองยุคแรกในร้านอาหารของเขาเป็นแบบดิจิทัล: สแกนคิวอาร์โค้ด เปิดเว็บไซต์ร้าน หาเพจที่ถูกต้อง แล้วพบกับข้อความก้อนใหญ่ เบื้องหลังนั้น Frank ต้องคอยดูแลฐานข้อมูลที่ใช้งานยุ่งยาก ข้อมูลมีอยู่ แต่ความสง่างามไม่มี ",
     "bio.story.2.afterBlackbone": " เป็นอีกโครงการหนึ่ง และแทบจะตรงกันข้ามโดยสิ้นเชิง การผจญภัยล่าขุมทรัพย์โจรสลัดของ Frank เกิดขึ้นในสถานที่จริง แขกเดินทางผ่านภูมิประเทศจริง ธรรมชาติยังเป็นผู้ร่วมเล่น ไม่ใช่แค่ฉากหลัง Blackbone ไม่ใช่ StoryGate ที่สวมผ้าปิดตา มันคือ Blackbone จุดเปราะบางของมันอยู่ที่สิ่งของจริง อุปกรณ์ประกอบฉากเสียหายหรือหายไป แล้วโรคระบาดก็ทำให้ทัวร์หยุดลง และส่วนที่เป็นของจริงส่วนใหญ่ก็สูญหายไป ที่ Blackbone การล่าขุมทรัพย์คือหัวใจสำคัญ แต่บนเว็บไซต์ร้านอาหาร มันคือข้อบกพร่องด้านการใช้งาน Blackbone พึ่งพาอุปกรณ์ประกอบฉากจริงมากเกินไป ส่วนการทดลองในร้านก็เรียกร้องจากทั้งแขกและผู้ดูแลมากเกินไป หลายปีต่อมา ขีดจำกัดที่อยู่คนละขั้วเหล่านี้ทำให้คำถามที่ StoryGate กำลังทดสอบคมชัดขึ้น: เรื่องราวจะไปพบกับสถานที่ สิ่งของ หรือช่วงเวลาหนึ่งได้อย่างไร โดยไม่ให้หน้าจอเข้ามาแทนที่โลกจริง และไม่บังคับให้คนเล่าเรื่องต้องคอยดูแลเครื่องจักรที่อยู่เบื้องหลัง?",
-
     "bio.story.3.afterStoryGateBeforeLittleHead": " ยังคงเป็นคำตอบที่ Frank กำลังลงมือทำ ไม่ใช่คำตอบสำเร็จรูป ขณะนี้อยู่ใน Phase 0: วางรากฐานและทดสอบบนกระดาษ เป้าหมายคือให้เนื้อหาที่แตกต่างกันมาก ไม่ว่าจะเป็นอาหารหนึ่งจาน ความทรงจำบนเกาะ หรือการผจญภัย มีโครงสร้างร่วมกันโดยไม่ทำให้แต่ละอย่างแบนราบ กฎนั้นเรียบง่าย: แพลตฟอร์ม แอป และกลไกควรหายไป ส่วนเนื้อหา ประสบการณ์ และความง่ายในการใช้งานต้องอยู่ข้างหน้า StoryGate ใช้โต๊ะทำงานเดียวกับ LumenAI, ReStock, MaBeBo และการทดลองเล็ก ๆ อีกหลายอย่างของ Frank — “",
     "bio.story.3.afterLittleHeadBeforeAi": "” คือคำที่เขาใช้ ในวันที่งานหนัก “ทีมงาน” ของเขาคือกลุ่ม ",
     "bio.story.3.afterAi": " ที่หมุนเวียนเปลี่ยนกันมา พวกเขาช่วยค้นคว้า จัดโครงสร้าง ตั้งคำถาม เขียนโค้ด และตรวจสอบ ทีมเปลี่ยนได้ แต่ความรับผิดชอบไม่เปลี่ยน Frank ยังคงกำหนดทิศทาง ใช้วิจารณญาณ และรับผิดชอบขั้นสุดท้ายต่อสิ่งที่จะกลายเป็นจริง ขั้นตอนการทำงานที่เผยตัวตนเขาที่สุดกลับเป็นสิ่งที่ดูไม่น่าตื่นเต้นที่สุด: เขาพูด ย้อนกลับไปมา เพิ่มอีกเรื่องหนึ่ง แล้วบางครั้งก็หลงประเด็น AI เปลี่ยนวัตถุดิบเหล่านั้นให้ใช้การได้ แทนที่จะบังคับให้เขากลายเป็นคนดูแลฐานข้อมูล ชีวประวัตินี้ก็กำลังเกิดขึ้นในแบบเดียวกัน Frank มอบเรื่องราวจากประสบการณ์จริงของเขา รวมทั้งทางวกวนทั้งหมด หน้าที่ของเครื่องจักรคือค้นหาเส้นเรื่อง ไม่ใช่แทนที่ชายผู้จับปลายเส้นอีกด้านไว้",
-
     "bio.references.heading": "แหล่งข้อมูลและทางลงโพรงกระต่ายต่อไป",
     "bio.references.google": "Rice Paddy - รีวิวบน Google Maps",
     "bio.references.cameron": "Where Every Meal Tells a Story - Cameron / Design Australia Group",
     "bio.references.ricePaddy": "Rice Paddy - เว็บไซต์ทางการ",
     "bio.references.tripadvisor": "Rice Paddy - รีวิวและคำตอบจากฝ่ายบริหารบน Tripadvisor",
     "bio.references.storygate": "StoryGate - ตัวอย่างสาธารณะ",
-
     "bio.layer.type.translation": "คำแปล",
     "bio.layer.type.context": "บริบท",
     "bio.layer.type.source": "แหล่งข้อมูล",
@@ -140,17 +132,17 @@ const catalogue = {
     "bio.layer.littleHead.title": "มากเกินไปนิดสำหรับหัวเดียว",
     "bio.layer.littleHead.copy": "“มากเกินไปนิดสำหรับหัวเล็ก ๆ ของผม” คือคำที่ Frank ใช้อธิบายการรับมือหลายโครงการพร้อมกัน",
     "bio.layer.aiCrew.title": "ทีมดิจิทัล",
-    "bio.layer.aiCrew.copy": "ทีมดิจิทัลที่หมุนเวียนเปลี่ยนกันมาเพื่อช่วย Frank ค้นคว้า จัดโครงสร้าง ตั้งคำถาม ตรวจสอบ และสร้างสรรค์ ทิศทางและความรับผิดชอบยังคงอยู่กับมนุษย์",
+    "bio.layer.aiCrew.copy": "ทีมดิจิทัลที่หมุนเวียนเปลี่ยนกันมาเพื่อช่วย Frank ค้นคว้า จัดโครงสร้าง ตั้งคำถาม ตรวจสอบ และสร้างสรรค์ ทิศทางและความรับผิดชอบยังคงอยู่กับมนุษย์"
   },
-  segments: {
+  "segments": {
     "teaser.firstReveal": [
       "บางสิ่ง",
       "จะเผยตัว",
       "ก็ต่อเมื่อ",
       "คุณ",
-      "อยู่ต่อ",
-    ],
-  },
+      "อยู่ต่อ"
+    ]
+  }
 };
 
 export default catalogue;
