@@ -1,4 +1,11 @@
 import englishCatalogue from "./locales/en.mjs";
+import germanCatalogue from "./locales/de.mjs";
+import thaiCatalogue from "./locales/th.mjs";
+import frenchCatalogue from "./locales/fr.mjs";
+import spanishCatalogue from "./locales/es.mjs";
+import russianCatalogue from "./locales/ru.mjs";
+import simplifiedChineseCatalogue from "./locales/zh-Hans.mjs";
+import traditionalChineseCatalogue from "./locales/zh-Hant.mjs";
 
 export const SUPPORTED_LOCALES = Object.freeze([
   "en",
@@ -12,15 +19,6 @@ export const SUPPORTED_LOCALES = Object.freeze([
 ]);
 
 const PREVIEW_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
-const PREVIEW_CATALOGUE_IMPORTS = Object.freeze({
-  de: "./locales/de.mjs",
-  th: "./locales/th.mjs",
-  fr: "./locales/fr.mjs",
-  es: "./locales/es.mjs",
-  ru: "./locales/ru.mjs",
-  "zh-Hans": "./locales/zh-Hans.mjs",
-  "zh-Hant": "./locales/zh-Hant.mjs",
-});
 
 export const LOCALE_LABELS = Object.freeze({
   en: "EN",
@@ -35,39 +33,21 @@ export const LOCALE_LABELS = Object.freeze({
 
 export const CATALOGUES = Object.freeze({
   en: englishCatalogue,
+  de: germanCatalogue,
+  th: thaiCatalogue,
+  fr: frenchCatalogue,
+  es: spanishCatalogue,
+  ru: russianCatalogue,
+  "zh-Hans": simplifiedChineseCatalogue,
+  "zh-Hant": traditionalChineseCatalogue,
 });
 
 function isPreviewLocation({ protocol = "", hostname = "" } = {}) {
   return protocol === "file:" || PREVIEW_HOSTS.has(hostname.toLowerCase());
 }
 
-function requestsPrivateLocalePreview({ search = "" } = {}) {
-  try {
-    return new URLSearchParams(search).get("previewLocales") === "all";
-  } catch {
-    return false;
-  }
-}
-
-export async function loadPreviewCatalogues(
-  locationLike = {},
-  importer = (specifier) => import(specifier),
-) {
-  if (!isPreviewLocation(locationLike) || !requestsPrivateLocalePreview(locationLike)) {
-    return CATALOGUES;
-  }
-
-  const catalogues = { ...CATALOGUES };
-  await Promise.all(Object.entries(PREVIEW_CATALOGUE_IMPORTS).map(async ([locale, specifier]) => {
-    try {
-      const module = await importer(specifier);
-      if (module?.default?.meta?.locale === locale) catalogues[locale] = module.default;
-    } catch {
-      // Preview catalogues are intentionally absent from the public release.
-    }
-  }));
-
-  return Object.freeze(catalogues);
+export async function loadPreviewCatalogues() {
+  return CATALOGUES;
 }
 
 export function normalizeLocale(value) {
@@ -325,6 +305,7 @@ export function initializeLocalization({
   });
 
   applyLocale(documentLike, currentLocale, catalogMap);
+  writeStoredLocale(availableStorage, currentLocale);
 
   if (selectableLocales.length <= 1) {
     return {

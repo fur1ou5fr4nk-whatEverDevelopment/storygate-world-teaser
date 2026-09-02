@@ -52,7 +52,7 @@ before(async () => {
 
 after(() => new Promise((resolveClosed) => server.close(resolveClosed)));
 
-test("homepage routes the simple demo to StoryGate's internal detection experience", async () => {
+test("homepage routes the StoryGate introduction and simple demo internally", async () => {
   const response = await fetch(baseUrl + "/");
   assert.equal(response.status, 200);
   const html = await response.text();
@@ -62,12 +62,18 @@ test("homepage routes the simple demo to StoryGate's internal detection experien
     /id="detail-demo"[^>]*href="\.\/simple-demo\/"/
   );
   assert.doesNotMatch(html, /storygate-immediate-benefit\.furiousfrank\.chatgpt\.site/);
-  assert.equal((html.match(/href="\.\/coming-soon\.html"/g) || []).length, 1);
+  assert.match(html, /id="detail-storygate"[^>]*href="\.\/what-is-storygate\.html"/);
+  assert.equal((html.match(/href="\.\/coming-soon\.html"/g) || []).length, 0);
+
+  const { response: aboutResponse, text: aboutHtml } = await fetchText("/what-is-storygate.html");
+  assert.equal(aboutResponse.status, 200);
+  assert.match(aboutHtml, /data-i18n="about\.introduction"/);
 
   const { response: demoResponse, text: demoHtml } = await fetchText("/simple-demo/");
   assert.equal(demoResponse.status, 200);
   assert.match(demoHtml, /data-demo-stage/);
   assert.match(demoHtml, />StoryGate detected</);
+  assert.match(demoHtml, /data-i18n="demo\.instruction"/);
 
   for (const path of [
     "/simple-demo/simple-demo.css",
@@ -195,7 +201,8 @@ test("biography candidate is available behind the third discovery", async () => 
   assert.match(homepage, /data-discovery-id="demo"/);
   assert.match(homepage, /data-biography-discovery/);
   assert.match(homepage, /href="\.\/frank-bodmann\.html"/i);
-  assert.equal((homepage.match(/href="\.\/coming-soon\.html"/g) || []).length, 1);
+  assert.match(homepage, /href="\.\/what-is-storygate\.html"/i);
+  assert.equal((homepage.match(/href="\.\/coming-soon\.html"/g) || []).length, 0);
 });
 
 test("coming-soon page has one route back to the homepage", async () => {
@@ -206,16 +213,28 @@ test("coming-soon page has one route back to the homepage", async () => {
   assert.match(html, /href="\.\/"/);
 });
 
-test("all three pages bind every English source string to the shared localizer", async () => {
-  const pages = ["/", "/coming-soon.html", "/frank-bodmann.html"];
+test("What is StoryGate presents the human, physical-world promise through four Layers", async () => {
+  const { response, text: html } = await fetchText("/what-is-storygate.html");
+  assert.equal(response.status, 200);
+  assert.match(html, /StoryGate connects Stories made by people/);
+  assert.match(html, /world around you/);
+  assert.match(html, /StoryGate does not invent these Stories\. People do/);
+  assert.match(html, /early-stage startup, currently under development and testing/);
+  assert.equal((html.match(/class="layer-trigger"/g) || []).length, 4);
+  assert.equal((html.match(/data-layer-card=/g) || []).length, 4);
+});
+
+test("every page binds every English source string to the shared localizer", async () => {
+  const pages = ["/", "/coming-soon.html", "/frank-bodmann.html", "/simple-demo/", "/what-is-storygate.html"];
   const boundMessages = new Set();
   const boundSegments = new Set();
 
   for (const path of pages) {
     const { response, text: html } = await fetchText(path);
     assert.equal(response.status, 200, path);
-    assert.match(html, /<script type="module" src="\.\/localize-page\.mjs"><\/script>/, path);
-    assert.match(html, /<link rel="stylesheet" href="\.\/language-control\.css">/, path);
+    const prefix = path === "/simple-demo/" ? "\\.\\./" : "\\.\\/";
+    assert.match(html, new RegExp(`<script type="module" src="${prefix}localize-page\\.mjs"></script>`), path);
+    assert.match(html, new RegExp(`<link rel="stylesheet" href="${prefix}language-control\\.css">`), path);
 
     for (const match of html.matchAll(/data-i18n(?:-aria-label|-alt|-content)?="([^"]+)"/g)) {
       boundMessages.add(match[1]);
@@ -235,14 +254,45 @@ test("all three pages bind every English source string to the shared localizer",
   assert.deepEqual(missingSegments, []);
 });
 
+test("locale bootstrap prevents an English fallback flash and releases the page safely", async () => {
+  for (const path of ["/", "/coming-soon.html", "/frank-bodmann.html", "/what-is-storygate.html"]) {
+    const { text: html } = await fetchText(path);
+    assert.match(html, /<script src="\.\/locale-boot\.js"><\/script>/, path);
+  }
+  const { text: demoHtml } = await fetchText("/simple-demo/");
+  assert.match(demoHtml, /<script src="\.\.\/locale-boot\.js"><\/script>/);
+
+  const { response, text: boot } = await fetchText("/locale-boot.js");
+  assert.equal(response.status, 200);
+  assert.match(boot, /dataset\.localization\s*=\s*"pending"/);
+  assert.match(boot, /setTimeout/);
+  assert.match(boot, /removeAttribute\("data-localization"\)/);
+
+  const { text: css } = await fetchText("/language-control.css");
+  assert.match(css, /html\[data-localization="pending"\] body\s*\{[^}]*visibility:\s*hidden;/s);
+
+  const { text: localizer } = await fetchText("/localize-page.mjs");
+  assert.match(localizer, /finally\s*\{/);
+  assert.match(localizer, /removeAttribute\("data-localization"\)/);
+});
+
 test("all referenced production assets are available", async () => {
   const paths = [
     "/styles.css",
     "/script.js",
     "/i18n.mjs",
     "/localize-page.mjs",
+    "/locale-boot.js",
     "/language-control.css",
     "/locales/en.mjs",
+    "/locales/de.mjs",
+    "/locales/th.mjs",
+    "/locales/fr.mjs",
+    "/locales/es.mjs",
+    "/locales/ru.mjs",
+    "/locales/zh-Hans.mjs",
+    "/locales/zh-Hant.mjs",
+    "/about.css",
     "/discovery-state.mjs",
     "/reveal-flow.mjs",
     "/teaser-layout.mjs",

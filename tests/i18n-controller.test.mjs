@@ -160,7 +160,7 @@ function minimalCatalogues() {
     ["en", "de", "th", "fr", "es", "ru", "zh-Hans", "zh-Hant"].map((locale) => [
       locale,
       {
-        meta: { public: locale === "en" },
+        meta: { public: true },
         messages: { ...labels },
         segments: {},
       },
@@ -220,6 +220,18 @@ test("changing language persists it and updates the URL without reloading", () =
   assert.deepEqual(document.dispatchedEvents.at(-1).detail, { locale: "de" });
 });
 
+test("the initially detected language persists across following teaser pages", () => {
+  const document = createDocument();
+  const window = createWindow();
+  window.navigator.languages = ["fr-FR", "en"];
+  const storage = createStorage();
+
+  const controller = initialize({ document, window, storage, catalogMap: minimalCatalogues() });
+
+  assert.equal(controller.locale, "fr");
+  assert.equal(storage.value("storygate.locale"), "fr");
+});
+
 test("localization still initializes when browser storage access is blocked", () => {
   const document = createDocument();
   const window = createWindow();
@@ -257,7 +269,7 @@ test("Escape closes the language menu and returns focus to its trigger", () => {
   assert.equal(trigger.focusCount, 1);
 });
 
-test("production hides the picker when English is the only public locale", () => {
+test("production detects a saved supported language and exposes all language choices", () => {
   const document = createDocument();
   const controller = initialize({
     document,
@@ -266,7 +278,8 @@ test("production hides the picker when English is the only public locale", () =>
     catalogMap: minimalCatalogues(),
   });
 
-  assert.equal(controller.locale, "en");
-  assert.equal(controller.element, null);
-  assert.equal(document.body.children.length, 0);
+  assert.equal(controller.locale, "de");
+  assert.ok(controller.element);
+  assert.equal(document.body.children.length, 1);
+  assert.equal(controller.element.children[1].children.length, 8);
 });

@@ -1,24 +1,26 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="../locale-boot.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#050606">
-  <meta name="description" content="Bring a phone close to a STORY Token and experience the StoryGate detection moment.">
-  <title>StoryGate detected</title>
+  <meta name="description" content="Bring a phone close to a STORY Token and experience the StoryGate detection moment." data-i18n-content="demo.page.description">
+  <title data-i18n="demo.page.title">StoryGate detected</title>
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
   <link rel="stylesheet" href="./simple-demo.css">
+  <link rel="stylesheet" href="../language-control.css">
 </head>
 <body>
-  <main class="demo-stage" data-demo-stage data-phase="approach" tabindex="0" aria-label="StoryGate proximity demo. Move toward the STORY Token to trigger detection.">
+  <main class="demo-stage" data-demo-stage data-phase="approach" tabindex="0" aria-label="StoryGate proximity demo. Move toward the STORY Token to trigger detection." data-i18n-aria-label="demo.stageLabel">
     <img class="demo-backdrop demo-backdrop--blur" src="../assets/teaser-source-original.png" alt="" aria-hidden="true">
-    <img class="demo-backdrop demo-backdrop--sharp" data-demo-backdrop src="../assets/teaser-source-original.png" alt="A physical STORY Token by the sea">
+    <img class="demo-backdrop demo-backdrop--sharp" data-demo-backdrop src="../assets/teaser-source-original.png" alt="A physical STORY Token by the sea" data-i18n-alt="demo.backdropAlt">
     <div class="demo-shade" aria-hidden="true"></div>
 
-    <img class="demo-wordmark" src="../assets/storygate-wordmark-white.png" alt="StoryGate">
+    <img class="demo-wordmark" src="../assets/storygate-wordmark-white.png" alt="StoryGate" data-i18n-alt="common.wordmarkAlt">
 
-    <p class="demo-instruction" data-demo-instruction>Bring your phone closer.</p>
-    <p class="demo-assist" id="demo-assist">Drag toward the token. On a phone, swipe upward.</p>
+    <p class="demo-instruction" data-demo-instruction data-i18n="demo.instruction">Bring your phone closer.</p>
+    <p class="demo-assist" id="demo-assist" data-i18n="demo.assist">Drag toward the token. On a phone, swipe upward.</p>
 
     <div class="demo-field" data-demo-target aria-hidden="true">
       <span></span>
@@ -26,14 +28,15 @@
       <span></span>
     </div>
 
-    <div class="demo-phone" data-demo-phone role="button" tabindex="0" aria-describedby="demo-assist" aria-label="Move phone closer to the STORY Token">
+    <div class="demo-phone" data-demo-phone role="button" tabindex="0" aria-describedby="demo-assist" aria-label="Move phone closer to the STORY Token" data-i18n-aria-label="demo.phoneLabel">
       <img class="demo-phone__asset" src="../assets/storygate-demo-phone.png" alt="">
       <section class="demo-status" data-demo-status aria-live="polite" aria-atomic="true" aria-hidden="true">
-        <strong>StoryGate detected</strong>
+        <strong data-i18n="demo.detected">StoryGate detected</strong>
         <span>storygate.world</span>
       </section>
     </div>
   </main>
+  <script type="module" src="../localize-page.mjs"></script>
   <script type="module" src="./simple-demo.js"></script>
 </body>
 </html>

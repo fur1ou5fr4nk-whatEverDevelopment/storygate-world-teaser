@@ -10,6 +10,7 @@ try {
 }
 
 const {
+  CATALOGUES,
   SUPPORTED_LOCALES,
   getMessage,
   getSelectableLocales,
@@ -35,6 +36,14 @@ test("the configured locale registry has one canonical order", () => {
     "zh-Hans",
     "zh-Hant",
   ]);
+});
+
+test("every supported production locale ships as a complete public catalogue", () => {
+  assert.deepEqual(Object.keys(CATALOGUES), SUPPORTED_LOCALES);
+  assert.deepEqual(validateCatalogs(CATALOGUES), []);
+  for (const locale of SUPPORTED_LOCALES) {
+    assert.equal(CATALOGUES[locale].meta.public, true, locale);
+  }
 });
 
 test("explicit URL language wins over saved and browser preferences", () => {
@@ -100,11 +109,11 @@ test("normalization rejects unsupported values and accepts case-insensitive supp
   assert.equal(normalizeLocale("xx"), null);
 });
 
-test("local previews expose configured locales while production exposes only public locales", () => {
+test("local previews and production expose every public locale", () => {
   assert.equal(typeof getSelectableLocales, "function", "selectable locale filtering is not implemented");
   const catalogues = Object.fromEntries(SUPPORTED_LOCALES.map((locale) => [
     locale,
-    catalogue(locale, { greeting: locale }),
+    catalogue(locale, { greeting: locale }, { reveal: [locale] }, { public: true }),
   ]));
 
   assert.deepEqual(
@@ -117,11 +126,11 @@ test("local previews expose configured locales while production exposes only pub
   );
   assert.deepEqual(
     getSelectableLocales({ protocol: "https:", hostname: "storygate.world" }, catalogues),
-    ["en"],
+    SUPPORTED_LOCALES,
   );
 });
 
-test("local pages do not request private catalogues unless preview mode is explicit", async () => {
+test("local pages use the same complete catalogue set as production", async () => {
   assert.equal(typeof loadPreviewCatalogues, "function", "preview catalogue loading is not implemented");
   let previewImportAttempted = false;
   const defaultLocalCatalogues = await loadPreviewCatalogues(
@@ -133,10 +142,10 @@ test("local pages do not request private catalogues unless preview mode is expli
   );
 
   assert.equal(previewImportAttempted, false);
-  assert.deepEqual(Object.keys(defaultLocalCatalogues), ["en"]);
+  assert.deepEqual(Object.keys(defaultLocalCatalogues), SUPPORTED_LOCALES);
 });
 
-test("explicit local preview mode loads all available private catalogues", async () => {
+test("legacy preview mode uses the already complete public catalogue set", async () => {
   assert.equal(typeof loadPreviewCatalogues, "function", "preview catalogue loading is not implemented");
   const imported = [];
   const previewCatalogues = await loadPreviewCatalogues(
@@ -148,11 +157,11 @@ test("explicit local preview mode loads all available private catalogues", async
     },
   );
 
-  assert.equal(imported.length, 7);
+  assert.equal(imported.length, 0);
   assert.deepEqual(Object.keys(previewCatalogues), SUPPORTED_LOCALES);
 });
 
-test("production never loads private catalogues even when preview mode is requested", async () => {
+test("production uses the complete public catalogue set even when preview mode is requested", async () => {
   assert.equal(typeof loadPreviewCatalogues, "function", "preview catalogue loading is not implemented");
   let productionImportAttempted = false;
   const productionCatalogues = await loadPreviewCatalogues(
@@ -164,7 +173,7 @@ test("production never loads private catalogues even when preview mode is reques
   );
 
   assert.equal(productionImportAttempted, false);
-  assert.deepEqual(Object.keys(productionCatalogues), ["en"]);
+  assert.deepEqual(Object.keys(productionCatalogues), SUPPORTED_LOCALES);
 });
 
 function catalogue(locale, messages, segments = { reveal: ["One", "two"] }, overrides = {}) {
