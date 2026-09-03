@@ -1,10 +1,10 @@
 const catalogue = {
   "meta": {
     "locale": "zh-Hans",
-    "sourceVersion": "2026-09-03.3",
+    "sourceVersion": "2026-09-03.4",
     "status": "ai-reviewed",
-    "generatedBy": "codex-translation-worker-2026-09-02",
-    "qaReviewedBy": "codex-locale-qa-2026-09-02",
+    "generatedBy": "codex-translation-worker-2026-09-03",
+    "qaReviewedBy": "codex-locale-qa-2026-09-03",
     "nativeReviewed": false,
     "public": true
   },
@@ -160,10 +160,8 @@ const catalogue = {
   },
   "segments": {
     "teaser.firstReveal": [
-      "有些事物",
-      "只有当你",
-      "停留下来",
-      "才会显露"
+      "有些事物只会显现",
+      "当你坚持下去"
     ]
   }
 };

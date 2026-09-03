@@ -1,7 +1,7 @@
 const catalogue = {
   meta: {
     locale: "en",
-    sourceVersion: "2026-09-03.3",
+    sourceVersion: "2026-09-03.4",
     status: "source",
     generatedBy: "approved-existing-copy",
     qaReviewedBy: null,
@@ -169,14 +169,8 @@ const catalogue = {
   },
   segments: {
     "teaser.firstReveal": [
-      "Some",
-      "things",
-      "only",
-      "reveal",
-      "themselves",
-      "when",
-      "you",
-      "stay",
+      "Some things only reveal themselves",
+      "when you keep going",
     ],
   },
 };

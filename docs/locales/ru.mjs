@@ -1,10 +1,10 @@
 const catalogue = {
   "meta": {
     "locale": "ru",
-    "sourceVersion": "2026-09-03.3",
+    "sourceVersion": "2026-09-03.4",
     "status": "ai-reviewed",
-    "generatedBy": "codex-translation-worker-2026-09-02",
-    "qaReviewedBy": "codex-locale-qa-2026-09-02",
+    "generatedBy": "codex-translation-worker-2026-09-03",
+    "qaReviewedBy": "codex-locale-qa-2026-09-03",
     "nativeReviewed": false,
     "public": true
   },
@@ -160,13 +160,8 @@ const catalogue = {
   },
   "segments": {
     "teaser.firstReveal": [
-      "Некоторые",
-      "вещи",
-      "открываются",
-      "лишь",
-      "тем,",
-      "кто",
-      "остаётся"
+      "Некоторые вещи открываются",
+      "только если продолжаешь идти"
     ]
   }
 };

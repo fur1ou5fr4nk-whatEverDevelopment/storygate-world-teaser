@@ -235,7 +235,7 @@ function getSegments(locale, key, catalogMap) {
 
 function getRevealDelay(index, segmentCount) {
   const firstStart = 0.15;
-  const lastStart = 4.35;
+  const lastStart = 2.25;
   if (segmentCount <= 1) return `${firstStart}s`;
 
   const delay = firstStart + index * ((lastStart - firstStart) / (segmentCount - 1));
@@ -269,10 +269,10 @@ export function applyLocale(root, locale, catalogMap = CATALOGUES) {
     const segments = getSegments(locale, node.dataset.i18nSegments, catalogMap);
     const children = segments.map((segment, index) => {
       const span = documentLike.createElement("span");
-      span.className = "word";
+      span.className = "reveal-line";
       span.textContent = segment;
-      span.style.setProperty("--word-index", String(index));
-      span.style.setProperty("--word-delay", getRevealDelay(index, segments.length));
+      span.style.setProperty("--line-index", String(index));
+      span.style.setProperty("--line-delay", getRevealDelay(index, segments.length));
       return span;
     });
     node.replaceChildren(...children);
