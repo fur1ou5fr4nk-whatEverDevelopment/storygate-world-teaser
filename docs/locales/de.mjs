@@ -69,10 +69,11 @@ const catalogue = {
     "demo.assist": "Ziehe es zum Token. Wische auf dem Smartphone nach oben.",
     "demo.phoneLabel": "Smartphone näher an den STORY Token bewegen",
     "demo.detected": "StoryGate erkannt",
+    "demo.back": "Zurück zum Gate",
 
     "bio.page.title": "Frank Bodmann - StoryGate",
     "bio.page.description": "Eine Biografie von Frank Bodmann.",
-    "bio.back": "Zurück zum Tor",
+    "bio.back": "Zurück zum Gate",
     "bio.name": "Frank Bodmann",
     "bio.introduction": "Gründer - Stratege - Träumer.",
     "bio.portraitAlt": "Porträtcollage von Frank Bodmann in dunkler formeller Kleidung, darunter Schwarz-Weiß-Studioporträts.",

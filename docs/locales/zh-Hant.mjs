@@ -69,6 +69,7 @@ const catalogue = {
     "demo.assist": "將它拖向 Token。在手機上向上滑動。",
     "demo.phoneLabel": "將手機移近 STORY Token",
     "demo.detected": "已發現 StoryGate",
+    "demo.back": "返回大門",
 
     "bio.page.title": "Frank Bodmann - StoryGate",
     "bio.page.description": "Frank Bodmann 的傳記。",

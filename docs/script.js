@@ -14,6 +14,7 @@ import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
   const biographyDiscovery = stage.querySelector("[data-biography-discovery]");
   const biographyButton = stage.querySelector("[data-biography-star]");
   const discoveryTracker = createDiscoveryTracker(primaryDiscoveryButtons.map((button) => button.dataset.discoveryId));
+  const shouldSkipIntro = ["1", "true", "yes"].includes(new URLSearchParams(window.location.search).get("skipIntro"));
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const {
     messageDuration,
@@ -64,6 +65,24 @@ import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
     primaryDiscoveryButtons.forEach((button) => setDiscoveryReady(button.closest(".discovery")));
   }
 
+  function setFinalReadyState() {
+    stage.dataset.phase = "5";
+    stage.classList.add("is-full-focus", "is-final-act");
+    preparePrimaryDiscoveries();
+    finalCopy.setAttribute("aria-hidden", "true");
+    image.style.animation = "none";
+    image.style.opacity = "1";
+    image.style.filter = "blur(0) brightness(1) saturate(1)";
+    image.style.transform = "scale(1)";
+    wordmark.style.opacity = "1";
+  }
+
+  function queueFinalReadyState() {
+    stage.classList.add("is-final-act");
+    window.clearTimeout(discoveryReadyTimer);
+    discoveryReadyTimer = window.setTimeout(preparePrimaryDiscoveries, discoveryDelay);
+  }
+
   function revealMessage() {
     stage.classList.remove("is-message-idle");
     stage.classList.add("has-message");
@@ -111,9 +130,7 @@ import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
     }
 
     if (step.action === "final") {
-      stage.classList.add("is-final-act");
-      window.clearTimeout(discoveryReadyTimer);
-      discoveryReadyTimer = window.setTimeout(preparePrimaryDiscoveries, discoveryDelay);
+      queueFinalReadyState();
     }
   }
 
@@ -174,6 +191,7 @@ import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
   biographyButton.addEventListener("click", () => revealDiscovery(biographyButton));
   if (image.complete) positionGate();
   else image.addEventListener("load", positionGate, { once: true });
+  if (shouldSkipIntro) setFinalReadyState();
 
   if ("ResizeObserver" in window) {
     new ResizeObserver(positionGate).observe(stage);

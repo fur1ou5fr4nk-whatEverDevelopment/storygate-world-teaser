@@ -69,6 +69,7 @@ const catalogue = {
     "demo.assist": "Перетащи его к токену. На телефоне проведи вверх.",
     "demo.phoneLabel": "Поднести телефон ближе к STORY Token",
     "demo.detected": "StoryGate обнаружен",
+    "demo.back": "Вернуться к воротам",
 
     "bio.page.title": "Frank Bodmann - StoryGate",
     "bio.page.description": "Биография Frank Bodmann.",
