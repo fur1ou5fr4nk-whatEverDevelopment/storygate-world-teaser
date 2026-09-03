@@ -69,6 +69,7 @@ const catalogue = {
     "demo.assist": "ลากเข้าหาโทเคน บนโทรศัพท์ให้ปัดขึ้น",
     "demo.phoneLabel": "เลื่อนโทรศัพท์เข้าใกล้ STORY Token",
     "demo.detected": "ตรวจพบ StoryGate",
+    "demo.back": "กลับไปที่ Gate",
 
     "bio.page.title": "Frank Bodmann - StoryGate",
     "bio.page.description": "ชีวประวัติของ Frank Bodmann",
