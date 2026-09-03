@@ -418,7 +418,7 @@ test("biography starts as three compact chapters with the full story behind inli
   assert.equal((html.match(/class="story-block__expanded"/g) || []).length, 3);
   const expandedChapters = [...html.matchAll(/<div class="story-block__expanded">([\s\S]*?)<\/div>/g)];
   assert.deepEqual(expandedChapters.map(([, chapter]) => (chapter.match(/<p(?:\s|>)/g) || []).length), [2, 3, 3]);
-  assert.match(html, /data-i18n="bio\.section\.about\.more">More about me</);
+  assert.match(html, /data-i18n="bio\.section\.about\.more">More about Frank</);
   assert.match(html, /data-i18n="bio\.section\.origin\.more">More about the road to StoryGate</);
   assert.match(html, /data-i18n="bio\.section\.thread\.more">More about the common thread</);
   assert.equal((html.match(/data-i18n="bio\.section\.less">Show less</g) || []).length, 3);
@@ -427,7 +427,7 @@ test("biography starts as three compact chapters with the full story behind inli
   assert.match(html, /class="story-block__expanded"[\s\S]*His first attempts to make restaurant stories and additional information available digitally were cumbersome/);
   assert.doesNotMatch(html, /His early restaurant experiments were digital/);
   assert.match(html, /class="story-block__expanded"[\s\S]*Its aim is to give very different material/);
-  assert.match(html, /data-i18n="bio\.story\.3\.closing">That little bit of chaos in between still comes straight from the source\.<\/span>/);
+  assert.match(html, /data-i18n="bio\.story\.3\.closing">That bit of chaos in between still comes from human hands\.<\/span>/);
 });
 
 test("biography translates Frank's kitchen nicknames into the real brigade progression", async () => {

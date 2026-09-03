@@ -290,6 +290,40 @@ svg { max-width: 100%; }
   margin-top: 1.15em;
 }
 
+.story-block__quote {
+  margin: 1.25rem 0;
+  padding: 0.65rem 1rem 0.65rem 1.2rem;
+  border-left: 3px solid var(--accent);
+  color: rgb(241 238 230 / 0.98);
+  font-style: italic;
+  line-height: 1.62;
+  position: relative;
+}
+
+.story-block__quote::before,
+.story-block__quote::after {
+  position: absolute;
+  color: rgb(241 238 230 / 0.3);
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.story-block__quote::before {
+  top: 0.22rem;
+  left: 0.2rem;
+  content: "“";
+  font-size: 1.7rem;
+}
+
+.story-block__quote::after {
+  right: 0.28rem;
+  bottom: 0.08rem;
+  content: "”";
+  font-size: 1.7rem;
+}
+
 .story-block__motif {
   position: absolute;
   top: -0.75rem;
