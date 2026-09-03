@@ -79,11 +79,42 @@ test("homepage routes the StoryGate introduction and simple demo internally", as
     "/simple-demo/simple-demo.css",
     "/simple-demo/simple-demo.js",
     "/simple-demo/demo-proximity.mjs",
-    "/assets/storygate-demo-phone.png",
+    "/assets/storygate-demo-phone-front.png",
   ]) {
     const assetResponse = await fetch(baseUrl + path);
     assert.equal(assetResponse.status, 200, path);
   }
+});
+
+test("simple demo uses a straight-on non-selectable phone presentation", async () => {
+  const { response, text: demoHtml } = await fetchText("/simple-demo/");
+  assert.equal(response.status, 200);
+  assert.match(
+    demoHtml,
+    /class="demo-phone__asset" src="\.\.\/assets\/storygate-demo-phone-front\.png" alt="" draggable="false"/
+  );
+
+  for (const image of demoHtml.matchAll(/<img\b[^>]*>/g)) {
+    assert.match(image[0], /draggable="false"/);
+  }
+
+  const { text: css } = await fetchText("/simple-demo/simple-demo.css");
+  assert.match(
+    css,
+    /html,\s*body,\s*\.demo-stage\s*\{[^}]*-webkit-user-select:\s*none;[^}]*user-select:\s*none;/s
+  );
+  const statusRule = css.match(/\.demo-status\s*\{([\s\S]*?)\n\}/);
+  assert.ok(statusRule);
+  assert.doesNotMatch(statusRule[1], /rotate\(/);
+
+  const phoneRule = css.match(/\.demo-phone\s*\{([\s\S]*?)\n\}/);
+  assert.ok(phoneRule);
+  assert.match(phoneRule[1], /left:\s*80%;/);
+  assert.match(phoneRule[1], /top:\s*57%;/);
+  assert.match(phoneRule[1], /width:\s*clamp\(230px,\s*25vw,\s*360px\);/);
+
+  const assetResponse = await fetch(baseUrl + "/assets/storygate-demo-phone-front.png");
+  assert.equal(assetResponse.status, 200);
 });
 
 test("homepage carries the approved suspense reveal copy", async () => {
