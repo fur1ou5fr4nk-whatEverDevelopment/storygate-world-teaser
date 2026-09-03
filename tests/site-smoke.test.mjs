@@ -91,7 +91,9 @@ test("homepage carries the approved suspense reveal copy", async () => {
   const html = await response.text();
   const visibleText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
-  assert.match(visibleText, /Some things only reveal themselves when you stay/);
+  assert.match(visibleText, /Some things only reveal themselves when you keep going/);
+  assert.equal((html.match(/class="reveal-line"/g) || []).length, 2);
+  assert.doesNotMatch(html, /class="word"/);
   assert.match(visibleText, /Still tapping\? Good!/);
   assert.match(visibleText, /Your wild, wandering heart was born for this/);
   assert.match(visibleText, /You earned it:/);

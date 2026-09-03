@@ -1,10 +1,10 @@
 const catalogue = {
   "meta": {
     "locale": "th",
-    "sourceVersion": "2026-09-03.3",
+    "sourceVersion": "2026-09-03.4",
     "status": "ai-reviewed",
-    "generatedBy": "codex-translation-worker-2026-09-02",
-    "qaReviewedBy": "codex-locale-qa-2026-09-02",
+    "generatedBy": "codex-translation-worker-2026-09-03",
+    "qaReviewedBy": "codex-locale-qa-2026-09-03",
     "nativeReviewed": false,
     "public": true
   },
@@ -160,11 +160,8 @@ const catalogue = {
   },
   "segments": {
     "teaser.firstReveal": [
-      "บางสิ่ง",
-      "จะเผยตัว",
-      "ก็ต่อเมื่อ",
-      "คุณ",
-      "อยู่ต่อ"
+      "บางสิ่งจะเผยตัวออกมา",
+      "เมื่อคุณยังคงเดินหน้าต่อ"
     ]
   }
 };

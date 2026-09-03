@@ -11,7 +11,7 @@ try {
   getRevealTimings = undefined;
 }
 
-test("five taps separate blurred copy, focus stages, prompts, and small ripples", () => {
+test("all five reveal taps emit the same pulse while preserving the reveal sequence", () => {
   assert.equal(typeof getNextRevealStep, "function", "reveal flow is not implemented");
 
   let phase = 0;
@@ -27,7 +27,7 @@ test("five taps separate blurred copy, focus stages, prompts, and small ripples"
   }
 
   assert.deepEqual(actions, ["message", "focus-partial", "still", "focus-full", "final"]);
-  assert.deepEqual(ripples, [false, false, true, false, true]);
+  assert.deepEqual(ripples, [true, true, true, true, true]);
   assert.equal(phase, 5);
   assert.deepEqual(getNextRevealStep(phase), { phase: 5, action: "done", ripple: false });
 });

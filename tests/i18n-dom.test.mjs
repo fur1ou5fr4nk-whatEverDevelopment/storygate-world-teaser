@@ -84,11 +84,11 @@ test("safe DOM localization updates text, attributes and ordered reveal segments
   const catalogues = {
     en: {
       messages: { copy: "English", aria: "English label", alt: "English alt", description: "English description" },
-      segments: { reveal: ["Some", "things"] },
+      segments: { reveal: ["Some things only reveal themselves", "when you keep going"] },
     },
     de: {
       messages: { copy: "Deutsch", aria: "Deutsches Label", alt: "Deutscher Alternativtext", description: "Deutsche Beschreibung" },
-      segments: { reveal: ["Manches", "zeigt", "sich"] },
+      segments: { reveal: ["Manches zeigt sich erst", "wenn du dranbleibst"] },
     },
   };
 
@@ -99,15 +99,15 @@ test("safe DOM localization updates text, attributes and ordered reveal segments
   assert.equal(ariaNode.getAttribute("aria-label"), "Deutsches Label");
   assert.equal(altNode.getAttribute("alt"), "Deutscher Alternativtext");
   assert.equal(contentNode.getAttribute("content"), "Deutsche Beschreibung");
-  assert.deepEqual(segmentNode.children.map((child) => child.textContent), ["Manches", "zeigt", "sich"]);
-  assert.deepEqual(segmentNode.children.map((child) => child.className), ["word", "word", "word"]);
+  assert.deepEqual(segmentNode.children.map((child) => child.textContent), ["Manches zeigt sich erst", "wenn du dranbleibst"]);
+  assert.deepEqual(segmentNode.children.map((child) => child.className), ["reveal-line", "reveal-line"]);
   assert.deepEqual(
-    segmentNode.children.map((child) => child.style.getPropertyValue("--word-index")),
-    ["0", "1", "2"],
+    segmentNode.children.map((child) => child.style.getPropertyValue("--line-index")),
+    ["0", "1"],
   );
   assert.deepEqual(
-    segmentNode.children.map((child) => child.style.getPropertyValue("--word-delay")),
-    ["0.15s", "2.25s", "4.35s"],
+    segmentNode.children.map((child) => child.style.getPropertyValue("--line-delay")),
+    ["0.15s", "2.25s"],
   );
 });
 
@@ -146,13 +146,7 @@ test("the English source catalogue covers every StoryGate surface", () => {
   assert.match(englishCatalogue.messages["bio.story.1.review"], /Customer service had become part of the menu\./);
   assert.equal(englishCatalogue.messages["bio.layer.aiCrew.title"], "The digital crew");
   assert.deepEqual(englishCatalogue.segments["teaser.firstReveal"], [
-    "Some",
-    "things",
-    "only",
-    "reveal",
-    "themselves",
-    "when",
-    "you",
-    "stay",
+    "Some things only reveal themselves",
+    "when you keep going",
   ]);
 });

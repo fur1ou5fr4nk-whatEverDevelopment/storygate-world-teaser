@@ -80,7 +80,7 @@ import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
     stage.classList.remove("is-rippling");
     void stage.offsetWidth;
     stage.classList.add("is-rippling");
-    rippleTimer = window.setTimeout(() => stage.classList.remove("is-rippling"), 1700);
+    rippleTimer = window.setTimeout(() => stage.classList.remove("is-rippling"), 2100);
   }
 
   function advance() {

@@ -44,10 +44,28 @@ test("AI-reviewed targets keep truthful human-review metadata and are public", (
     assert.equal(meta.locale, locale);
     assert.equal(meta.sourceVersion, englishCatalogue.meta.sourceVersion);
     assert.equal(meta.status, "ai-reviewed");
-    assert.equal(meta.generatedBy, "codex-translation-worker-2026-09-02");
-    assert.equal(meta.qaReviewedBy, "codex-locale-qa-2026-09-02");
+    assert.equal(meta.generatedBy, "codex-translation-worker-2026-09-03");
+    assert.equal(meta.qaReviewedBy, "codex-locale-qa-2026-09-03");
     assert.equal(meta.nativeReviewed, false);
     assert.equal(meta.public, true);
+  }
+});
+
+test("the first teaser reveal is two persistence-focused lines in every language", () => {
+  const expected = {
+    en: ["Some things only reveal themselves", "when you keep going"],
+    de: ["Manches zeigt sich erst", "wenn du dranbleibst"],
+    th: ["บางสิ่งจะเผยตัวออกมา", "เมื่อคุณยังคงเดินหน้าต่อ"],
+    fr: ["Certaines choses ne se révèlent", "que si tu persévères"],
+    es: ["Algunas cosas solo se revelan", "cuando sigues adelante"],
+    ru: ["Некоторые вещи открываются", "только если продолжаешь идти"],
+    "zh-Hans": ["有些事物只会显现", "当你坚持下去"],
+    "zh-Hant": ["有些事物只會顯現", "當你堅持下去"],
+  };
+  const catalogues = { en: englishCatalogue, ...loadedTargets };
+
+  for (const locale of SUPPORTED_LOCALES) {
+    assert.deepEqual(catalogues[locale].segments["teaser.firstReveal"], expected[locale], locale);
   }
 });
 
@@ -137,6 +155,5 @@ test("each target contains translated narrative and deliberate reveal segments",
       englishCatalogue.messages["demo.instruction"],
       `${locale} demo remained English`,
     );
-    assert.ok(catalogue.segments["teaser.firstReveal"].length >= 3, `${locale} reveal segmentation`);
   }
 });
