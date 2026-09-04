@@ -1,7 +1,6 @@
 import { createDemoFlow, isStoryLayerVisible } from "./demo-flow.mjs";
 import { createProximityTracker } from "./demo-proximity.mjs";
 import { getImageLayout } from "../teaser-layout.mjs";
-import { installGestureNavigation } from "../gesture-navigation.mjs";
 
 (() => {
   const stage = document.querySelector("[data-demo-stage]");
@@ -16,9 +15,6 @@ import { installGestureNavigation } from "../gesture-navigation.mjs";
   const countdown = stage.querySelector("[data-demo-countdown]");
   const story = stage.querySelector("[data-demo-story]");
   const instruction = stage.querySelector("[data-demo-instruction]");
-  const gestureCue = stage.querySelector("[data-demo-gesture]");
-  const gestureIcon = stage.querySelector("[data-demo-gesture-icon]");
-  const gestureMessage = stage.querySelector("[data-demo-gesture-message]");
   const openButton = stage.querySelector("[data-demo-open]");
   const beginButton = stage.querySelector("[data-demo-begin]");
   const count = stage.querySelector("[data-demo-count]");
@@ -32,18 +28,6 @@ import { installGestureNavigation } from "../gesture-navigation.mjs";
   let dragStart = null;
   let tracker = null;
   let countdownTimer = null;
-  let navigationStart = null;
-
-  function setGestureCue(active, direction = "neutral") {
-    if (!gestureCue) return;
-    stage.dataset.gestureActive = active ? "true" : "false";
-    gestureCue.setAttribute("aria-hidden", active ? "false" : "true");
-    if (!active) return;
-    if (direction === "next") { gestureIcon.textContent = "←"; gestureMessage.textContent = "Next Step"; }
-    else if (direction === "previous") { gestureIcon.textContent = "→"; gestureMessage.textContent = "Previous Step"; }
-    else if (direction === "blocked") { gestureIcon.textContent = "⌑"; gestureMessage.textContent = "Not available yet — choose an option first"; }
-    else { gestureIcon.textContent = "↔"; gestureMessage.textContent = "Swipe to navigate"; }
-  }
 
   function isApproaching() {
     return flow.snapshot().phase === "approach";
@@ -172,16 +156,7 @@ import { installGestureNavigation } from "../gesture-navigation.mjs";
   }
 
   function beginApproach(event) {
-    if (event.button > 0) return;
-    if (!isApproaching()) {
-      navigationStart = { x: event.clientX, y: event.clientY };
-      activePointerId = event.pointerId;
-      stage.setPointerCapture?.(event.pointerId);
-      setGestureCue(true);
-      return;
-    }
-    
-    if (!mobileQuery.matches && !phone.contains(event.target)) return;
+    if (!isApproaching() || event.button > 0) return;
     if (!mobileQuery.matches && !phone.contains(event.target)) return;
 
     const targetRect = target.getBoundingClientRect();
@@ -204,23 +179,11 @@ import { installGestureNavigation } from "../gesture-navigation.mjs";
 
   function moveApproach(event) {
     if (event.pointerId !== activePointerId) return;
-    if (navigationStart) {
-      const deltaX = event.clientX - navigationStart.x;
-      setGestureCue(true, deltaX < -18 ? "next" : deltaX > 18 ? "previous" : "neutral");
-      return;
-    }
     updateApproach({ x: event.clientX, y: event.clientY });
   }
 
   function endApproach(event) {
     if (event.pointerId !== activePointerId) return;
-    if (navigationStart) {
-      if (event.clientX - navigationStart.x < -52) {
-        setGestureCue(true, "blocked");
-        window.setTimeout(() => setGestureCue(false), 1500);
-      } else setGestureCue(false);
-      navigationStart = null;
-    }
     stage.releasePointerCapture?.(event.pointerId);
     activePointerId = null;
   }
@@ -292,11 +255,4 @@ import { installGestureNavigation } from "../gesture-navigation.mjs";
   window.addEventListener("resize", setTokenPosition);
   window.addEventListener("beforeunload", clearCountdown, { once: true });
   render();
-  installGestureNavigation({
-    stage,
-    cue: stage.querySelector("[data-gesture-cue]"),
-    onNext: () => false,
-    onPrevious: () => {},
-    blockedReason: "Not available yet — choose an option first",
-  });
 })();
