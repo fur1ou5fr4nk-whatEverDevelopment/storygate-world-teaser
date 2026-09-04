@@ -103,9 +103,13 @@ test("simple demo uses a straight-on non-selectable phone presentation", async (
     css,
     /html,\s*body,\s*\.demo-stage\s*\{[^}]*-webkit-user-select:\s*none;[^}]*user-select:\s*none;/s
   );
-  const statusRule = css.match(/\.demo-status\s*\{([\s\S]*?)\n\}/);
-  assert.ok(statusRule);
-  assert.doesNotMatch(statusRule[1], /rotate\(/);
+  const screenRule = css.match(/\.demo-screen\s*\{([\s\S]*?)\n\}/);
+  assert.ok(screenRule);
+  assert.doesNotMatch(screenRule[1], /rotate\(/);
+
+  const nfcBannerRule = css.match(/\.demo-nfc__banner\s*\{([\s\S]*?)\n\}/);
+  assert.ok(nfcBannerRule);
+  assert.match(nfcBannerRule[1], /backdrop-filter:\s*blur\(/);
 
   const phoneRule = css.match(/\.demo-phone\s*\{([\s\S]*?)\n\}/);
   assert.ok(phoneRule);
@@ -115,6 +119,50 @@ test("simple demo uses a straight-on non-selectable phone presentation", async (
 
   const assetResponse = await fetch(baseUrl + "/assets/storygate-demo-phone-front.png");
   assert.equal(assetResponse.status, 200);
+});
+
+test("simple demo keeps the NFC confirmation and story journey inside the phone", async () => {
+  const { response, text: demoHtml } = await fetchText("/simple-demo/");
+  assert.equal(response.status, 200);
+
+  const phoneMarkup = demoHtml.match(/<div class="demo-phone"[\s\S]*?<\/div>\s*<\/main>/)?.[0] || "";
+  assert.match(phoneMarkup, /data-demo-screen/);
+  assert.match(phoneMarkup, /data-demo-nfc/);
+  assert.match(phoneMarkup, /data-demo-open/);
+  assert.match(
+    phoneMarkup,
+    /<img class="demo-nfc__glyph-image" src="https:\/\/developer\.apple\.com\/tutorials\/images\/com\.apple\.HIG\/nfc\.svg" alt="" draggable="false">/
+  );
+  assert.match(phoneMarkup, /data-demo-entry/);
+  assert.match(phoneMarkup, /data-demo-countdown/);
+  assert.match(phoneMarkup, /data-demo-story/);
+  assert.equal((phoneMarkup.match(/data-story-layer/g) || []).length, 3);
+
+  for (const path of [
+    "/simple-demo/demo-flow.mjs",
+    "/assets/gt103-place.webp",
+    "/assets/gt103-trace.webp",
+    "/assets/gt103-discovery.webp",
+  ]) {
+    const assetResponse = await fetch(baseUrl + path);
+    assert.equal(assetResponse.status, 200, path);
+  }
+
+  const { text: css } = await fetchText("/simple-demo/simple-demo.css");
+  assert.doesNotMatch(css, /\.demo-nfc__glyph::before/);
+  assert.doesNotMatch(css, /\.demo-nfc__glyph::after/);
+});
+
+test("mobile NFC mode removes web chrome from the immersive phone screen", async () => {
+  const { text: demoScript } = await fetchText("/simple-demo/simple-demo.js");
+  const { text: css } = await fetchText("/simple-demo/simple-demo.css");
+
+  assert.match(demoScript, /document\.body\.dataset\.demoPhase/);
+  assert.match(demoScript, /phone\.removeAttribute\("aria-label"\)/);
+  assert.match(demoScript, /delete phone\.dataset\.i18nAriaLabel/);
+  assert.match(css, /\.demo-stage\[data-phase="nfc"\] \.demo-wordmark/);
+  assert.match(css, /\.demo-stage\[data-phase="nfc"\] \.demo-back/);
+  assert.match(css, /body\[data-demo-phase="nfc"\] \.language-picker/);
 });
 
 test("homepage carries the approved suspense reveal copy", async () => {

@@ -1,3 +1,4 @@
+import { createDemoFlow, isStoryLayerVisible } from "./demo-flow.mjs";
 import { createProximityTracker } from "./demo-proximity.mjs";
 import { getImageLayout } from "../teaser-layout.mjs";
 
@@ -8,13 +9,29 @@ import { getImageLayout } from "../teaser-layout.mjs";
   const backdrop = stage.querySelector("[data-demo-backdrop]");
   const phone = stage.querySelector("[data-demo-phone]");
   const target = stage.querySelector("[data-demo-target]");
-  const status = stage.querySelector("[data-demo-status]");
+  const screen = stage.querySelector("[data-demo-screen]");
+  const nfc = stage.querySelector("[data-demo-nfc]");
+  const entry = stage.querySelector("[data-demo-entry]");
+  const countdown = stage.querySelector("[data-demo-countdown]");
+  const story = stage.querySelector("[data-demo-story]");
   const instruction = stage.querySelector("[data-demo-instruction]");
+  const openButton = stage.querySelector("[data-demo-open]");
+  const beginButton = stage.querySelector("[data-demo-begin]");
+  const count = stage.querySelector("[data-demo-count]");
+  const live = stage.querySelector("[data-demo-live]");
+  const storyLayers = [...stage.querySelectorAll("[data-story-layer]")];
+  const revealButtons = [...stage.querySelectorAll("[data-demo-reveal]")];
   const mobileQuery = window.matchMedia("(max-width: 720px), (pointer: coarse)");
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const flow = createDemoFlow();
   let activePointerId = null;
   let dragStart = null;
   let tracker = null;
-  let detected = false;
+  let countdownTimer = null;
+
+  function isApproaching() {
+    return flow.snapshot().phase === "approach";
+  }
 
   function setTokenPosition() {
     if (!backdrop.naturalWidth || !backdrop.naturalHeight) return;
@@ -38,6 +55,47 @@ import { getImageLayout } from "../teaser-layout.mjs";
     stage.style.setProperty("--token-size", tokenSize + "px");
   }
 
+  function setVisible(element, visible) {
+    element.hidden = !visible;
+    element.setAttribute("aria-hidden", String(!visible));
+  }
+
+  function announce(message) {
+    if (live) live.textContent = message;
+  }
+
+  function render() {
+    const state = flow.snapshot();
+    const isDetected = state.phase !== "approach";
+    stage.dataset.phase = state.phase;
+    document.body.dataset.demoPhase = state.phase;
+    screen.dataset.phase = state.phase;
+    setVisible(nfc, state.phase === "nfc");
+    setVisible(entry, state.phase === "entry");
+    setVisible(countdown, state.phase === "countdown");
+    setVisible(story, state.phase === "story");
+    count.textContent = String(state.countdown || 1);
+
+    for (const layer of storyLayers) {
+      const index = Number(layer.dataset.storyLayer);
+      setVisible(layer, isStoryLayerVisible(state, index));
+    }
+
+    instruction.setAttribute("aria-hidden", String(isDetected));
+    if (isDetected) {
+      phone.removeAttribute("role");
+      phone.removeAttribute("tabindex");
+      phone.removeAttribute("aria-describedby");
+      phone.removeAttribute("aria-label");
+      delete phone.dataset.i18nAriaLabel;
+    } else {
+      phone.setAttribute("role", "button");
+      phone.setAttribute("tabindex", "0");
+      phone.setAttribute("aria-describedby", "demo-assist");
+      phone.dataset.i18nAriaLabel = "demo.phoneLabel";
+    }
+  }
+
   function playDetectionChime() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
@@ -57,23 +115,22 @@ import { getImageLayout } from "../teaser-layout.mjs";
       oscillator.start(context.currentTime + index * .055);
       oscillator.stop(context.currentTime + .36);
     });
+
+    window.setTimeout(() => context.close().catch(() => {}), 600);
   }
 
   function completeDetection() {
-    if (detected) return;
-    detected = true;
-    stage.dataset.phase = "detected";
-    status.setAttribute("aria-hidden", "false");
-    instruction.setAttribute("aria-hidden", "true");
-    phone.dataset.i18nAriaLabel = "demo.detected";
-    phone.setAttribute("aria-label", status.querySelector("strong")?.textContent || "StoryGate detected");
-    phone.removeAttribute("tabindex");
+    if (!isApproaching()) return;
+    flow.dispatch("DETECTED");
+    stage.style.setProperty("--progress", "1");
+    render();
     navigator.vibrate?.(22);
     playDetectionChime();
+    announce(nfc.querySelector("strong")?.textContent || "Item Detected");
   }
 
   function updateApproach(point) {
-    if (!tracker || !dragStart || detected) return;
+    if (!tracker || !dragStart || !isApproaching()) return;
 
     const state = tracker.update(point);
     stage.style.setProperty("--progress", state.progress.toFixed(4));
@@ -99,7 +156,7 @@ import { getImageLayout } from "../teaser-layout.mjs";
   }
 
   function beginApproach(event) {
-    if (detected || event.button > 0) return;
+    if (!isApproaching() || event.button > 0) return;
     if (!mobileQuery.matches && !phone.contains(event.target)) return;
 
     const targetRect = target.getBoundingClientRect();
@@ -132,10 +189,57 @@ import { getImageLayout } from "../teaser-layout.mjs";
   }
 
   function handleKeyboard(event) {
-    if (detected || !["Enter", " "].includes(event.key)) return;
+    if (!isApproaching() || !["Enter", " "].includes(event.key)) return;
     event.preventDefault();
     stage.style.setProperty("--progress", "1");
     completeDetection();
+  }
+
+  function clearCountdown() {
+    if (countdownTimer !== null) window.clearTimeout(countdownTimer);
+    countdownTimer = null;
+  }
+
+  function advanceCountdown() {
+    clearCountdown();
+    if (flow.snapshot().phase !== "countdown") return;
+    const delay = reducedMotionQuery.matches ? 320 : 760;
+    countdownTimer = window.setTimeout(() => {
+      flow.dispatch("TICK");
+      render();
+      if (flow.snapshot().phase === "countdown") {
+        advanceCountdown();
+      } else {
+        announce(story.querySelector("[data-story-layer='1'] p")?.textContent || "");
+        story.querySelector("[data-demo-reveal]")?.focus({ preventScroll: true });
+      }
+    }, delay);
+  }
+
+  openButton.addEventListener("click", () => {
+    if (flow.snapshot().phase !== "nfc") return;
+    flow.dispatch("OPEN");
+    render();
+    announce(entry.querySelector("h2")?.textContent || "");
+    beginButton.focus({ preventScroll: true });
+  });
+
+  beginButton.addEventListener("click", () => {
+    if (flow.snapshot().phase !== "entry") return;
+    flow.dispatch("BEGIN_STORY");
+    render();
+    advanceCountdown();
+  });
+
+  for (const button of revealButtons) {
+    button.addEventListener("click", () => {
+      if (flow.snapshot().phase !== "story") return;
+      flow.dispatch("REVEAL_LAYER");
+      render();
+      const nextLayer = flow.snapshot().storyLayer;
+      announce(story.querySelector(`[data-story-layer="${nextLayer}"] p`)?.textContent || "");
+      story.querySelector(`[data-story-layer="${nextLayer}"] [data-demo-reveal]`)?.focus({ preventScroll: true });
+    });
   }
 
   stage.dataset.mode = mobileQuery.matches ? "mobile" : "desktop";
@@ -144,8 +248,11 @@ import { getImageLayout } from "../teaser-layout.mjs";
   stage.addEventListener("pointerup", endApproach);
   stage.addEventListener("pointercancel", endApproach);
   stage.addEventListener("keydown", handleKeyboard);
+  stage.addEventListener("dragstart", (event) => event.preventDefault());
 
   if (backdrop.complete) setTokenPosition();
   else backdrop.addEventListener("load", setTokenPosition, { once: true });
   window.addEventListener("resize", setTokenPosition);
+  window.addEventListener("beforeunload", clearCountdown, { once: true });
+  render();
 })();

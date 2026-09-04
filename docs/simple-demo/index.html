@@ -31,10 +31,81 @@
 
     <div class="demo-phone" data-demo-phone role="button" tabindex="0" aria-describedby="demo-assist" aria-label="Move phone closer to the STORY Token" data-i18n-aria-label="demo.phoneLabel">
       <img class="demo-phone__asset" src="../assets/storygate-demo-phone-front.png" alt="" draggable="false">
-      <section class="demo-status" data-demo-status aria-live="polite" aria-atomic="true" aria-hidden="true">
-        <strong data-i18n="demo.detected">StoryGate detected</strong>
-        <span>storygate.world</span>
-      </section>
+      <div class="demo-screen" data-demo-screen data-phase="approach" aria-label="StoryGate demo screen" data-i18n-aria-label="demo.screenLabel">
+        <div class="demo-ios-home" aria-hidden="true">
+          <div class="demo-ios-home__wallpaper"></div>
+          <div class="demo-ios-home__icons">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="demo-ios-home__dock"><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="demo-ios-status" aria-hidden="true">
+          <span>9:41</span>
+          <span class="demo-ios-status__signal"><i></i><i></i><i></i></span>
+        </div>
+
+        <section class="demo-nfc" data-demo-nfc aria-labelledby="demo-nfc-title" hidden>
+          <button class="demo-nfc__banner" type="button" data-demo-open aria-label="Open in StoryGate" data-i18n-aria-label="demo.nfc.action">
+            <span class="demo-nfc__glyph" aria-hidden="true">
+              <img class="demo-nfc__glyph-image" src="https://developer.apple.com/tutorials/images/com.apple.HIG/nfc.svg" alt="" draggable="false">
+            </span>
+            <span class="demo-nfc__copy">
+              <strong id="demo-nfc-title" data-i18n="demo.nfc.title">Item Detected</strong>
+              <span data-i18n="demo.nfc.action">Open in StoryGate</span>
+            </span>
+            <time data-i18n="demo.nfc.time">now</time>
+          </button>
+        </section>
+
+        <section class="demo-entry" data-demo-entry aria-labelledby="demo-entry-title" hidden>
+          <img class="demo-entry__art" src="../assets/gt103-place.webp" alt="" draggable="false">
+          <div class="demo-entry__copy">
+            <p data-i18n="demo.entry.eyebrow">STORYGATE DETECTED</p>
+            <h2 id="demo-entry-title" data-i18n="demo.entry.title">GT–103 · Secrets of the Bay</h2>
+            <button class="demo-entry__start" type="button" data-demo-begin data-i18n="demo.entry.start">Here we go</button>
+          </div>
+        </section>
+
+        <section class="demo-countdown" data-demo-countdown aria-live="polite" hidden>
+          <span class="demo-countdown__number" data-demo-count>1</span>
+          <span class="demo-countdown__label" data-i18n="demo.countdown.label">Opening the story</span>
+        </section>
+
+        <article class="demo-story" data-demo-story aria-label="StoryGate demo story" data-i18n-aria-label="demo.story.label" hidden>
+          <section class="demo-story__layer" data-story-layer="1" hidden>
+            <img src="../assets/gt103-place.webp" alt="" draggable="false">
+            <div class="demo-story__copy">
+              <p class="demo-story__eyebrow" data-i18n="demo.story.place.label">THE PLACE</p>
+              <p data-i18n="demo.story.place.body">More than 3,000 years ago, people left their marks on the rocks of this bay.</p>
+              <button type="button" data-demo-reveal data-i18n="demo.story.place.action">Reveal the trace</button>
+            </div>
+          </section>
+
+          <section class="demo-story__layer" data-story-layer="2" hidden>
+            <img src="../assets/gt103-trace.webp" alt="" draggable="false">
+            <div class="demo-story__copy">
+              <p class="demo-story__eyebrow" data-i18n="demo.story.trace.label">THE TRACE</p>
+              <p data-i18n="demo.story.trace.body">People. Animals. Boats. And on every boat, the same empty place.</p>
+              <button type="button" data-demo-reveal data-i18n="demo.story.trace.action">Overlay the drawings</button>
+            </div>
+          </section>
+
+          <section class="demo-story__layer" data-story-layer="3" hidden>
+            <img src="../assets/gt103-discovery.webp" alt="" draggable="false">
+            <div class="demo-story__copy">
+              <p class="demo-story__eyebrow" data-i18n="demo.story.discovery.label">YOUR DISCOVERY</p>
+              <p data-i18n="demo.story.discovery.body">Only when the tracings overlap does the empty space become a sign.</p>
+              <p class="demo-story__hook" data-i18n="demo.story.discovery.hook">They did not paint who went out. They painted who returned.</p>
+              <p class="demo-story__ending" data-i18n="demo.story.discovery.ending">One is still missing.</p>
+            </div>
+          </section>
+        </article>
+
+        <p class="demo-live" data-demo-live aria-live="polite" aria-atomic="true"></p>
+      </div>
     </div>
   </main>
   <script type="module" src="../localize-page.mjs"></script>
