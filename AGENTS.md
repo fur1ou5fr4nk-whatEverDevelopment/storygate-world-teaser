@@ -19,7 +19,7 @@ This repository is the sole deployable source for `storygate.world`.
 - GitHub Pages must deploy through `.github/workflows/pages.yml`; do not restore branch-folder auto-deployment.
 - The reviewed server configuration is committed at `.github/rulesets/protect-main.json`. Do not add bypass actors or weaken it outside an explicitly approved governance change.
 - Public external destinations are allowlisted by `tests/public-content-policy.test.mjs`. Adding or replacing a destination requires Frank's explicit approval. Never weaken or bypass that policy to make a test pass.
-- Commit, push, deployment, DNS changes, paid settings, and other external mutations require explicit authorization.
+- For a clearly scoped, verified teaser change, commit and push the isolated branch and complete the existing protected-branch and Pages deployment sequence without asking again. Stop for destructive actions, paid settings, DNS or cloud changes, secrets, external messages, or an unclear target, and ask then.
 - Report local verification, pushed commit, GitHub Actions result, and live-browser verification as separate evidence.
 
 ## Release sequence
@@ -28,7 +28,7 @@ This repository is the sole deployable source for `storygate.world`.
 2. Commit only the approved task files.
 3. Confirm the worktree is clean.
 4. Run `npm run release:check`.
-5. Push only the isolated task branch when explicitly authorized.
+5. Push the isolated task branch after the exact clean release check passes.
 6. Open a pull request to `main` and wait for the required `Release safeguards` check.
 7. Merge through GitHub; never bypass the protected-branch ruleset.
 8. Wait for automatic verification and Pages deployment of the exact merged commit.
