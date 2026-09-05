@@ -1,6 +1,7 @@
 import { createDiscoveryTracker } from "./discovery-state.mjs";
 import { getNextRevealStep, getRevealTimings } from "./reveal-flow.mjs";
 import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
+import { installGestureNavigation } from "./gesture-navigation.mjs";
 
 (() => {
   const stage = document.getElementById("portal");
@@ -189,6 +190,13 @@ import { getImageLayout, getLowerCopyCenter } from "./teaser-layout.mjs";
   gate.addEventListener("click", advance);
   primaryDiscoveryButtons.forEach((button) => button.addEventListener("click", findPrimaryDiscovery));
   biographyButton.addEventListener("click", () => revealDiscovery(biographyButton));
+  installGestureNavigation({
+    stage,
+    cue: stage.querySelector("[data-gesture-cue]"),
+    onNext: advance,
+    onPrevious: () => false,
+    blockedReason: "Start at the gate first",
+  });
   if (image.complete) positionGate();
   else image.addEventListener("load", positionGate, { once: true });
   if (shouldSkipIntro) setFinalReadyState();

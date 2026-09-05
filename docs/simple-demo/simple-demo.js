@@ -1,6 +1,7 @@
 import { createDemoFlow, isStoryLayerVisible } from "./demo-flow.mjs";
 import { createProximityTracker } from "./demo-proximity.mjs";
 import { getImageLayout } from "../teaser-layout.mjs";
+import { installGestureNavigation } from "../gesture-navigation.mjs";
 
 (() => {
   const stage = document.querySelector("[data-demo-stage]");
@@ -291,4 +292,11 @@ import { getImageLayout } from "../teaser-layout.mjs";
   window.addEventListener("resize", setTokenPosition);
   window.addEventListener("beforeunload", clearCountdown, { once: true });
   render();
+  installGestureNavigation({
+    stage,
+    cue: stage.querySelector("[data-gesture-cue]"),
+    onNext: () => false,
+    onPrevious: () => {},
+    blockedReason: "Not available yet — choose an option first",
+  });
 })();
