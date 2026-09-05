@@ -557,6 +557,11 @@ html[lang="zh-Hant"] .message--first {
   box-shadow: 0 0 0 1px var(--story-gold), 0 0 0 9px rgba(215, 173, 98, .12), 0 0 32px rgba(215, 173, 98, .42);
 }
 
+.portal-stage.is-full-focus .gate {
+  background: var(--story-gold);
+  box-shadow: 0 0 0 1px var(--story-gold), 0 0 0 9px rgba(215, 173, 98, .12), 0 0 32px rgba(215, 173, 98, .42);
+}
+
 .portal-stage .wave:nth-of-type(2) {
   animation-delay: 0s;
 }
