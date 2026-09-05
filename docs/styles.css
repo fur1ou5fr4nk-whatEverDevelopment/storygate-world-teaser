@@ -661,6 +661,14 @@ html[lang="zh-Hant"] .message--first {
   animation: none;
 }
 
+/* The gate point remains the earned focus marker after the image is fully sharp. */
+.portal-stage.is-full-focus .gate {
+  opacity: .78;
+  pointer-events: none;
+  background: var(--story-gold);
+  box-shadow: 0 0 0 1px var(--story-gold), 0 0 0 9px rgba(215, 173, 98, .12), 0 0 32px rgba(215, 173, 98, .42);
+}
+
 .coming-page {
   overflow: hidden;
 }
