@@ -171,6 +171,12 @@ a {
   line-height: 1;
   text-shadow: 0 0 18px rgba(215, 173, 98, .52);
   animation: prelude-star-pulse 2.8s ease-in-out infinite;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .prelude-star--left {
@@ -193,6 +199,42 @@ a {
 .portal-stage[data-phase="1"] .prelude-stars,
 .portal-stage[data-phase="2"] .prelude-stars {
   opacity: .9;
+}
+
+.portal-stage[data-phase="1"] .wordmark,
+.portal-stage[data-phase="2"] .wordmark {
+  opacity: 1;
+}
+
+.portal-stage[data-phase="1"] .prelude-star,
+.portal-stage[data-phase="2"] .prelude-star {
+  animation-name: prelude-star-flare;
+  animation-duration: 1.25s;
+}
+
+.prelude-card {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--gate-y) + clamp(64px, 8vw, 116px));
+  z-index: 12;
+  min-width: 150px;
+  padding: 14px 22px;
+  border: 1px solid rgba(215, 173, 98, .62);
+  border-radius: 14px;
+  color: #f4dfb0;
+  background: rgba(5, 5, 4, .92);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .38), 0 0 24px rgba(215, 173, 98, .16);
+  opacity: 0;
+  transform: translate(-50%, 8px) scale(.94);
+  pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+  font: 600 16px/1 Georgia, "Times New Roman", serif;
+  text-align: center;
+}
+
+.portal-stage.is-remember-open .prelude-card {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
 }
 
 .portal-stage[data-phase="1"] .portal-image,
@@ -814,6 +856,13 @@ html[lang="zh-Hant"] .message--first {
 @keyframes prelude-star-pulse {
   0%, 100% { opacity: .42; transform: scale(.86); }
   50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes prelude-star-flare {
+  0%, 100% { opacity: .48; transform: scale(.82) rotate(0deg); filter: brightness(1); }
+  24% { opacity: 1; transform: scale(1.22) rotate(7deg); filter: brightness(2.5); }
+  42% { opacity: .64; transform: scale(.9) rotate(-4deg); filter: brightness(1.15); }
+  66% { opacity: 1; transform: scale(1.12) rotate(3deg); filter: brightness(2.1); }
 }
 
 @keyframes centered-line {

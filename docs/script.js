@@ -14,6 +14,8 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   const primaryDiscoveryButtons = Array.from(stage.querySelectorAll("[data-discovery-id]"));
   const biographyDiscovery = stage.querySelector("[data-biography-discovery]");
   const biographyButton = stage.querySelector("[data-biography-star]");
+  const preludeStars = Array.from(stage.querySelectorAll("[data-prelude-star]"));
+  const preludeCard = stage.querySelector("[data-prelude-card]");
   const discoveryTracker = createDiscoveryTracker(primaryDiscoveryButtons.map((button) => button.dataset.discoveryId));
   const shouldSkipIntro = ["1", "true", "yes"].includes(new URLSearchParams(window.location.search).get("skipIntro"));
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -25,6 +27,24 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   let messageIdleTimer;
   let discoveryReadyTimer;
   let rippleTimer;
+
+  function syncPrelude() {
+    const active = ["1", "2"].includes(stage.dataset.phase);
+    preludeStars.forEach((star) => {
+      star.disabled = !active;
+      star.setAttribute("aria-hidden", String(!active));
+    });
+    if (!active) {
+      stage.classList.remove("is-remember-open");
+      preludeCard?.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  function revealRemember() {
+    if (!["1", "2"].includes(stage.dataset.phase)) return;
+    stage.classList.add("is-remember-open");
+    preludeCard?.setAttribute("aria-hidden", "false");
+  }
 
   function setDiscoveryReady(discovery) {
     const button = discovery.querySelector(".discovery-star");
@@ -106,6 +126,7 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   function advance() {
     const step = getNextRevealStep(stage.dataset.phase || "0");
     stage.dataset.phase = String(step.phase);
+    syncPrelude();
     if (step.ripple) triggerRipple();
 
     if (step.action === "message") {
@@ -115,6 +136,14 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
 
     if (step.action === "focus-partial") {
       stage.classList.add("is-partial-focus");
+      return;
+    }
+
+    if (step.action === "focus-partial-still") {
+      stage.classList.add("is-partial-focus");
+      window.clearTimeout(messageIdleTimer);
+      stage.classList.remove("is-message-idle");
+      stage.classList.add("is-still-prompt");
       return;
     }
 
@@ -196,6 +225,7 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   }
 
   gate.addEventListener("click", advance);
+  preludeStars.forEach((star) => star.addEventListener("click", revealRemember));
   primaryDiscoveryButtons.forEach((button) => button.addEventListener("click", findPrimaryDiscovery));
   biographyButton.addEventListener("click", () => revealDiscovery(biographyButton));
   installGestureNavigation({
@@ -208,6 +238,7 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   if (image.complete) positionGate();
   else image.addEventListener("load", positionGate, { once: true });
   if (shouldSkipIntro) setFinalReadyState();
+  syncPrelude();
 
   if ("ResizeObserver" in window) {
     new ResizeObserver(positionGate).observe(stage);
