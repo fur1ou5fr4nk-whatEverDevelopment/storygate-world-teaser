@@ -19,7 +19,7 @@ const catalogue = {
     "teaser.imageAlt": "A wooden StoryGate emblem beside the sea",
     "teaser.gateLabel": "Reveal StoryGate",
     "teaser.tapHint": "tap the gate",
-    "teaser.wild": "Your wild, wandering heart was born for this",
+    "teaser.wild": "Your wild, restless heart was born for this encounter.",
     "teaser.still": "Still tapping? Good!",
     "teaser.final.first": "You earned it:",
     "teaser.final.second": "Gate is open: Find the demo story",

@@ -18,7 +18,7 @@ const catalogue = {
     "teaser.imageAlt": "Ein hölzernes StoryGate-Emblem am Meer",
     "teaser.gateLabel": "StoryGate enthüllen",
     "teaser.tapHint": "Tippe auf das Tor",
-    "teaser.wild": "Dein wildes, rastloses Herz ist dafür geboren",
+    "teaser.wild": "Dein wildes, rastloses Herz ist für diese Begegnung geboren.",
     "teaser.still": "Du tippst immer noch? Gut!",
     "teaser.final.first": "Du hast es dir verdient:",
     "teaser.final.second": "Das Tor ist offen: Finde die Demo-Story",

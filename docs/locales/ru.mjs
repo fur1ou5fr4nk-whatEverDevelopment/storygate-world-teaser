@@ -18,7 +18,7 @@ const catalogue = {
     "teaser.imageAlt": "Деревянная эмблема StoryGate у моря",
     "teaser.gateLabel": "Открыть StoryGate",
     "teaser.tapHint": "коснитесь ворот",
-    "teaser.wild": "Твоё дикое, странствующее сердце рождено для этого",
+    "teaser.wild": "Твоё дикое, беспокойное сердце рождено для этой встречи.",
     "teaser.still": "Всё ещё касаешься? Хорошо!",
     "teaser.final.first": "Ты это заслужил:",
     "teaser.final.second": "Врата открыты: найди демо-историю",

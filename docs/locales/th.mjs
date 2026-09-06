@@ -18,7 +18,7 @@ const catalogue = {
     "teaser.imageAlt": "ตรา StoryGate ทำจากไม้ริมทะเล",
     "teaser.gateLabel": "เปิดเผย StoryGate",
     "teaser.tapHint": "แตะที่ประตู",
-    "teaser.wild": "หัวใจอิสระที่รักการเดินทางของคุณเกิดมาเพื่อสิ่งนี้",
+    "teaser.wild": "หัวใจอิสระที่ไม่เคยหยุดนิ่งของคุณเกิดมาเพื่อการพบพานครั้งนี้",
     "teaser.still": "ยังแตะอยู่เหรอ? ดี!",
     "teaser.final.first": "คุณคู่ควรกับมัน:",
     "teaser.final.second": "ประตูเปิดแล้ว: ค้นหาเรื่องราวสาธิต",

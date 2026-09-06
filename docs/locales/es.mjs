@@ -18,7 +18,7 @@ const catalogue = {
     "teaser.imageAlt": "Un emblema de madera de StoryGate junto al mar",
     "teaser.gateLabel": "Revelar StoryGate",
     "teaser.tapHint": "toca la puerta",
-    "teaser.wild": "Tu corazón salvaje y errante nació para esto",
+    "teaser.wild": "Tu corazón salvaje, siempre inquieto, nació para este encuentro.",
     "teaser.still": "¿Sigues tocando? ¡Bien!",
     "teaser.final.first": "Te lo has ganado:",
     "teaser.final.second": "La puerta está abierta: encuentra la historia de demostración",

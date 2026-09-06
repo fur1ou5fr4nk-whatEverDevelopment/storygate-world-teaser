@@ -174,7 +174,7 @@ test("homepage carries the approved suspense reveal copy", async () => {
   assert.equal((html.match(/class="reveal-line"/g) || []).length, 2);
   assert.doesNotMatch(html, /class="word"/);
   assert.match(visibleText, /Still tapping\? Good!/);
-  assert.match(visibleText, /Your wild, wandering heart was born for this/);
+  assert.match(visibleText, /Your wild, restless heart was born for this encounter\./);
   assert.match(visibleText, /You earned it:/);
   assert.match(visibleText, /Gate is open: Find the demo story/);
   assert.doesNotMatch(visibleText, /The gate opens soon/);
