@@ -30,15 +30,23 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
 
   function syncPrelude() {
     const active = ["1", "2"].includes(stage.dataset.phase);
-    preludeStars.forEach((star) => {
-      star.disabled = !active;
-      star.setAttribute("aria-hidden", String(!active));
-      star.closest(".discovery")?.classList.toggle("is-ready", active);
-    });
-    if (!active) {
+    if (active) {
+      preludeStars.forEach((star) => {
+        star.disabled = false;
+        star.removeAttribute("aria-hidden");
+        star.closest(".discovery")?.classList.add("is-ready");
+      });
+    } else {
       stage.classList.remove("is-remember-open");
       stage.querySelectorAll(".discovery").forEach((discovery) => discovery.classList.remove("is-remember-open"));
       preludeCards.forEach((card) => card.setAttribute("aria-hidden", "true"));
+      if (stage.dataset.phase !== "5") {
+        preludeStars.forEach((star) => {
+          star.disabled = true;
+          star.setAttribute("aria-hidden", "true");
+          star.closest(".discovery")?.classList.remove("is-ready");
+        });
+      }
     }
   }
 
@@ -101,8 +109,9 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
 
   function setFinalReadyState() {
     stage.dataset.phase = "5";
-    stage.classList.add("is-full-focus", "is-final-act");
+    stage.classList.add("is-full-focus", "is-final-act", "has-found-both");
     preparePrimaryDiscoveries();
+    unlockBiographyDiscovery();
     finalCopy.setAttribute("aria-hidden", "true");
     image.style.animation = "none";
     image.style.opacity = "1";

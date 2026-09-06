@@ -601,10 +601,34 @@ test("biography references are separate, public, and absent from Layer cards", a
     "./"
   ]);
 
-  const externalLinks = [...references.matchAll(/<a\b[^>]*href="https:[^"]+"[^>]*>/g)];
-  assert.equal(externalLinks.length, 4);
-  for (const [tag] of externalLinks) {
-    assert.match(tag, /target="_blank"/);
-    assert.match(tag, /rel="noopener noreferrer"/);
-  }
-});
+    const externalLinks = [...references.matchAll(/<a\b[^>]*href="https:[^"]+"[^>]*>/g)];
+    assert.equal(externalLinks.length, 4);
+    for (const [tag] of externalLinks) {
+      assert.match(tag, /target="_blank"/);
+      assert.match(tag, /rel="noopener noreferrer"/);
+    }
+  });
+
+  test("returning to gate via skipIntro leaves all discovery stars ready and interactive", async () => {
+    const { text: js } = await fetchText("/script.js");
+    assert.match(js, /stage\.classList\.add\("is-full-focus",\s*"is-final-act",\s*"has-found-both"\);/);
+    assert.match(js, /unlockBiographyDiscovery\(\);/);
+    assert.match(js, /if\s*\(stage\.dataset\.phase\s*!==\s*"5"\)/);
+  });
+
+  test("cards offer swipe gesture navigation back to the gate and explain it", async () => {
+    for (const path of ["/frank-bodmann.html", "/what-is-storygate.html"]) {
+      const { text: html } = await fetchText(path);
+      assert.match(html, /class="bio-hero__back"[^>]*href="\.\/\?skipIntro=1"[^>]*>Swipe to return to the Gate<\/a>/);
+    }
+
+    const { text: demoHtml } = await fetchText("/simple-demo/");
+    assert.match(demoHtml, /class="demo-back"[^>]*href="\.\.\/\?skipIntro=1"[^>]*>Swipe to return to the Gate<\/a>/);
+
+    const { text: bioJs } = await fetchText("/biography.js");
+    assert.match(bioJs, /window\.location\.href\s*=\s*"\.\/\?skipIntro=1"/);
+
+    const { text: demoJs } = await fetchText("/simple-demo/simple-demo.js");
+    assert.match(demoJs, /window\.location\.href\s*=\s*"\.\.\/\?skipIntro=1"/);
+  });
+
