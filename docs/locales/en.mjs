@@ -39,7 +39,7 @@ const catalogue = {
 
     "about.page.title": "What is StoryGate?",
     "about.page.description": "StoryGate connects Stories made by people with the places, objects and moments they belong to.",
-    "about.back": "Back to the Gate",
+    "about.back": "Swipe to return to the Gate",
     "about.heading": "What is StoryGate?",
     "about.introduction": "StoryGate connects Stories made by people with the places, objects and moments they belong to.",
     "about.articleLabel": "What is StoryGate?",
@@ -71,7 +71,7 @@ const catalogue = {
     "demo.instruction": "Bring your phone closer.",
     "demo.assist": "Drag toward the token. On a phone, swipe upward.",
     "demo.phoneLabel": "Move phone closer to the STORY Token",
-    "demo.back": "Back to the Gate",
+    "demo.back": "Swipe to return to the Gate",
     "demo.screenLabel": "StoryGate demo screen",
     "demo.nfc.title": "Item Detected",
     "demo.nfc.action": "Open in StoryGate",
@@ -94,7 +94,7 @@ const catalogue = {
 
     "bio.page.title": "Frank Bodmann - StoryGate",
     "bio.page.description": "A biography of Frank Bodmann.",
-    "bio.back": "Back to the Gate",
+    "bio.back": "Swipe to return to the Gate",
     "bio.name": "Frank Bodmann",
     "bio.introduction": "Founder - Strategist - Dreamer.",
     "bio.portraitAlt": "Portrait collage of Frank Bodmann in dark formalwear, including black-and-white studio portraits.",

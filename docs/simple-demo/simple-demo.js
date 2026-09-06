@@ -208,6 +208,13 @@ import { getImageLayout } from "../teaser-layout.mjs";
     if (event.pointerId !== activePointerId) return;
     stage.releasePointerCapture?.(event.pointerId);
     activePointerId = null;
+    if (dragStart && isApproaching()) {
+      const dx = event.clientX - dragStart.x;
+      const dy = event.clientY - dragStart.y;
+      if (dx > 52 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+        window.location.href = "../?skipIntro=1";
+      }
+    }
   }
 
   function handleKeyboard(event) {
@@ -281,6 +288,10 @@ import { getImageLayout } from "../teaser-layout.mjs";
 
   function navigatePreviousPhase() {
     const before = flow.snapshot();
+    if (before.phase === "approach") {
+      window.location.href = "../?skipIntro=1";
+      return;
+    }
     flow.dispatch("PREVIOUS_STEP");
     const after = flow.snapshot();
     if (before.phase === "countdown") clearCountdown();
@@ -357,6 +368,26 @@ import { getImageLayout } from "../teaser-layout.mjs";
   stage.addEventListener("pointercancel", endApproach);
   stage.addEventListener("keydown", handleKeyboard);
   stage.addEventListener("dragstart", (event) => event.preventDefault());
+
+  let stageSwipeStart = null;
+  stage.addEventListener("pointerdown", (event) => {
+    if (event.button > 0) return;
+    stageSwipeStart = { x: event.clientX, y: event.clientY };
+  }, { passive: true });
+
+  stage.addEventListener("pointerup", (event) => {
+    if (!stageSwipeStart) return;
+    const dx = event.clientX - stageSwipeStart.x;
+    const dy = event.clientY - stageSwipeStart.y;
+    stageSwipeStart = null;
+    if (dx > 52 && Math.abs(dx) > Math.abs(dy) * 1.2 && isApproaching()) {
+      window.location.href = "../?skipIntro=1";
+    }
+  }, { passive: true });
+
+  stage.addEventListener("pointercancel", () => {
+    stageSwipeStart = null;
+  }, { passive: true });
 
   if (backdrop.complete) setTokenPosition();
   else backdrop.addEventListener("load", setTokenPosition, { once: true });

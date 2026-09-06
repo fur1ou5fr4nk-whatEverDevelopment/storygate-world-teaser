@@ -235,6 +235,27 @@
     closeLayer({ restoreFocus: true });
   });
 
+  let swipeStart = null;
+  document.addEventListener("pointerdown", (event) => {
+    if (event.button > 0) return;
+    swipeStart = { x: event.clientX, y: event.clientY };
+  }, { passive: true });
+
+  document.addEventListener("pointerup", (event) => {
+    if (!swipeStart) return;
+    const dx = event.clientX - swipeStart.x;
+    const dy = event.clientY - swipeStart.y;
+    swipeStart = null;
+    if (window.getSelection()?.toString()) return;
+    if (dx > 52 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      window.location.href = "./?skipIntro=1";
+    }
+  }, { passive: true });
+
+  document.addEventListener("pointercancel", () => {
+    swipeStart = null;
+  }, { passive: true });
+
   window.addEventListener("resize", moveActiveCard);
   window.addEventListener("scroll", moveActiveCard, { passive: true });
   hoverQuery.addEventListener("change", moveActiveCard);
