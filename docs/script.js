@@ -15,7 +15,7 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   const biographyDiscovery = stage.querySelector("[data-biography-discovery]");
   const biographyButton = stage.querySelector("[data-biography-star]");
   const preludeStars = [...primaryDiscoveryButtons, biographyButton];
-  const preludeCard = stage.querySelector("[data-prelude-card]");
+  const preludeCards = Array.from(stage.querySelectorAll("[data-prelude-card]"));
   const discoveryTracker = createDiscoveryTracker(primaryDiscoveryButtons.map((button) => button.dataset.discoveryId));
   const shouldSkipIntro = ["1", "true", "yes"].includes(new URLSearchParams(window.location.search).get("skipIntro"));
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -37,14 +37,22 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
     });
     if (!active) {
       stage.classList.remove("is-remember-open");
-      preludeCard?.setAttribute("aria-hidden", "true");
+      stage.querySelectorAll(".discovery").forEach((discovery) => discovery.classList.remove("is-remember-open"));
+      preludeCards.forEach((card) => card.setAttribute("aria-hidden", "true"));
     }
   }
 
-  function revealRemember() {
+  function revealRemember(event) {
     if (!["1", "2"].includes(stage.dataset.phase)) return;
-    stage.classList.add("is-remember-open");
-    preludeCard?.setAttribute("aria-hidden", "false");
+    const button = event?.currentTarget || (event instanceof Element ? event : null);
+    const discovery = button?.closest?.(".discovery");
+    if (discovery) {
+      discovery.classList.add("is-remember-open");
+      discovery.querySelector("[data-prelude-card]")?.setAttribute("aria-hidden", "false");
+    } else {
+      stage.classList.add("is-remember-open");
+      preludeCards.forEach((card) => card.setAttribute("aria-hidden", "false"));
+    }
   }
 
   function setDiscoveryReady(discovery) {
@@ -73,7 +81,7 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   function findPrimaryDiscovery(event) {
     const button = event.currentTarget;
     if (["1", "2"].includes(stage.dataset.phase)) {
-      revealRemember();
+      revealRemember(event);
       return;
     }
     const result = discoveryTracker.find(button.dataset.discoveryId);
@@ -238,8 +246,8 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   stage.addEventListener("click", handleStageClick);
   preludeStars.forEach((star) => star.addEventListener("click", revealRemember));
   primaryDiscoveryButtons.forEach((button) => button.addEventListener("click", findPrimaryDiscovery));
-  biographyButton.addEventListener("click", () => {
-    if (["1", "2"].includes(stage.dataset.phase)) revealRemember();
+  biographyButton.addEventListener("click", (event) => {
+    if (["1", "2"].includes(stage.dataset.phase)) revealRemember(event);
     else revealDiscovery(biographyButton);
   });
   installGestureNavigation({

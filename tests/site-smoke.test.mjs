@@ -285,6 +285,21 @@ test("wild prompt keeps gate interactive and pulsing, and stage click advances r
   );
 });
 
+test("prelude remember cards are positioned under each discovery star matching content cards", async () => {
+  const { text: html } = await fetchText("/");
+  const { text: css } = await fetchText("/styles.css");
+
+  assert.equal((html.match(/<div class="prelude-card"[^>]*>Remember<\/div>/g) || []).length, 3);
+
+  for (const discovery of ["storygate", "demo", "biography"]) {
+    assert.match(
+      css,
+      new RegExp(`\\.discovery--${discovery} \\.prelude-card`),
+      `prelude-card must have positioning under discovery--${discovery}`
+    );
+  }
+});
+
 test("Thai and Chinese use explicit UI and story font candidates", async () => {
   const { text: teaserCss } = await fetchText("/styles.css");
   const { text: biographyCss } = await fetchText("/biography.css");
