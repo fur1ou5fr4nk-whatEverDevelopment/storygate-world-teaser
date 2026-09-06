@@ -118,6 +118,14 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
       return;
     }
 
+    if (step.action === "focus-partial-still") {
+      stage.classList.add("is-partial-focus");
+      window.clearTimeout(messageIdleTimer);
+      stage.classList.remove("is-message-idle");
+      stage.classList.add("is-still-prompt");
+      return;
+    }
+
     if (step.action === "focus-full") {
       stage.classList.add("is-full-focus", "is-wild-prompt");
       return;
