@@ -19,6 +19,9 @@ import { getImageLayout } from "../teaser-layout.mjs";
   const beginButton = stage.querySelector("[data-demo-begin]");
   const count = stage.querySelector("[data-demo-count]");
   const live = stage.querySelector("[data-demo-live]");
+  const gestureCue = stage.querySelector("[data-gesture-cue]");
+  const gestureIcon = gestureCue?.querySelector("[data-gesture-icon]");
+  const gestureMessage = gestureCue?.querySelector("[data-gesture-message]");
   const storyLayers = [...stage.querySelectorAll("[data-story-layer]")];
   const revealButtons = [...stage.querySelectorAll("[data-demo-reveal]")];
   const mobileQuery = window.matchMedia("(max-width: 720px), (pointer: coarse)");
@@ -28,7 +31,9 @@ import { getImageLayout } from "../teaser-layout.mjs";
   let dragStart = null;
   let tracker = null;
   let countdownTimer = null;
-  let storyPointerStart = null;
+  let navigationPointerStart = null;
+  let navigationPointerId = null;
+  let gestureTimer = null;
 
   function isApproaching() {
     return flow.snapshot().phase === "approach";
@@ -65,6 +70,17 @@ import { getImageLayout } from "../teaser-layout.mjs";
     if (live) live.textContent = message;
   }
 
+  function showGestureCue(direction, allowed = true) {
+    if (!gestureCue || !gestureIcon || !gestureMessage) return;
+    gestureIcon.textContent = direction === "next" ? "←" : direction === "previous" ? "→" : "⌑";
+    gestureMessage.textContent = allowed
+      ? direction === "next" ? "Next step" : "Previous step"
+      : direction === "next" ? "End of story" : "Back to the Gate";
+    stage.dataset.gestureActive = "true";
+    window.clearTimeout(gestureTimer);
+    gestureTimer = window.setTimeout(() => { stage.dataset.gestureActive = "false"; }, 1500);
+  }
+
   function render() {
     const state = flow.snapshot();
     const isDetected = state.phase !== "approach";
@@ -80,6 +96,11 @@ import { getImageLayout } from "../teaser-layout.mjs";
     for (const layer of storyLayers) {
       const index = Number(layer.dataset.storyLayer);
       setVisible(layer, isStoryLayerVisible(state, index));
+    }
+
+    if (state.phase !== "story") {
+      story.style.setProperty("--story-drag-x", "0px");
+      story.removeAttribute("data-story-dragging");
     }
 
     instruction.setAttribute("aria-hidden", String(isDetected));
@@ -258,20 +279,76 @@ import { getImageLayout } from "../teaser-layout.mjs";
     layer?.querySelector("[data-demo-reveal]")?.focus({ preventScroll: true });
   }
 
-  story.addEventListener("pointerdown", (event) => {
-    if (!mobileQuery.matches || event.pointerType !== "touch" || flow.snapshot().phase !== "story") return;
-    storyPointerStart = { x: event.clientX, y: event.clientY };
+  function navigatePreviousPhase() {
+    const before = flow.snapshot();
+    flow.dispatch("PREVIOUS_STEP");
+    const after = flow.snapshot();
+    if (before.phase === "countdown") clearCountdown();
+    render();
+    if (after.phase === "approach") {
+      stage.style.setProperty("--progress", "0");
+      stage.style.setProperty("--phone-x", "0px");
+      stage.style.setProperty("--phone-y", "0px");
+      announce(instruction.textContent || "");
+    } else if (after.phase === "nfc") {
+      announce(nfc.querySelector("strong")?.textContent || "Item Detected");
+    } else if (after.phase === "entry") {
+      announce(entry.querySelector("h2")?.textContent || "");
+    }
+    showGestureCue("previous", after.phase !== before.phase);
+  }
+
+  function navigateNextPhase() {
+    const phase = flow.snapshot().phase;
+    if (phase === "story") return navigateStory("NEXT_STEP");
+    if (phase === "nfc") openButton.click();
+    else if (phase === "entry") beginButton.click();
+    else showGestureCue("next", false);
+  }
+
+  stage.addEventListener("pointerdown", (event) => {
+    if (!mobileQuery.matches || event.pointerType !== "touch" || flow.snapshot().phase === "approach") return;
+    navigationPointerStart = { x: event.clientX, y: event.clientY };
+    navigationPointerId = event.pointerId;
+    stage.setPointerCapture?.(event.pointerId);
+    if (flow.snapshot().phase === "story") {
+      story.dataset.storyDragging = "true";
+    }
   });
-  story.addEventListener("pointerup", (event) => {
-    if (!storyPointerStart) return;
-    const deltaX = event.clientX - storyPointerStart.x;
-    const deltaY = event.clientY - storyPointerStart.y;
-    storyPointerStart = null;
+  stage.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== navigationPointerId || !navigationPointerStart || flow.snapshot().phase !== "story") return;
+    const dx = Math.max(-120, Math.min(120, event.clientX - navigationPointerStart.x));
+    const dy = Math.abs(event.clientY - navigationPointerStart.y);
+    if (Math.abs(dx) > dy) story.style.setProperty("--story-drag-x", `${dx}px`);
+  });
+  stage.addEventListener("pointerup", (event) => {
+    if (event.pointerId !== navigationPointerId || !navigationPointerStart) return;
+    const deltaX = event.clientX - navigationPointerStart.x;
+    const deltaY = event.clientY - navigationPointerStart.y;
+    navigationPointerStart = null;
+    navigationPointerId = null;
+    story.style.setProperty("--story-drag-x", "0px");
+    story.removeAttribute("data-story-dragging");
+    stage.releasePointerCapture?.(event.pointerId);
     if (Math.abs(deltaX) < 52 || Math.abs(deltaX) < Math.abs(deltaY)) return;
     event.preventDefault();
-    navigateStory(deltaX < 0 ? "NEXT_STEP" : "PREVIOUS_STEP");
+    if (deltaX < 0) {
+      const before = flow.snapshot();
+      navigateNextPhase();
+      showGestureCue("next", flow.snapshot().phase !== before.phase || flow.snapshot().storyLayer !== before.storyLayer);
+    } else if (flow.snapshot().phase === "story") {
+      const before = flow.snapshot();
+      navigateStory("PREVIOUS_STEP");
+      showGestureCue("previous", flow.snapshot().phase !== before.phase || flow.snapshot().storyLayer !== before.storyLayer);
+    }
+    else navigatePreviousPhase();
   });
-  story.addEventListener("pointercancel", () => { storyPointerStart = null; });
+  stage.addEventListener("pointercancel", () => {
+    navigationPointerStart = null;
+    navigationPointerId = null;
+    story.style.setProperty("--story-drag-x", "0px");
+    story.removeAttribute("data-story-dragging");
+  });
 
   stage.dataset.mode = mobileQuery.matches ? "mobile" : "desktop";
   stage.addEventListener("pointerdown", beginApproach);
