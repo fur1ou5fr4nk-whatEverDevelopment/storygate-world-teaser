@@ -603,6 +603,7 @@ body {
 .demo-story {
   z-index: 7;
   background: #0b1515;
+  --story-drag-x: 0px;
 }
 
 .demo-story__layer {
@@ -613,6 +614,13 @@ body {
   overflow: hidden;
   background: #102020;
   animation: story-layer-in .36s cubic-bezier(.2, .75, .2, 1) both;
+  transform: translate3d(var(--story-drag-x), 0, 0);
+  transition: transform 220ms cubic-bezier(.2, .75, .2, 1);
+  will-change: transform;
+}
+
+.demo-story[data-story-dragging="true"] .demo-story__layer {
+  transition: none;
 }
 
 .demo-story__layer img {
@@ -625,12 +633,15 @@ body {
 }
 
 .demo-story__copy {
+  position: relative;
+  z-index: 1;
   display: grid;
   align-content: start;
   gap: clamp(5px, .55vw, 8px);
   padding: 9% 10% 8%;
   color: #f2ede1;
   background: linear-gradient(145deg, #163031, #0c1617 86%);
+  opacity: 1;
 }
 
 .demo-story__copy p {

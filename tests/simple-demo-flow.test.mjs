@@ -106,4 +106,21 @@ test("touch navigation advances and returns between story layers", async () => {
   assert.equal(flow.snapshot().storyLayer, 3);
   flow.dispatch("PREVIOUS_STEP");
   assert.equal(flow.snapshot().storyLayer, 2);
+  flow.dispatch("PREVIOUS_STEP");
+  assert.equal(flow.snapshot().storyLayer, 1);
+  flow.dispatch("PREVIOUS_STEP");
+  assert.equal(flow.snapshot().phase, "nfc");
+  flow.dispatch("PREVIOUS_STEP");
+  assert.equal(flow.snapshot().phase, "approach");
+});
+
+test("backward gestures expose every earlier demo station", async () => {
+  const flow = await createFlow();
+  flow.dispatch("DETECTED");
+  flow.dispatch("OPEN");
+  flow.dispatch("BEGIN_STORY");
+  flow.dispatch("PREVIOUS_STEP");
+  assert.deepEqual(flow.snapshot(), { phase: "entry", countdown: 0, storyLayer: 0 });
+  flow.dispatch("PREVIOUS_STEP");
+  assert.deepEqual(flow.snapshot(), { phase: "nfc", countdown: 0, storyLayer: 0 });
 });

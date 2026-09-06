@@ -39,7 +39,20 @@ function transition(state, event) {
   }
 
   if (state.phase === "story" && event === "PREVIOUS_STEP") {
-    return { ...state, storyLayer: Math.max(1, state.storyLayer - 1) };
+    if (state.storyLayer > 1) return { ...state, storyLayer: state.storyLayer - 1 };
+    return { phase: "nfc", countdown: 0, storyLayer: 0 };
+  }
+
+  if (state.phase === "nfc" && event === "PREVIOUS_STEP") {
+    return { phase: "approach", countdown: 0, storyLayer: 0 };
+  }
+
+  if (state.phase === "entry" && event === "PREVIOUS_STEP") {
+    return { phase: "nfc", countdown: 0, storyLayer: 0 };
+  }
+
+  if (state.phase === "countdown" && event === "PREVIOUS_STEP") {
+    return { phase: "entry", countdown: 0, storyLayer: 0 };
   }
 
   return state;
