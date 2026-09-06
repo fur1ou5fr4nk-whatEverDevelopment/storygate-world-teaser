@@ -46,7 +46,7 @@ const catalogue = {
     "about.term.curiosity": "好奇心開始帶路",
     "about.story.1.beforeGate": "一道",
     "about.story.1.introAfterGate": "只邀請你做一個簡單動作：輕觸。你在手機上早已熟悉這個動作——但這一次，不是付款，而是有什麼向你敞開：一個故事。",
-    "about.story.1.expandedBeforeWorld": "它可以有許多面貌，卻總與你身邊的一切相連：地點、事物、體驗，有時也包括人。你身邊的世界",
+    "about.story.1.expandedBeforeWorld": "它可以有許多面貌，卻總與你身邊的一切相連：地點、事物、體驗，有時也包括人。",
     "about.story.1.afterWorld": "不是單純的背景，而會成為故事的一部分。你永遠——真的永遠——不會來到資訊流、登入畫面或資訊牆前。",
     "about.story.2.intro": "你找到的，不是為眼前一刻生成、隨即丟棄的答案。StoryGate 不會編造這些故事。故事由人創作。",
     "about.story.2.expandedBeforeHumanPerspective": "——由親歷、學習、研究或想像過它們的個人和社群創作。他們的",
