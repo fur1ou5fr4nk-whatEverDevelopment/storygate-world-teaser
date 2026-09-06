@@ -38,7 +38,7 @@ const catalogue = {
     "about.page.description": "StoryGate связывает истории, созданные людьми, с местами, предметами и моментами, к которым они принадлежат.",
     "about.back": "Проведите, чтобы вернуться к воротам",
     "about.heading": "Что такое StoryGate?",
-    "about.introduction": "StoryGate связывает истории, созданные людьми, с местами, предметами и моментами, к которым они принадлежат.",
+    "about.introduction": "В каждом месте, предмете и мгновении может скрываться история. StoryGate открывает её",
     "about.articleLabel": "Что такое StoryGate?",
     "about.term.gate": "ворота",
     "about.term.world": "мир вокруг тебя",

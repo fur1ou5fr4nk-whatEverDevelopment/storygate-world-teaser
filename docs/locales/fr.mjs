@@ -38,7 +38,7 @@ const catalogue = {
     "about.page.description": "StoryGate relie les histoires créées par des personnes aux lieux, objets et moments auxquels elles appartiennent.",
     "about.back": "Glisser pour revenir à la porte",
     "about.heading": "Qu’est-ce que StoryGate ?",
-    "about.introduction": "StoryGate relie les histoires créées par des personnes aux lieux, objets et moments auxquels elles appartiennent.",
+    "about.introduction": "Chaque lieu, chaque objet et chaque instant peut abriter une histoire. StoryGate l’ouvre",
     "about.articleLabel": "Qu’est-ce que StoryGate ?",
     "about.term.gate": "porte",
     "about.term.world": "monde qui t’entoure",
