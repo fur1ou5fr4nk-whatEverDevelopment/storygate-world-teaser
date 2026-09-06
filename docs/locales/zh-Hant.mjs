@@ -18,6 +18,7 @@ const catalogue = {
     "teaser.imageAlt": "海邊的一枚木製 StoryGate 徽記",
     "teaser.gateLabel": "揭開 StoryGate",
     "teaser.tapHint": "輕觸大門",
+    "teaser.prelude.remember": "記住",
     "teaser.wild": "你那顆狂野、躁動的心，正是為這場相遇而生",
     "teaser.still": "還在輕觸？很好！",
     "teaser.final.first": "這是你贏得的：",
