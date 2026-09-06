@@ -137,6 +137,25 @@ svg { max-width: 100%; }
   outline-offset: 5px;
 }
 
+.back-link__label--touch {
+  display: none;
+}
+
+.back-link__label--default {
+  display: inline;
+}
+
+@media (pointer: coarse) {
+  .back-link__label--touch {
+    display: inline;
+  }
+
+  .back-link__label--default {
+    display: none;
+  }
+}
+
+
 .bio-hero__copy {
   grid-area: copy;
   align-self: center;

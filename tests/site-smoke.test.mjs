@@ -630,11 +630,15 @@ test("biography references are separate, public, and absent from Layer cards", a
   test("cards offer swipe gesture navigation back to the gate and explain it", async () => {
     for (const path of ["/frank-bodmann.html", "/what-is-storygate.html"]) {
       const { text: html } = await fetchText(path);
-      assert.match(html, /class="bio-hero__back"[^>]*href="\.\/\?skipIntro=1"[^>]*>Swipe to return to the Gate<\/a>/);
+      assert.match(html, /class="bio-hero__back"[^>]*href="\.\/\?skipIntro=1"/);
+      assert.match(html, /data-i18n="[^"]*\.backTouch"[^>]*>Swipe to return to the Gate<\/span>/);
+      assert.match(html, /data-i18n="[^"]*\.back"[^>]*>Back to the Gate<\/span>/);
     }
 
     const { text: demoHtml } = await fetchText("/simple-demo/");
-    assert.match(demoHtml, /class="demo-back"[^>]*href="\.\.\/\?skipIntro=1"[^>]*>Swipe to return to the Gate<\/a>/);
+    assert.match(demoHtml, /class="demo-back"[^>]*href="\.\.\/\?skipIntro=1"/);
+    assert.match(demoHtml, /data-i18n="demo\.backTouch"[^>]*>Swipe to return to the Gate<\/span>/);
+    assert.match(demoHtml, /data-i18n="demo\.back"[^>]*>Back to the Gate<\/span>/);
 
     const { text: bioJs } = await fetchText("/biography.js");
     assert.match(bioJs, /window\.location\.href\s*=\s*"\.\/\?skipIntro=1"/);
@@ -642,4 +646,26 @@ test("biography references are separate, public, and absent from Layer cards", a
     const { text: demoJs } = await fetchText("/simple-demo/simple-demo.js");
     assert.match(demoJs, /window\.location\.href\s*=\s*"\.\.\/\?skipIntro=1"/);
   });
+
+  test("swipe navigation and back-to-gate cues are scoped to touch devices", async () => {
+    const { text: bioCss } = await fetchText("/biography.css");
+    assert.match(bioCss, /\.back-link__label--touch\s*\{\s*display:\s*none;\s*\}/);
+    assert.match(bioCss, /\.back-link__label--default\s*\{\s*display:\s*inline;\s*\}/);
+    assert.match(bioCss, /@media\s*\(pointer:\s*coarse\)\s*\{\s*\.back-link__label--touch\s*\{\s*display:\s*inline;\s*\}\s*\.back-link__label--default\s*\{\s*display:\s*none;\s*\}\s*\}/);
+
+    const { text: demoCss } = await fetchText("/simple-demo/simple-demo.css");
+    assert.match(demoCss, /\.demo-page\s+\.back-link__label--touch\s*\{\s*display:\s*none;\s*\}/);
+    assert.match(demoCss, /\.demo-page\s+\.back-link__label--default\s*\{\s*display:\s*inline;\s*\}/);
+    assert.match(demoCss, /@media\s*\(pointer:\s*coarse\)\s*\{\s*\.demo-page\s+\.back-link__label--touch\s*\{\s*display:\s*inline;\s*\}\s*\.demo-page\s+\.back-link__label--default\s*\{\s*display:\s*none;\s*\}\s*\}/);
+
+    const { text: bioJs } = await fetchText("/biography.js");
+    assert.match(bioJs, /if\s*\(event\.pointerType\s*&&\s*event\.pointerType\s*!==\s*"touch"\)\s*return;/);
+
+    const { text: demoJs } = await fetchText("/simple-demo/simple-demo.js");
+    assert.match(demoJs, /if\s*\(event\.pointerType\s*&&\s*event\.pointerType\s*!==\s*"touch"\)\s*return;/);
+
+    const { text: gestureJs } = await fetchText("/gesture-navigation.mjs");
+    assert.match(gestureJs, /if\s*\(event\.pointerType\s*&&\s*event\.pointerType\s*!==\s*"touch"\)\s*return;/);
+  });
+
 

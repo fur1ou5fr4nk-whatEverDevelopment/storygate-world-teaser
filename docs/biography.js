@@ -237,6 +237,7 @@
 
   let swipeStart = null;
   document.addEventListener("pointerdown", (event) => {
+    if (event.pointerType && event.pointerType !== "touch") return;
     if (event.button > 0) return;
     swipeStart = { x: event.clientX, y: event.clientY };
   }, { passive: true });
