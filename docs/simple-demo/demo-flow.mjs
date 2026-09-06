@@ -34,6 +34,14 @@ function transition(state, event) {
     return { ...state, storyLayer: Math.min(3, state.storyLayer + 1) };
   }
 
+  if (state.phase === "story" && event === "NEXT_STEP") {
+    return { ...state, storyLayer: Math.min(3, state.storyLayer + 1) };
+  }
+
+  if (state.phase === "story" && event === "PREVIOUS_STEP") {
+    return { ...state, storyLayer: Math.max(1, state.storyLayer - 1) };
+  }
+
   return state;
 }
 

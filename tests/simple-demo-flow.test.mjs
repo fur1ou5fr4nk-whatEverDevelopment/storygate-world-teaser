@@ -88,3 +88,22 @@ test("only the current story layer is exposed after a reveal", () => {
   assert.equal(demoFlow.isStoryLayerVisible(story, 2), true);
   assert.equal(demoFlow.isStoryLayerVisible(story, 3), false);
 });
+
+test("touch navigation advances and returns between story layers", async () => {
+  const flow = await createFlow();
+  flow.dispatch("DETECTED");
+  flow.dispatch("OPEN");
+  flow.dispatch("BEGIN_STORY");
+  flow.dispatch("TICK");
+  flow.dispatch("TICK");
+  flow.dispatch("TICK");
+
+  flow.dispatch("NEXT_STEP");
+  assert.equal(flow.snapshot().storyLayer, 2);
+  flow.dispatch("NEXT_STEP");
+  assert.equal(flow.snapshot().storyLayer, 3);
+  flow.dispatch("NEXT_STEP");
+  assert.equal(flow.snapshot().storyLayer, 3);
+  flow.dispatch("PREVIOUS_STEP");
+  assert.equal(flow.snapshot().storyLayer, 2);
+});
