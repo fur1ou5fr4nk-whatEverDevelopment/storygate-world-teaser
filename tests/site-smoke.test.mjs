@@ -668,4 +668,16 @@ test("biography references are separate, public, and absent from Layer cards", a
     assert.match(gestureJs, /if\s*\(event\.pointerType\s*&&\s*event\.pointerType\s*!==\s*"touch"\)\s*return;/);
   });
 
-
+  test("gate tap point presents a gold voice-control sphere prototype", async () => {
+    const { text: css } = await fetchText("/styles.css");
+    assert.match(css, /--gate-sphere-surface:\s*radial-gradient\(/);
+    assert.match(css, /--gate-sphere-shadow:\s*0 0 0 1px/);
+    assert.match(css, /\.gate\s*\{[^}]*background:\s*var\(--gate-sphere-surface\);/s);
+    assert.match(css, /\.gate::before\s*\{[^}]*animation:\s*gate-halo-breathe/s);
+    assert.match(css, /\.gate-core\s*\{[^}]*display:\s*block;[^}]*animation:\s*gate-core-drift/s);
+    assert.match(css, /\.gate:focus-visible\s*\{[^}]*outline:\s*2px solid #fff;/s);
+    assert.match(
+      css,
+      /\.gate,\s*\.gate::before,\s*\.gate-core\s*\{\s*animation:\s*none\s*!important;\s*\}/
+    );
+  });

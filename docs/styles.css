@@ -60,6 +60,13 @@ a {
 
 .portal-stage {
   --story-gold: #d7ad62;
+  --gate-sphere-surface: radial-gradient(circle at 35% 26%, #fff7e0 0%, #f7dc99 18%, var(--story-gold) 44%, #9e7228 74%, #4a320c 100%);
+  --gate-sphere-shadow:
+    0 0 0 1px rgba(246, 218, 148, .75),
+    0 2px 14px rgba(215, 173, 98, .4),
+    0 0 28px rgba(215, 173, 98, .24),
+    inset 0 -4px 10px rgba(74, 50, 12, .65),
+    inset 0 2px 6px rgba(255, 255, 255, .55);
   --gate-x: 50%;
   --gate-y: 44%;
   --gate-size: 56px;
@@ -260,12 +267,23 @@ a {
   transform: translate(-50%, -50%);
   border: 0;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 0 1px #fff, 0 0 0 9px rgba(255, 255, 255, .08), 0 0 30px rgba(255, 255, 255, .25);
+  background: var(--gate-sphere-surface);
+  box-shadow: var(--gate-sphere-shadow);
   cursor: pointer;
-  animation: gate-idle-pulse 2.4s ease-in-out infinite;
+  animation: gate-idle-pulse 2.8s ease-in-out infinite;
   transition: transform .28s ease, box-shadow .28s ease, opacity 1.2s ease;
   touch-action: manipulation;
+}
+
+.gate::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(215, 173, 98, .35) 0%, rgba(215, 173, 98, .1) 50%, transparent 72%);
+  pointer-events: none;
+  z-index: -1;
+  animation: gate-halo-breathe 2.8s ease-in-out infinite;
 }
 
 .gate::after {
@@ -279,14 +297,38 @@ a {
   border-radius: 50%;
 }
 
-.gate:hover,
-.gate:focus-visible {
+.gate:hover {
   transform: translate(-50%, -50%) scale(1.055);
-  box-shadow: 0 0 0 1px #fff, 0 0 0 13px rgba(255, 255, 255, .11), 0 0 46px rgba(255, 255, 255, .5);
-  outline: none;
+  box-shadow:
+    0 0 0 1.5px rgba(255, 246, 219, .95),
+    0 3px 20px rgba(215, 173, 98, .58),
+    0 0 46px rgba(215, 173, 98, .38),
+    inset 0 -3px 8px rgba(74, 50, 12, .5),
+    inset 0 2px 8px rgba(255, 255, 255, .7);
 }
 
-.gate-core,
+.gate:focus-visible {
+  transform: translate(-50%, -50%) scale(1.055);
+  outline: 2px solid #fff;
+  outline-offset: 5px;
+  box-shadow:
+    0 0 0 1.5px rgba(255, 246, 219, .95),
+    0 3px 20px rgba(215, 173, 98, .58),
+    0 0 46px rgba(215, 173, 98, .38),
+    inset 0 -3px 8px rgba(74, 50, 12, .5),
+    inset 0 2px 8px rgba(255, 255, 255, .7);
+}
+
+.gate-core {
+  display: block;
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 64% 68%, rgba(255, 226, 154, .25) 0%, rgba(215, 173, 98, .08) 32%, transparent 64%);
+  pointer-events: none;
+  animation: gate-core-drift 4.2s ease-in-out infinite alternate;
+}
+
 .tap-hint {
   display: none;
 }
@@ -622,13 +664,13 @@ html[lang="zh-Hant"] .message--first {
 }
 
 .portal-stage.is-rippling .gate {
-  background: var(--story-gold);
-  box-shadow: 0 0 0 1px var(--story-gold), 0 0 0 9px rgba(215, 173, 98, .12), 0 0 32px rgba(215, 173, 98, .42);
+  background: var(--gate-sphere-surface);
+  box-shadow: var(--gate-sphere-shadow);
 }
 
 .portal-stage.is-full-focus .gate {
-  background: var(--story-gold);
-  box-shadow: 0 0 0 1px var(--story-gold), 0 0 0 9px rgba(215, 173, 98, .12), 0 0 32px rgba(215, 173, 98, .42);
+  background: var(--gate-sphere-surface);
+  box-shadow: var(--gate-sphere-shadow);
 }
 
 .portal-stage .wave:nth-of-type(2) {
@@ -667,8 +709,8 @@ html[lang="zh-Hant"] .message--first {
 
 .portal-stage.has-message .gate {
   opacity: .62;
-  background: var(--story-gold);
-  box-shadow: 0 0 0 1px var(--story-gold), 0 0 0 9px rgba(215, 173, 98, .12), 0 0 32px rgba(215, 173, 98, .42);
+  background: var(--gate-sphere-surface);
+  box-shadow: var(--gate-sphere-shadow);
 }
 
 .portal-stage.has-message.is-message-idle .gate {
@@ -729,8 +771,8 @@ html[lang="zh-Hant"] .message--first {
 .portal-stage.is-final-act .gate {
   opacity: .78;
   pointer-events: none;
-  background: var(--story-gold);
-  box-shadow: 0 0 0 1px var(--story-gold), 0 0 0 9px rgba(215, 173, 98, .12), 0 0 32px rgba(215, 173, 98, .42);
+  background: var(--gate-sphere-surface);
+  box-shadow: var(--gate-sphere-shadow);
   animation: none;
 }
 
@@ -827,8 +869,46 @@ html[lang="zh-Hant"] .message--first {
 }
 
 @keyframes gate-idle-pulse {
-  0%, 100% { box-shadow: 0 0 0 1px #fff, 0 0 0 9px rgba(255, 255, 255, .08), 0 0 30px rgba(255, 255, 255, .25); }
-  50% { box-shadow: 0 0 0 1px #fff, 0 0 0 15px rgba(255, 255, 255, .13), 0 0 48px rgba(255, 255, 255, .5); }
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow:
+      0 0 0 1px rgba(246, 218, 148, .75),
+      0 2px 14px rgba(215, 173, 98, .38),
+      0 0 28px rgba(215, 173, 98, .22),
+      inset 0 -4px 10px rgba(74, 50, 12, .65),
+      inset 0 2px 6px rgba(255, 255, 255, .55);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.036);
+    box-shadow:
+      0 0 0 1.5px rgba(255, 246, 219, .88),
+      0 3px 20px rgba(215, 173, 98, .5),
+      0 0 42px rgba(215, 173, 98, .32),
+      inset 0 -3px 8px rgba(74, 50, 12, .5),
+      inset 0 2px 8px rgba(255, 255, 255, .7);
+  }
+}
+
+@keyframes gate-halo-breathe {
+  0%, 100% {
+    transform: scale(.92);
+    opacity: .45;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: .85;
+  }
+}
+
+@keyframes gate-core-drift {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: .5;
+  }
+  100% {
+    transform: rotate(20deg) scale(1.06);
+    opacity: .85;
+  }
 }
 
 @keyframes discovery-flare {
@@ -1002,5 +1082,11 @@ html[lang="zh-Hant"] .message--first {
 
   .portal-stage.is-final-act.is-discovery-ready .final-copy {
     opacity: 0;
+  }
+
+  .gate,
+  .gate::before,
+  .gate-core {
+    animation: none !important;
   }
 }
