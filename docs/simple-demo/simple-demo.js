@@ -371,6 +371,7 @@ import { getImageLayout } from "../teaser-layout.mjs";
 
   let stageSwipeStart = null;
   stage.addEventListener("pointerdown", (event) => {
+    if (event.pointerType && event.pointerType !== "touch") return;
     if (event.button > 0) return;
     stageSwipeStart = { x: event.clientX, y: event.clientY };
   }, { passive: true });

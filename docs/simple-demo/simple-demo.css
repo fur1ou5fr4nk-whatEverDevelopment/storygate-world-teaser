@@ -75,6 +75,25 @@ body {
   text-decoration-color: rgba(255, 255, 255, .8);
 }
 
+.demo-page .back-link__label--touch {
+  display: none;
+}
+
+.demo-page .back-link__label--default {
+  display: inline;
+}
+
+@media (pointer: coarse) {
+  .demo-page .back-link__label--touch {
+    display: inline;
+  }
+
+  .demo-page .back-link__label--default {
+    display: none;
+  }
+}
+
+
 .demo-backdrop {
   position: absolute;
   z-index: 0;

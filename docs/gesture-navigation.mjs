@@ -14,6 +14,7 @@ export function installGestureNavigation({ stage, cue, onNext, onPrevious, block
     else { icon.textContent = "↔"; message.textContent = "Swipe to navigate"; }
   };
   stage.addEventListener("pointerdown", (event) => {
+    if (event.pointerType && event.pointerType !== "touch") return;
     if (event.button > 0) return;
     start = { x: event.clientX, y: event.clientY };
     active = true;
