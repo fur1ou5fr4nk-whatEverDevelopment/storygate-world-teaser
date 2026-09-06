@@ -1,7 +1,7 @@
 const revealSteps = [
   { phase: 1, action: "message", ripple: true },
-  { phase: 2, action: "focus-partial", ripple: true },
-  { phase: 3, action: "still", ripple: true },
+  { phase: 2, action: "prelude", ripple: true },
+  { phase: 3, action: "focus-partial-still", ripple: true },
   { phase: 4, action: "focus-full", ripple: true },
   { phase: 5, action: "final", ripple: true }
 ];

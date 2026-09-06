@@ -155,6 +155,51 @@ a {
   transition: opacity 1.6s ease;
 }
 
+.prelude-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+
+.prelude-star {
+  position: absolute;
+  color: var(--story-gold);
+  font-size: clamp(15px, 1.7vw, 24px);
+  line-height: 1;
+  text-shadow: 0 0 18px rgba(215, 173, 98, .52);
+  animation: prelude-star-pulse 2.8s ease-in-out infinite;
+}
+
+.prelude-star--left {
+  left: calc(var(--gate-x) - clamp(56px, 6vw, 90px));
+  top: calc(var(--gate-y) + clamp(12px, 1.8vw, 26px));
+}
+
+.prelude-star--top {
+  left: calc(var(--gate-x) + clamp(8px, 1vw, 16px));
+  top: calc(var(--gate-y) - clamp(64px, 7vw, 104px));
+  animation-delay: .45s;
+}
+
+.prelude-star--right {
+  left: calc(var(--gate-x) + clamp(54px, 5.5vw, 84px));
+  top: calc(var(--gate-y) + clamp(18px, 2vw, 30px));
+  animation-delay: .9s;
+}
+
+.portal-stage[data-phase="1"] .prelude-stars,
+.portal-stage[data-phase="2"] .prelude-stars {
+  opacity: .9;
+}
+
+.portal-stage[data-phase="1"] .portal-image,
+.portal-stage[data-phase="2"] .portal-image {
+  opacity: 0;
+}
+
 .wordmark {
   position: absolute;
   top: max(5.5%, env(safe-area-inset-top));
@@ -764,6 +809,11 @@ html[lang="zh-Hant"] .message--first {
 @keyframes gate-idle-pulse {
   0%, 100% { box-shadow: 0 0 0 1px #fff, 0 0 0 9px rgba(255, 255, 255, .08), 0 0 30px rgba(255, 255, 255, .25); }
   50% { box-shadow: 0 0 0 1px #fff, 0 0 0 15px rgba(255, 255, 255, .13), 0 0 48px rgba(255, 255, 255, .5); }
+}
+
+@keyframes prelude-star-pulse {
+  0%, 100% { opacity: .42; transform: scale(.86); }
+  50% { opacity: 1; transform: scale(1); }
 }
 
 @keyframes centered-line {

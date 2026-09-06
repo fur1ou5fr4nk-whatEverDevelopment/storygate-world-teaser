@@ -26,7 +26,7 @@ test("all five reveal taps emit the same pulse while preserving the reveal seque
     ripples.push(step.ripple);
   }
 
-  assert.deepEqual(actions, ["message", "focus-partial", "still", "focus-full", "final"]);
+  assert.deepEqual(actions, ["message", "prelude", "focus-partial-still", "focus-full", "final"]);
   assert.deepEqual(ripples, [true, true, true, true, true]);
   assert.equal(phase, 5);
   assert.deepEqual(getNextRevealStep(phase), { phase: 5, action: "done", ripple: false });
