@@ -221,7 +221,21 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
     stage.style.setProperty("--biography-detail-y", wordmarkRect.top - stageRect.top + wordmarkRect.height * .52 + "px");
   }
 
-  gate.addEventListener("click", advance);
+  function handleStageClick(event) {
+    if (event.target.closest(".discovery-star, [data-discovery-card], [data-prelude-card], .language-control, a, button:not(.gate)")) {
+      return;
+    }
+    if (stage.classList.contains("is-final-act")) {
+      if (!stage.classList.contains("is-discovery-ready")) {
+        window.clearTimeout(discoveryReadyTimer);
+        preparePrimaryDiscoveries();
+      }
+      return;
+    }
+    advance();
+  }
+
+  stage.addEventListener("click", handleStageClick);
   preludeStars.forEach((star) => star.addEventListener("click", revealRemember));
   primaryDiscoveryButtons.forEach((button) => button.addEventListener("click", findPrimaryDiscovery));
   biographyButton.addEventListener("click", () => {

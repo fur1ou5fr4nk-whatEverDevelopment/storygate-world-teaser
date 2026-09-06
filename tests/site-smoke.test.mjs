@@ -259,6 +259,32 @@ test("reduced-motion final copy stays static until discoveries become ready", as
   assert.match(hiddenDeclarations, /opacity:\s*0;/);
 });
 
+test("wild prompt keeps gate interactive and pulsing, and stage click advances reveal", async () => {
+  const { text: css } = await fetchText("/styles.css");
+  const { text: script } = await fetchText("/script.js");
+
+  assert.match(
+    css,
+    /\.portal-stage\.is-wild-prompt \.gate\s*\{[^}]*pointer-events:\s*auto;[^}]*animation:\s*gate-idle-pulse/s,
+    "wild prompt gate must have pointer-events auto and idle pulse"
+  );
+  assert.doesNotMatch(
+    css,
+    /\.portal-stage\.is-full-focus \.gate\s*\{[^}]*pointer-events:\s*none;/s,
+    "full focus must not disable gate pointer events before final act"
+  );
+  assert.match(
+    css,
+    /\.portal-stage\.is-final-act \.gate\s*\{[^}]*pointer-events:\s*none;/s,
+    "final act disables gate pointer events"
+  );
+  assert.match(
+    script,
+    /stage\.addEventListener\("click",\s*handleStageClick\);/,
+    "stage must advance on tap via handleStageClick"
+  );
+});
+
 test("Thai and Chinese use explicit UI and story font candidates", async () => {
   const { text: teaserCss } = await fetchText("/styles.css");
   const { text: biographyCss } = await fetchText("/biography.css");
