@@ -41,7 +41,7 @@ const catalogue = {
     "about.page.description": "StoryGate connects Stories made by people with the places, objects and moments they belong to.",
     "about.back": "Swipe to return to the Gate",
     "about.heading": "What is StoryGate?",
-    "about.introduction": "StoryGate connects Stories made by people with the places, objects and moments they belong to.",
+    "about.introduction": "Every place, object and moment can hold a story. StoryGate opens it",
     "about.articleLabel": "What is StoryGate?",
     "about.term.gate": "Gate",
     "about.term.world": "world around you",

@@ -38,7 +38,7 @@ const catalogue = {
     "about.page.description": "StoryGate 将人们创作的故事，与它们所属的地点、物件和时刻连接起来。",
     "about.back": "滑动返回大门",
     "about.heading": "StoryGate 是什么？",
-    "about.introduction": "StoryGate 将人们创作的故事，与它们所属的地点、物件和时刻连接起来。",
+    "about.introduction": "每个地点、物件和时刻都可能藏着一个故事。StoryGate 将它打开",
     "about.articleLabel": "StoryGate 是什么？",
     "about.term.gate": "门",
     "about.term.world": "你身边的世界",

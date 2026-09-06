@@ -38,7 +38,7 @@ const catalogue = {
     "about.page.description": "StoryGate verbindet von Menschen geschaffene Stories mit den Orten, Objekten und Momenten, zu denen sie gehören.",
     "about.back": "Zum Gate wischen",
     "about.heading": "Was ist StoryGate?",
-    "about.introduction": "StoryGate verbindet von Menschen geschaffene Stories mit den Orten, Objekten und Momenten, zu denen sie gehören.",
+    "about.introduction": "Jeder Ort, jedes Objekt und jeder Moment kann eine Story in sich tragen. StoryGate öffnet sie",
     "about.articleLabel": "Was ist StoryGate?",
     "about.term.gate": "Gate",
     "about.term.world": "Welt um dich herum",
