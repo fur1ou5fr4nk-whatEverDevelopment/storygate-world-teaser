@@ -18,6 +18,7 @@ const catalogue = {
     "teaser.imageAlt": "Un emblème StoryGate en bois au bord de la mer",
     "teaser.gateLabel": "Révéler StoryGate",
     "teaser.tapHint": "touche la porte",
+    "teaser.prelude.remember": "Souviens-toi",
     "teaser.wild": "Ton cœur sauvage, toujours en mouvement, est né pour cette rencontre.",
     "teaser.still": "Tu tapotes encore ? Bien !",
     "teaser.final.first": "Tu l’as mérité :",

@@ -235,7 +235,7 @@ a {
   z-index: 6;
   width: clamp(132px, 18vw, 218px);
   height: auto;
-  opacity: 0;
+  opacity: 1;
   filter: drop-shadow(0 4px 18px rgba(0, 0, 0, .35));
   transition: opacity 2.4s ease;
 }
@@ -431,6 +431,7 @@ html[lang="zh-Hant"] .message--first {
 
 .open {
   font-weight: 700;
+  white-space: pre-line;
 }
 
 .coming-card a {

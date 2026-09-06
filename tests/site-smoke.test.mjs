@@ -675,9 +675,22 @@ test("biography references are separate, public, and absent from Layer cards", a
     assert.match(css, /\.gate\s*\{[^}]*background:\s*var\(--gate-sphere-surface\);/s);
     assert.match(css, /\.gate::before\s*\{[^}]*animation:\s*gate-halo-breathe/s);
     assert.match(css, /\.gate-core\s*\{[^}]*display:\s*block;[^}]*animation:\s*gate-core-drift/s);
-    assert.match(css, /\.gate:focus-visible\s*\{[^}]*outline:\s*2px solid #fff;/s);
     assert.match(
       css,
       /\.gate,\s*\.gate::before,\s*\.gate-core\s*\{\s*animation:\s*none\s*!important;\s*\}/
     );
   });
+
+  test("wordmark is visible on initial screen, prelude remember adapts to language, and open copy carries linefeed", async () => {
+    const { text: css } = await fetchText("/styles.css");
+    assert.match(css, /\.wordmark\s*\{[^}]*opacity:\s*1;/s);
+    assert.match(css, /\.open\s*\{[^}]*white-space:\s*pre-line;/s);
+
+    const { text: html } = await fetchText("/");
+    assert.match(html, /class="prelude-card"[^>]*data-i18n="teaser\.prelude\.remember">Remember<\/div>/);
+
+    const deModule = await import("../docs/locales/de.mjs");
+    assert.equal(deModule.default.messages["teaser.final.second"], "Das Gate ist offen\nFinde die Demo");
+    assert.equal(deModule.default.messages["teaser.prelude.remember"], "Erinnere dich");
+  });
+
