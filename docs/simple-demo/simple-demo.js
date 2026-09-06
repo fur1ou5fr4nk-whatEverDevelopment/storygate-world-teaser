@@ -28,6 +28,7 @@ import { getImageLayout } from "../teaser-layout.mjs";
   let dragStart = null;
   let tracker = null;
   let countdownTimer = null;
+  let storyPointerStart = null;
 
   function isApproaching() {
     return flow.snapshot().phase === "approach";
@@ -241,6 +242,36 @@ import { getImageLayout } from "../teaser-layout.mjs";
       story.querySelector(`[data-story-layer="${nextLayer}"] [data-demo-reveal]`)?.focus({ preventScroll: true });
     });
   }
+
+  function navigateStory(eventName) {
+    if (flow.snapshot().phase !== "story") return;
+    const before = flow.snapshot().storyLayer;
+    flow.dispatch(eventName);
+    const after = flow.snapshot().storyLayer;
+    render();
+    if (after === before) {
+      announce(eventName === "NEXT_STEP" ? "End of story" : "Beginning of story");
+      return;
+    }
+    const layer = story.querySelector(`[data-story-layer="${after}"]`);
+    announce(layer?.querySelector("p")?.textContent || "");
+    layer?.querySelector("[data-demo-reveal]")?.focus({ preventScroll: true });
+  }
+
+  story.addEventListener("pointerdown", (event) => {
+    if (!mobileQuery.matches || event.pointerType !== "touch" || flow.snapshot().phase !== "story") return;
+    storyPointerStart = { x: event.clientX, y: event.clientY };
+  });
+  story.addEventListener("pointerup", (event) => {
+    if (!storyPointerStart) return;
+    const deltaX = event.clientX - storyPointerStart.x;
+    const deltaY = event.clientY - storyPointerStart.y;
+    storyPointerStart = null;
+    if (Math.abs(deltaX) < 52 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+    event.preventDefault();
+    navigateStory(deltaX < 0 ? "NEXT_STEP" : "PREVIOUS_STEP");
+  });
+  story.addEventListener("pointercancel", () => { storyPointerStart = null; });
 
   stage.dataset.mode = mobileQuery.matches ? "mobile" : "desktop";
   stage.addEventListener("pointerdown", beginApproach);
