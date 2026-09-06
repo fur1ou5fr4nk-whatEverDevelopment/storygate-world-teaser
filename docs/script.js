@@ -14,7 +14,7 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   const primaryDiscoveryButtons = Array.from(stage.querySelectorAll("[data-discovery-id]"));
   const biographyDiscovery = stage.querySelector("[data-biography-discovery]");
   const biographyButton = stage.querySelector("[data-biography-star]");
-  const preludeStars = Array.from(stage.querySelectorAll("[data-prelude-star]"));
+  const preludeStars = [...primaryDiscoveryButtons, biographyButton];
   const preludeCard = stage.querySelector("[data-prelude-card]");
   const discoveryTracker = createDiscoveryTracker(primaryDiscoveryButtons.map((button) => button.dataset.discoveryId));
   const shouldSkipIntro = ["1", "true", "yes"].includes(new URLSearchParams(window.location.search).get("skipIntro"));
@@ -33,6 +33,7 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
     preludeStars.forEach((star) => {
       star.disabled = !active;
       star.setAttribute("aria-hidden", String(!active));
+      star.closest(".discovery")?.classList.toggle("is-ready", active);
     });
     if (!active) {
       stage.classList.remove("is-remember-open");
@@ -71,6 +72,10 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
 
   function findPrimaryDiscovery(event) {
     const button = event.currentTarget;
+    if (["1", "2"].includes(stage.dataset.phase)) {
+      revealRemember();
+      return;
+    }
     const result = discoveryTracker.find(button.dataset.discoveryId);
 
     revealDiscovery(button);
@@ -219,7 +224,10 @@ import { installGestureNavigation } from "./gesture-navigation.mjs";
   gate.addEventListener("click", advance);
   preludeStars.forEach((star) => star.addEventListener("click", revealRemember));
   primaryDiscoveryButtons.forEach((button) => button.addEventListener("click", findPrimaryDiscovery));
-  biographyButton.addEventListener("click", () => revealDiscovery(biographyButton));
+  biographyButton.addEventListener("click", () => {
+    if (["1", "2"].includes(stage.dataset.phase)) revealRemember();
+    else revealDiscovery(biographyButton);
+  });
   installGestureNavigation({
     stage,
     cue: stage.querySelector("[data-gesture-cue]"),
