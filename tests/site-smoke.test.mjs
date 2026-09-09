@@ -365,12 +365,12 @@ test("What is StoryGate presents the human, physical-world promise through four 
 test("What is StoryGate uses folded accordion paragraphs with intro and details disclosures", async () => {
   const { response, text: html } = await fetchText("/what-is-storygate.html");
   assert.equal(response.status, 200);
-  assert.equal((html.match(/class="story-block__intro"/g) || []).length, 4);
-  assert.equal((html.match(/<details class="story-block__details">/g) || []).length, 4);
-  assert.equal((html.match(/<summary class="story-block__summary">/g) || []).length, 4);
-  assert.equal((html.match(/class="story-block__more"/g) || []).length, 4);
-  assert.equal((html.match(/class="story-block__less"/g) || []).length, 4);
-  assert.equal((html.match(/<div class="story-block__expanded">/g) || []).length, 4);
+  assert.equal((html.match(/class="story-block__intro"/g) || []).length, 6);
+  assert.equal((html.match(/<details class="story-block__details">/g) || []).length, 6);
+  assert.equal((html.match(/<summary class="story-block__summary">/g) || []).length, 6);
+  assert.equal((html.match(/class="story-block__more"/g) || []).length, 6);
+  assert.equal((html.match(/class="story-block__less"/g) || []).length, 6);
+  assert.equal((html.match(/<div class="story-block__expanded">/g) || []).length, 6);
 });
 
 test("every page binds every English source string to the shared localizer", async () => {
@@ -693,4 +693,3 @@ test("biography references are separate, public, and absent from Layer cards", a
     assert.equal(deModule.default.messages["teaser.final.second"], "Das Gate ist offen\nFinde die Demo");
     assert.equal(deModule.default.messages["teaser.prelude.remember"], "Erinnere dich");
   });
-
