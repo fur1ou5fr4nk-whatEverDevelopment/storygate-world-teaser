@@ -169,6 +169,17 @@
     });
   });
 
+  const forwardBtns = root.querySelectorAll(".story-block__forward");
+  forwardBtns.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (currentStep < storyBlocks.length - 1) {
+        setStep(currentStep + 1, { focus: true, direction: "forward" });
+      }
+    });
+  });
+
   if (prevBtn) {
     prevBtn.addEventListener("click", () => setStep(currentStep - 1, { focus: true, direction: "backward" }));
   }
@@ -221,11 +232,22 @@
   let isDragging = false;
   let activeCard = null;
 
+  function resetDrag() {
+    if (activeCard && activeCard.style) {
+      activeCard.style.transition = "";
+      activeCard.style.transform = "";
+      activeCard.style.opacity = "";
+    }
+    dragStart = null;
+    isDragging = false;
+    activeCard = null;
+  }
+
   document.addEventListener("pointerdown", (event) => {
     if (event.button > 0) return;
     const target = event.target;
     if (target && typeof target.closest === "function") {
-      if (target.closest("a, button, summary, input, textarea, select, [role='button'], [role='tab'], .story-block__expanded")) {
+      if (target.closest("a, button, summary, input, textarea, select, [role='button'], [role='tab'], .story-block__forward, .layer-trigger")) {
         return;
       }
     }
@@ -249,8 +271,7 @@
         isDragging = true;
         if (activeCard.style) activeCard.style.transition = "none";
       } else if (Math.abs(dy) > 16) {
-        dragStart = null;
-        activeCard = null;
+        resetDrag();
         return;
       }
     }
@@ -268,21 +289,16 @@
     if (!dragStart) return;
     const dx = event.clientX - dragStart.x;
     const dy = event.clientY - dragStart.y;
-    const card = activeCard;
+    const dt = Date.now() - (dragStart.time || 0);
 
-    dragStart = null;
-    isDragging = false;
-    activeCard = null;
-
-    if (card && card.style) {
-      card.style.transition = "";
-      card.style.transform = "";
-      card.style.opacity = "";
-    }
+    resetDrag();
 
     if (window.getSelection && window.getSelection().toString().trim()) return;
 
-    if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.1) {
+    const velocity = Math.abs(dx) / Math.max(dt, 1);
+    const isSwipe = (Math.abs(dx) > 36 || (Math.abs(dx) > 20 && velocity > 0.35)) && Math.abs(dx) > Math.abs(dy) * 1.1;
+
+    if (isSwipe) {
       if (dx < 0) {
         // Dragged / swiped left -> advance step
         if (currentStep < storyBlocks.length - 1) {
@@ -298,6 +314,10 @@
       }
     }
   }, { capture: true });
+
+  document.addEventListener("pointercancel", () => {
+    resetDrag();
+  }, { passive: true });
 
   const ctaBtn = root.querySelector(".bio-hero__cta");
   if (ctaBtn) {

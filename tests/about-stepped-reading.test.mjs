@@ -65,6 +65,7 @@ function createMockElement(tag, attrs = {}) {
         if (selector === "[data-step-total]" && node._isTotal) results.push(node);
         if (selector === ".about-stepper__dot" && node._isDot) results.push(node);
         if (selector === ".bio-hero__cta" && node._isCta) results.push(node);
+        if (selector === ".story-block__forward" && node._isForward) results.push(node);
         if (selector === ".story-block--status" && node._isStatus) results.push(node);
         if (selector === ".biography > .story-block:not(.story-block--status)" && node._isBlock) results.push(node);
         for (const child of node._children || []) match(child);
@@ -106,6 +107,7 @@ async function createAboutHarness() {
   const docListeners = new Map();
   const windowListeners = new Map();
 
+  const forwardBtns = [];
   const storyBlocks = Array.from({ length: 7 }, (_, i) => {
     const block = createMockElement("section");
     block._isBlock = true;
@@ -121,6 +123,14 @@ async function createAboutHarness() {
     details.open = false;
     details._parent = block;
     block._children.push(details);
+
+    if (i < 6) {
+      const fwd = createMockElement("button");
+      fwd._isForward = true;
+      fwd._parent = block;
+      block._children.push(fwd);
+      forwardBtns.push(fwd);
+    }
 
     return block;
   });
@@ -208,6 +218,7 @@ async function createAboutHarness() {
   return {
     root,
     ctaBtn,
+    forwardBtns,
     storyBlocks,
     statusBlock,
     prevBtn,
@@ -408,5 +419,64 @@ test("about page transitions from hero to content stage on CTA click", async () 
   assert.equal(harness.currentEl.textContent, "1");
   assert.equal(harness.storyBlocks[0].dataset.active, "true");
 });
+
+test("clicking forward button inside story block advances to next step", async () => {
+  const harness = await createAboutHarness();
+  assert.equal(harness.currentEl.textContent, "1");
+
+  // Click forward button inside active block 0
+  harness.forwardBtns[0].dispatchEvent({
+    type: "click",
+    preventDefault() {},
+    stopPropagation() {},
+  });
+
+  assert.equal(harness.currentEl.textContent, "2");
+  assert.equal(harness.storyBlocks[1].dataset.active, "true");
+  assert.equal(harness.storyBlocks[1].dataset.direction, "forward");
+});
+
+test("mobile swipe left on expanded story block advances step", async () => {
+  const harness = await createAboutHarness();
+  const pointerdownFns = harness.docListeners.get("pointerdown") || [];
+  const pointermoveFns = harness.docListeners.get("pointermove") || [];
+  const pointerupFns = harness.docListeners.get("pointerup") || [];
+
+  // Start touch swipe inside block 0
+  pointerdownFns[0]({ pointerType: "touch", button: 0, clientX: 250, clientY: 100, target: harness.storyBlocks[0] });
+
+  // Move left with horizontal gesture
+  pointermoveFns[0]({ clientX: 180, clientY: 102 });
+
+  // Release swipe
+  let stoppedImmediate = false;
+  pointerupFns[0]({
+    clientX: 180,
+    clientY: 102,
+    stopImmediatePropagation() { stoppedImmediate = true; },
+  });
+
+  assert.equal(harness.currentEl.textContent, "2");
+  assert.equal(stoppedImmediate, true);
+  assert.equal(harness.storyBlocks[1].dataset.active, "true");
+});
+
+test("pointercancel cleanly resets card drag state", async () => {
+  const harness = await createAboutHarness();
+  const pointerdownFns = harness.docListeners.get("pointerdown") || [];
+  const pointermoveFns = harness.docListeners.get("pointermove") || [];
+  const pointercancelFns = harness.docListeners.get("pointercancel") || [];
+
+  pointerdownFns[0]({ pointerType: "touch", button: 0, clientX: 200, clientY: 100, target: harness.storyBlocks[0] });
+  pointermoveFns[0]({ clientX: 170, clientY: 100 });
+
+  assert.ok(pointercancelFns.length > 0);
+  pointercancelFns[0]();
+
+  // Card transform is reset
+  assert.equal(harness.storyBlocks[0].style.transform, "");
+  assert.equal(harness.currentEl.textContent, "1");
+});
+
 
 

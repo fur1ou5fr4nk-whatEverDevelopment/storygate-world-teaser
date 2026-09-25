@@ -201,6 +201,7 @@
   border: 1px solid rgba(241, 238, 230, 0.12);
   border-radius: clamp(16px, 3vw, 24px);
   padding: clamp(2rem, 5vw, 3.5rem);
+  padding-bottom: clamp(4.25rem, 8vw, 5.25rem);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -209,6 +210,16 @@
   user-select: text;
   touch-action: pan-y;
   transition: border-color 240ms ease, background 240ms ease, box-shadow 240ms ease;
+}
+
+.about-page .story-block * {
+  touch-action: pan-y;
+}
+
+.about-page .story-block a,
+.about-page .story-block button,
+.about-page .story-block summary {
+  touch-action: manipulation;
 }
 
 .about-page .story-block:hover {
@@ -244,8 +255,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.25rem;
-  margin: clamp(1.5rem, 3vw, 2.25rem) auto 0;
+  gap: 0;
+  margin: clamp(1.25rem, 2.5vw, 1.75rem) auto 0;
   padding: 0.5rem 0;
   background: transparent;
   border: none;
@@ -259,8 +270,9 @@
   justify-content: center;
 }
 
-/* x/x and top progress bar removed */
-.about-stepper__count {
+/* x/x count and nav buttons removed - truly ONLY the Apple points under the box */
+.about-stepper__count,
+.about-stepper__actions {
   display: none !important;
 }
 
@@ -309,12 +321,6 @@
   outline-offset: 3px;
 }
 
-.about-stepper__actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .about-stepper__btn {
   display: inline-flex;
   align-items: center;
@@ -349,27 +355,40 @@
   outline-offset: 3px;
 }
 
-/* Prominent interactive forward flow button at base of readable card */
-.about-page .story-block[data-active="true"]:not([data-step-index="6"])::after {
-  content: "";
-  display: flex;
+/* Interactive forward flow button positioned at bottom-right of the card */
+.about-page .story-block__forward {
+  position: absolute;
+  right: clamp(1.25rem, 3.5vw, 2.25rem);
+  bottom: clamp(1.25rem, 3.5vw, 2rem);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  width: 2.85rem;
+  height: 2.85rem;
   border-radius: 9999px;
-  background: rgba(241, 238, 230, 0.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23f1eee6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center center;
-  border: 1px solid rgba(241, 238, 230, 0.25);
+  background: rgba(241, 238, 230, 0.08);
+  border: 1px solid rgba(241, 238, 230, 0.28);
+  color: var(--story);
+  cursor: pointer;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 5;
 }
 
-.about-page .story-block[data-active="true"]:not([data-step-index="6"]):hover::after {
-  background-color: var(--story);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%230b0d0c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E");
-  box-shadow: 0 0 20px rgba(241, 238, 230, 0.45);
-  transform: translateX(4px) scale(1.06);
+.about-page .story-block__forward:hover {
+  background: var(--story);
+  color: #0b0d0c;
+  transform: translateX(3px) scale(1.06);
+  box-shadow: 0 0 24px rgba(241, 238, 230, 0.45);
+}
+
+.about-page .story-block__forward:active {
+  transform: translateX(1px) scale(0.96);
+}
+
+.about-page .story-block__forward:focus-visible {
+  outline: 2px solid var(--story);
+  outline-offset: 3px;
 }
 
 /* Tap ripple effect on card click */
