@@ -1,31 +1,245 @@
+/* About StoryGate Page - Stepped Reading Experience */
+
 .about-page .bio-hero {
   grid-template-columns: minmax(0, 790px);
   grid-template-areas:
     "masthead"
     "copy";
+  min-height: auto;
+  padding: 1.5rem 0 clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.about-page .bio-hero::after {
+  display: none;
 }
 
 .about-page .bio-hero__copy {
   max-width: 790px;
-  padding-block: clamp(3.75rem, 8vw, 6.5rem);
+  padding-block: clamp(1.75rem, 4vw, 3rem);
 }
 
 .about-page .bio-hero h1 {
   max-width: 9ch;
+  margin-bottom: 0.65rem;
 }
 
 .about-page .bio-hero__introduction {
-  max-width: 34ch;
+  max-width: 38ch;
+  color: rgb(241 238 230 / 0.78);
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  line-height: 1.4;
+}
+
+/* Stepper Navigation Header */
+.about-stepper {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  margin-bottom: clamp(2rem, 4vw, 3.25rem);
+  border-bottom: 1px solid var(--line);
+  background: rgba(11, 13, 12, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  user-select: none;
+}
+
+.about-stepper__progress {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+.about-stepper__count {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(0.82rem, 0.95vw, 0.92rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.about-stepper__current {
+  color: var(--story);
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.about-stepper__dots {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.about-stepper__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: rgb(241 238 230 / 0.22);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: width var(--transition), background var(--transition), transform var(--transition);
+}
+
+.about-stepper__dot:hover {
+  background: rgb(241 238 230 / 0.55);
+  transform: scale(1.2);
+}
+
+.about-stepper__dot.is-active {
+  width: 1.4rem;
+  background: var(--story);
+  transform: none;
+}
+
+.about-stepper__dot:focus-visible {
+  outline: 2px solid var(--story);
+  outline-offset: 3px;
+}
+
+.about-stepper__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.about-stepper__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 9999px;
+  background: rgb(241 238 230 / 0.05);
+  border: 1px solid var(--line);
+  color: var(--story);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), opacity var(--transition), transform var(--transition);
+}
+
+.about-stepper__btn:hover:not(:disabled) {
+  background: rgb(241 238 230 / 0.12);
+  border-color: rgb(241 238 230 / 0.32);
+  transform: translateY(-1px);
+}
+
+.about-stepper__btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.about-stepper__btn:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+.about-stepper__btn:focus-visible {
+  outline: 2px solid var(--story);
+  outline-offset: 3px;
+}
+
+/* Stepped Reading Container */
+.about-page .biography {
+  container-type: inline-size;
+  padding-top: 0;
+  padding-bottom: clamp(5rem, 10vw, 8rem);
+  min-height: clamp(340px, 46vh, 520px);
+}
+
+/* Story Blocks: show only one at a time */
+.about-page .story-block {
+  display: none;
+  min-width: 0;
 }
 
 .about-page .story-block + .story-block {
-  margin-top: clamp(2.6rem, 4.5vw, 4rem);
+  margin-top: 0;
 }
 
+.about-page .story-block[data-active="true"] {
+  display: block;
+  animation: aboutBlockFadeIn 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes aboutBlockFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-page .story-block[data-active="true"] {
+    animation: none;
+  }
+}
+
+/* Adaptive Typography for Single Paragraph Display */
+.about-page .story-block__intro {
+  max-width: 42ch;
+  font-family: Spectral, Georgia, "Times New Roman", serif;
+  font-size: clamp(1.4rem, 1.2rem + 1.2cqi, 2.2rem);
+  line-height: 1.52;
+  letter-spacing: -0.015em;
+  color: var(--story);
+  outline: none;
+}
+
+@supports not (font-size: 1cqi) {
+  .about-page .story-block__intro {
+    font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+  }
+}
+
+/* More About Chevron Disclosure */
+.about-page .story-block__details {
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.about-page .story-block__summary {
+  font-size: clamp(0.86rem, 0.9vw, 0.95rem);
+  letter-spacing: 0.02em;
+}
+
+.about-page .story-block__expanded {
+  padding-top: clamp(1.4rem, 2.5vw, 2rem);
+  max-width: 56ch;
+}
+
+.about-page .story-block__expanded p {
+  font-size: clamp(1.1rem, 0.98rem + 0.4cqi, 1.32rem);
+  line-height: 1.68;
+  color: rgb(241 238 230 / 0.88);
+}
+
+@supports not (font-size: 1cqi) {
+  .about-page .story-block__expanded p {
+    font-size: clamp(1.1rem, 1.35vw, 1.32rem);
+  }
+}
+
+/* Concluding Startup Status */
 .about-page .story-block--status {
-  margin-top: clamp(4rem, 7vw, 6rem);
-  padding-top: 2rem;
+  display: none;
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  padding-top: 1.75rem;
   border-top: 1px solid var(--line);
+}
+
+.about-page .story-block--status[data-active="true"] {
+  display: block;
+  animation: aboutBlockFadeIn 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .about-page .story-block--status p {
@@ -33,25 +247,69 @@
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: clamp(0.92rem, 1.05vw, 1.02rem);
   line-height: 1.65;
+  max-width: 52ch;
 }
 
+/* International Font Bindings */
+html[lang="th"] .about-stepper {
+  font-family: "Noto Sans Thai", Thonburi, Tahoma, sans-serif;
+}
+
+html[lang="zh-Hans"] .about-stepper {
+  font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif;
+}
+
+html[lang="zh-Hant"] .about-stepper {
+  font-family: "Noto Sans TC", "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+}
+
+html[lang="th"] .about-page .story-block__intro {
+  font-family: "Noto Serif Thai", Thonburi, Tahoma, serif;
+}
+
+html[lang="zh-Hans"] .about-page .story-block__intro {
+  font-family: "Noto Serif SC", "Songti SC", SimSun, serif;
+}
+
+html[lang="zh-Hant"] .about-page .story-block__intro {
+  font-family: "Noto Serif TC", "Songti TC", PMingLiU, serif;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 719px) {
   .about-page .bio-hero {
     grid-template-areas:
       "masthead"
       "copy";
     grid-template-rows: auto 1fr;
+    padding-bottom: 1rem;
   }
 
   .about-page .bio-hero__copy {
-    padding-block: clamp(3.25rem, 15vw, 5rem);
+    padding-block: clamp(1.5rem, 8vw, 2.5rem);
   }
 
   .about-page .bio-hero h1 {
     max-width: 8ch;
   }
 
-  .about-page .biography {
-    padding-top: clamp(3.75rem, 14vw, 5rem);
+  .about-stepper {
+    margin-bottom: 1.75rem;
+    padding: 0.75rem 0;
+  }
+
+  .about-stepper__btn {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .about-page .story-block__intro {
+    font-size: clamp(1.22rem, 4.8vw, 1.55rem);
+    line-height: 1.5;
+  }
+
+  .about-page .story-block__expanded p {
+    font-size: clamp(1.02rem, 3.8vw, 1.18rem);
+    line-height: 1.62;
   }
 }
