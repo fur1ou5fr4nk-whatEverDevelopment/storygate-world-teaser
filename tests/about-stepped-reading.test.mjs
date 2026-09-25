@@ -93,6 +93,7 @@ function createMockElement(tag, attrs = {}) {
       return false;
     },
     focus() {},
+    style: {},
     _children: children,
     _parent: null,
   };
