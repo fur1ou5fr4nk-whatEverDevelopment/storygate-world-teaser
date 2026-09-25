@@ -1,187 +1,200 @@
 /* About StoryGate Page - Stepped Reading Experience */
 
+/* Intro Hero Phase (Centered large in screen initially) */
 .about-page .bio-hero {
-  grid-template-columns: minmax(0, 790px);
-  grid-template-areas:
-    "masthead"
-    "copy";
-  min-height: auto;
-  padding: 1.5rem 0 clamp(1.5rem, 3vw, 2.5rem);
+  min-height: clamp(520px, 80vh, 760px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 0 clamp(2rem, 4vw, 3rem);
+  position: relative;
+  transition: min-height 500ms cubic-bezier(0.16, 1, 0.3, 1), padding 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .about-page .bio-hero::after {
   display: none;
 }
 
+.about-page .bio-hero__masthead {
+  position: absolute;
+  top: 1.5rem;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .about-page .bio-hero__copy {
-  max-width: 790px;
-  padding-block: clamp(1.75rem, 4vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 720px;
+  margin: auto;
+  padding-block: clamp(1rem, 3vw, 2.5rem);
 }
 
 .about-page .bio-hero h1 {
-  max-width: 9ch;
-  margin-bottom: 0.65rem;
+  font-family: Spectral, Georgia, "Times New Roman", serif;
+  font-size: clamp(2.4rem, 6.5vw, 4.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  max-width: 14ch;
+  margin-bottom: 1.25rem;
+  color: var(--story);
+  transition: font-size 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .about-page .bio-hero__introduction {
   max-width: 38ch;
-  color: rgb(241 238 230 / 0.78);
-  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
-  line-height: 1.4;
+  color: rgb(241 238 230 / 0.82);
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  line-height: 1.45;
+  margin: 0 auto clamp(2rem, 4vh, 3rem);
+  transition: opacity 400ms ease, font-size 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Stepper Navigation Floating Capsule */
-.about-stepper {
-  position: sticky;
-  top: 1rem;
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.25rem;
-  max-width: 580px;
-  margin: 0 auto clamp(2rem, 4vw, 3rem);
-  padding: 0.65rem 1.25rem;
-  border-radius: 9999px;
-  background: rgba(14, 18, 16, 0.88);
-  border: 1px solid var(--line);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(241, 238, 230, 0.04);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  user-select: none;
-}
-
-.about-stepper__progress {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.75rem, 2vw, 1.5rem);
-  flex: 1;
-}
-
-.about-stepper__count {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: clamp(0.8rem, 0.9vw, 0.88rem);
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.25rem;
-  white-space: nowrap;
-}
-
-.about-stepper__current {
-  color: var(--story);
-  font-feature-settings: "tnum";
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-}
-
-/* Modern Segmented Story Progress Bar */
-.about-stepper__dots {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.3rem, 0.7vw, 0.55rem);
-  flex: 1;
-  max-width: 320px;
-}
-
-.about-stepper__dot {
-  flex: 1;
-  min-width: 0.9rem;
-  height: 0.25rem;
-  border-radius: 9999px;
-  background: rgb(241 238 230 / 0.16);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  position: relative;
-  transition: background 220ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.about-stepper__dot::before {
-  content: "";
-  position: absolute;
-  inset: -0.75rem -0.2rem;
-}
-
-.about-stepper__dot:hover {
-  background: rgb(241 238 230 / 0.5);
-  transform: scaleY(1.4);
-}
-
-.about-stepper__dot.is-completed {
-  background: rgb(241 238 230 / 0.52);
-}
-
-.about-stepper__dot.is-active {
-  background: var(--story);
-  box-shadow: 0 0 10px rgb(241 238 230 / 0.45);
-  transform: scaleY(1.2);
-}
-
-.about-stepper__dot:focus-visible {
-  outline: 2px solid var(--story);
-  outline-offset: 3px;
-}
-
-.about-stepper__actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.about-stepper__btn {
+/* Hero CTA Button */
+.bio-hero__cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.35rem;
-  height: 2.35rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 9999px;
-  background: rgb(241 238 230 / 0.05);
-  border: 1px solid var(--line);
+  background: rgba(241, 238, 230, 0.08);
+  border: 1px solid rgba(241, 238, 230, 0.28);
   color: var(--story);
   cursor: pointer;
-  transition: background var(--transition), border-color var(--transition), opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 0 24px rgba(241, 238, 230, 0.12);
+  transition: all 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: heroCtaPulse 2.4s infinite ease-in-out;
 }
 
-.about-stepper__btn:hover:not(:disabled) {
-  background: rgb(241 238 230 / 0.14);
-  border-color: rgb(241 238 230 / 0.4);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+.bio-hero__cta:hover {
+  background: var(--story);
+  color: #0b0d0c;
+  transform: translateY(4px) scale(1.08);
+  box-shadow: 0 0 32px rgba(241, 238, 230, 0.45);
 }
 
-.about-stepper__btn:active:not(:disabled) {
-  transform: translateY(0) scale(0.96);
+@keyframes heroCtaPulse {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow: 0 0 16px rgba(241, 238, 230, 0.1);
+  }
+  50% {
+    transform: translateY(6px);
+    box-shadow: 0 0 28px rgba(241, 238, 230, 0.25);
+  }
 }
 
-.about-stepper__btn:disabled {
-  opacity: 0.18;
-  cursor: not-allowed;
+/* Initial state: Biography reading stage hidden until CTA or content mode */
+.about-page:not([data-stage="content"]) .biography {
+  opacity: 0;
+  transform: translateY(40px) scale(0.97);
+  pointer-events: none;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
 }
 
-.about-stepper__btn:focus-visible {
-  outline: 2px solid var(--story);
-  outline-offset: 3px;
+/* Content Stage: "Was ist StoryGate?" slided zum Titel, Content Box ist zentriert */
+.about-page[data-stage="content"] .bio-hero {
+  min-height: auto;
+  padding: 1.5rem 0 clamp(0.75rem, 2vw, 1.5rem);
+  display: block;
 }
 
-/* Stepped Reading Stage */
+.about-page[data-stage="content"] .bio-hero__masthead {
+  position: static;
+}
+
+.about-page[data-stage="content"] .bio-hero__copy {
+  display: block;
+  text-align: left;
+  max-width: 780px;
+  margin: 0 auto;
+  padding-block: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.about-page[data-stage="content"] .bio-hero h1 {
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  max-width: 14ch;
+  margin-bottom: 0.35rem;
+  animation: aboutTitleSlideToTop 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.about-page[data-stage="content"] .bio-hero__introduction {
+  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  max-width: 48ch;
+  color: rgb(241 238 230 / 0.65);
+  margin: 0 0 0.5rem;
+  text-align: left;
+}
+
+.about-page[data-stage="content"] .bio-hero__cta {
+  display: none;
+}
+
+@keyframes aboutTitleSlideToTop {
+  from {
+    transform: translateY(24px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Stepped Reading Stage - Centered Content Box */
 .about-page .biography {
   container-type: inline-size;
-  padding-top: 0;
-  padding-bottom: clamp(5rem, 10vw, 8rem);
-  min-height: clamp(380px, 50vh, 560px);
-  position: relative;
-  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 780px;
   margin: 0 auto;
+  padding-top: 0.5rem;
+  padding-bottom: clamp(4rem, 8vw, 6rem);
+  min-height: clamp(380px, 48vh, 560px);
+  position: relative;
+  transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Story Blocks: Focused Interactive Reading Card */
+.about-page[data-stage="content"] .biography {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+  visibility: visible;
+  height: auto;
+  animation: aboutContentBoxEnter 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes aboutContentBoxEnter {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Story Blocks: Focused Centered Interactive Reading Card */
 .about-page .story-block {
   display: none;
+  order: 1;
+  width: 100%;
   min-width: 0;
   position: relative;
   background: rgba(241, 238, 230, 0.03);
@@ -222,6 +235,118 @@
 
 .about-page .story-block[data-active="true"]:not([data-direction]) {
   animation: aboutBlockFadeIn 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Stepper Navigation: Positioned UNDERNEATH the Content Box (Apple-Style Points) */
+.about-stepper {
+  order: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: clamp(1.5rem, 3vw, 2.25rem) auto 0;
+  padding: 0.5rem 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  user-select: none;
+}
+
+.about-stepper__progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* x/x and top progress bar removed */
+.about-stepper__count {
+  display: none !important;
+}
+
+/* Apple Style Points Unterhalb der Box */
+.about-stepper__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.about-stepper__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: rgba(241, 238, 230, 0.25);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  transition: width 260ms cubic-bezier(0.16, 1, 0.3, 1),
+              background 260ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 260ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-stepper__dot::before {
+  content: "";
+  position: absolute;
+  inset: -10px -4px;
+}
+
+.about-stepper__dot:hover {
+  background: rgba(241, 238, 230, 0.65);
+  transform: scale(1.15);
+}
+
+.about-stepper__dot.is-active {
+  width: 22px;
+  background: var(--story);
+  box-shadow: 0 0 10px rgba(241, 238, 230, 0.45);
+}
+
+.about-stepper__dot:focus-visible {
+  outline: 2px solid var(--story);
+  outline-offset: 3px;
+}
+
+.about-stepper__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.about-stepper__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 9999px;
+  background: rgba(241, 238, 230, 0.05);
+  border: 1px solid var(--line);
+  color: var(--story);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), opacity var(--transition), transform var(--transition);
+}
+
+.about-stepper__btn:hover:not(:disabled) {
+  background: rgba(241, 238, 230, 0.16);
+  border-color: rgba(241, 238, 230, 0.4);
+  transform: translateY(-1px);
+}
+
+.about-stepper__btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.96);
+}
+
+.about-stepper__btn:disabled {
+  opacity: 0.15;
+  cursor: not-allowed;
+}
+
+.about-stepper__btn:focus-visible {
+  outline: 2px solid var(--story);
+  outline-offset: 3px;
 }
 
 /* Prominent interactive forward flow button at base of readable card */
@@ -407,45 +532,46 @@ html[lang="zh-Hant"] .about-page .story-block__intro {
 
 /* Responsive Adjustments */
 @media (max-width: 719px) {
-  .about-page .bio-hero {
-    grid-template-areas:
-      "masthead"
-      "copy";
-    grid-template-rows: auto 1fr;
-    padding-bottom: 1rem;
+  .about-page[data-stage="hero"] .bio-hero {
+    min-height: clamp(440px, 85vh, 680px);
+    padding: 1.5rem 0;
   }
 
-  .about-page .bio-hero__copy {
-    padding-block: clamp(1.5rem, 8vw, 2.5rem);
+  .about-page[data-stage="hero"] .bio-hero h1 {
+    font-size: clamp(2rem, 8.5vw, 3rem);
+    max-width: 10ch;
   }
 
-  .about-page .bio-hero h1 {
-    max-width: 8ch;
+  .about-page[data-stage="hero"] .bio-hero__introduction {
+    font-size: clamp(1.08rem, 4.5vw, 1.35rem);
+    max-width: 28ch;
+  }
+
+  .about-page[data-stage="content"] .bio-hero h1 {
+    font-size: clamp(1.5rem, 5.5vw, 2rem);
   }
 
   .about-stepper {
-    margin-bottom: 1.75rem;
-    padding: 0.75rem 0;
-    gap: 0.75rem;
-  }
-
-  .about-stepper__progress {
+    margin: 1.25rem auto 0;
     gap: 0.75rem;
   }
 
   .about-stepper__dots {
-    max-width: none;
-    gap: 0.25rem;
+    gap: 6px;
   }
 
   .about-stepper__dot {
-    min-width: 0.65rem;
-    height: 0.22rem;
+    width: 6px;
+    height: 6px;
+  }
+
+  .about-stepper__dot.is-active {
+    width: 18px;
   }
 
   .about-stepper__btn {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.1rem;
+    height: 2.1rem;
   }
 
   .about-page .story-block__intro {

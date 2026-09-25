@@ -47,8 +47,14 @@
     }
   }
 
-  function setStep(index, { focus = false, updateUrl = true, direction } = {}) {
+  function setStep(index, { focus = false, updateUrl = true, direction, stage } = {}) {
     if (index < 0 || index >= storyBlocks.length) return;
+
+    if (stage) {
+      root.dataset.stage = stage;
+    } else if (focus || index > 0 || updateUrl) {
+      root.dataset.stage = "content";
+    }
 
     const dir = direction || (index >= currentStep ? "forward" : "backward");
     currentStep = index;
@@ -293,11 +299,34 @@
     }
   }, { capture: true });
 
+  const ctaBtn = root.querySelector(".bio-hero__cta");
+  if (ctaBtn) {
+    ctaBtn.addEventListener("click", () => {
+      root.dataset.stage = "content";
+      setStep(0, { focus: true });
+    });
+  }
+
+  // Hero click to enter content
+  const heroCopy = root.querySelector(".bio-hero__copy");
+  if (heroCopy) {
+    heroCopy.addEventListener("click", (event) => {
+      if (root.dataset.stage !== "content" && !event.target.closest("a, button")) {
+        root.dataset.stage = "content";
+        setStep(0, { focus: true });
+      }
+    });
+  }
+
   window.addEventListener("hashchange", () => {
     const target = parseHashStep();
     if (target !== currentStep) setStep(target, { updateUrl: false });
   });
 
-  // Initialize
-  setStep(parseHashStep(), { updateUrl: false });
+  // Initialize stage & step
+  const initialHash = window.location.hash;
+  const hasStepHash = /^#step-\d+$/.test(initialHash);
+  const initialStep = parseHashStep();
+  root.dataset.stage = hasStepHash || initialStep > 0 ? "content" : "hero";
+  setStep(initialStep, { updateUrl: false, stage: root.dataset.stage });
 })();

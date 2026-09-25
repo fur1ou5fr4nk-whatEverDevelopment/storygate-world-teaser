@@ -64,6 +64,7 @@ function createMockElement(tag, attrs = {}) {
         if (selector === "[data-step-current]" && node._isCurrent) results.push(node);
         if (selector === "[data-step-total]" && node._isTotal) results.push(node);
         if (selector === ".about-stepper__dot" && node._isDot) results.push(node);
+        if (selector === ".bio-hero__cta" && node._isCta) results.push(node);
         if (selector === ".story-block--status" && node._isStatus) results.push(node);
         if (selector === ".biography > .story-block:not(.story-block--status)" && node._isBlock) results.push(node);
         for (const child of node._children || []) match(child);
@@ -146,15 +147,19 @@ async function createAboutHarness() {
     return dot;
   });
 
+  const ctaBtn = createMockElement("button");
+  ctaBtn._isCta = true;
+
   const root = createMockElement("div");
   root.classList.add("about-page");
-  root._children.push(...storyBlocks, statusBlock, prevBtn, nextBtn, currentEl, totalEl, ...dots);
+  root._children.push(...storyBlocks, statusBlock, prevBtn, nextBtn, currentEl, totalEl, ...dots, ctaBtn);
 
   const dispatchedEvents = [];
   const documentMock = {
     querySelector(selector) {
       if (selector === ".about-page") return root;
       if (selector === ".about-stepper") return root;
+      if (selector === ".bio-hero__cta") return ctaBtn;
       return null;
     },
     querySelectorAll(selector) {
@@ -201,6 +206,8 @@ async function createAboutHarness() {
   vm.runInContext(script, context);
 
   return {
+    root,
+    ctaBtn,
     storyBlocks,
     statusBlock,
     prevBtn,
@@ -386,4 +393,20 @@ test("about stepped reading advances with Space and retreats with Shift+Space", 
   assert.equal(harness.currentEl.textContent, "1");
   assert.equal(prevented, true);
 });
+
+test("about page transitions from hero to content stage on CTA click", async () => {
+  const harness = await createAboutHarness();
+
+  // Initially in hero stage when no step hash
+  assert.equal(harness.root.dataset.stage, "hero");
+
+  // Click CTA button
+  harness.ctaBtn.dispatchEvent({ type: "click" });
+
+  // Transitions to content stage
+  assert.equal(harness.root.dataset.stage, "content");
+  assert.equal(harness.currentEl.textContent, "1");
+  assert.equal(harness.storyBlocks[0].dataset.active, "true");
+});
+
 
