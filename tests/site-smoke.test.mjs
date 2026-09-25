@@ -370,7 +370,30 @@ test("What is StoryGate uses folded accordion paragraphs with intro and details 
   assert.equal((html.match(/<summary class="story-block__summary">/g) || []).length, 7);
   assert.equal((html.match(/class="story-block__more"/g) || []).length, 7);
   assert.equal((html.match(/class="story-block__less"/g) || []).length, 7);
-  assert.equal((html.match(/<div class="story-block__expanded">/g) || []).length, 7);
+});
+
+test("What is StoryGate provides stepped reading navigation showing one paragraph at a time", async () => {
+  const { response, text: html } = await fetchText("/what-is-storygate.html");
+  assert.equal(response.status, 200);
+  assert.match(html, /class="about-stepper"/);
+  assert.match(html, /data-step-current/);
+  assert.match(html, /data-step-total/);
+  assert.match(html, /data-step-prev/);
+  assert.match(html, /data-step-next/);
+  assert.equal((html.match(/class="about-stepper__dot\b/g) || []).length, 7);
+  assert.equal((html.match(/data-step-index=/g) || []).length, 7);
+  assert.match(html, /<script src="\.\/about\.js" defer><\/script>/);
+
+  const { response: cssResponse, text: css } = await fetchText("/about.css");
+  assert.equal(cssResponse.status, 200);
+  assert.match(css, /\.about-stepper/);
+  assert.match(css, /\.about-page \.story-block\[data-active="true"\]/);
+  assert.match(css, /\.about-page \.story-block__intro\s*\{[^}]*font-size:\s*clamp\(/s);
+
+  const { response: jsResponse, text: js } = await fetchText("/about.js");
+  assert.equal(jsResponse.status, 200);
+  assert.match(js, /setStep/);
+  assert.match(js, /beforematch/);
 });
 
 test("every page binds every English source string to the shared localizer", async () => {
@@ -442,6 +465,7 @@ test("all referenced production assets are available", async () => {
     "/locales/zh-Hans.mjs",
     "/locales/zh-Hant.mjs",
     "/about.css",
+    "/about.js",
     "/discovery-state.mjs",
     "/reveal-flow.mjs",
     "/teaser-layout.mjs",
