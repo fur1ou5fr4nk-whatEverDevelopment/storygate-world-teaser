@@ -124,9 +124,11 @@ async function createAboutHarness() {
   root.classList.add("about-page");
   root._children.push(...storyBlocks, statusBlock, prevBtn, nextBtn, currentEl, totalEl, ...dots);
 
+  const dispatchedEvents = [];
   const documentMock = {
     querySelector(selector) {
       if (selector === ".about-page") return root;
+      if (selector === ".about-stepper") return root;
       return null;
     },
     querySelectorAll(selector) {
@@ -137,6 +139,7 @@ async function createAboutHarness() {
       docListeners.get(type).push(fn);
     },
     dispatchEvent(event) {
+      dispatchedEvents.push(event);
       const fns = docListeners.get(event.type) || [];
       for (const fn of fns) fn(event);
     },
@@ -155,6 +158,9 @@ async function createAboutHarness() {
       if (!windowListeners.has(type)) windowListeners.set(type, []);
       windowListeners.get(type).push(fn);
     },
+    getSelection() {
+      return { toString: () => "" };
+    },
   };
 
   const script = await readFile(new URL("../docs/about.js", import.meta.url), "utf8");
@@ -162,6 +168,7 @@ async function createAboutHarness() {
     document: documentMock,
     window: windowMock,
     PointerEvent: class { constructor(type) { this.type = type; } },
+    KeyboardEvent: class { constructor(type, init) { this.type = type; Object.assign(this, init); } },
     history: windowMock.history,
   };
   vm.createContext(context);
@@ -178,6 +185,7 @@ async function createAboutHarness() {
     docListeners,
     windowListeners,
     windowMock,
+    dispatchedEvents,
   };
 }
 
@@ -251,4 +259,39 @@ test("about stepped reading reveals panel on beforematch search event", async ()
   assert.equal(harness.currentEl.textContent, "4");
   assert.equal(harness.storyBlocks[3].dataset.active, "true");
   assert.equal(harness.storyBlocks[0].dataset.active, "false");
+});
+
+test("skipping forward via Next or swipe left does not dispatch pointerdown or trigger gate redirect", async () => {
+  const harness = await createAboutHarness();
+
+  // Clear initial load dispatched events
+  harness.dispatchedEvents.length = 0;
+
+  // Click Next
+  harness.nextBtn.dispatchEvent({ type: "click" });
+  assert.equal(harness.currentEl.textContent, "2");
+
+  // Verify NO pointerdown event was dispatched
+  assert.equal(harness.dispatchedEvents.some((e) => e.type === "pointerdown"), false);
+  // Verify Escape key event was dispatched to close layers safely
+  assert.equal(harness.dispatchedEvents.some((e) => e.type === "keydown" && e.key === "Escape"), true);
+
+  // Simulate swipe left (skip forward)
+  const pointerdownFns = harness.docListeners.get("pointerdown") || [];
+  const pointerupFns = harness.docListeners.get("pointerup") || [];
+  assert.ok(pointerdownFns.length > 0);
+  assert.ok(pointerupFns.length > 0);
+
+  pointerdownFns[0]({ pointerType: "touch", button: 0, clientX: 200, clientY: 100 });
+
+  let stoppedImmediate = false;
+  pointerupFns[0]({
+    clientX: 100,
+    clientY: 100,
+    stopImmediatePropagation() { stoppedImmediate = true; },
+  });
+
+  // Verify swipe left advanced to step 3 and called stopImmediatePropagation
+  assert.equal(harness.currentEl.textContent, "3");
+  assert.equal(stoppedImmediate, true);
 });

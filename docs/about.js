@@ -34,7 +34,7 @@
     currentStep = index;
 
     // Close any open layer popovers
-    document.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
 
     storyBlocks.forEach((block, idx) => {
       const isActive = idx === currentStep;
@@ -122,6 +122,12 @@
     dot.addEventListener("click", () => setStep(idx, { focus: true }));
   });
 
+  const stepper = root.querySelector(".about-stepper");
+  if (stepper) {
+    stepper.addEventListener("pointerdown", (event) => event.stopPropagation());
+    stepper.addEventListener("pointerup", (event) => event.stopPropagation());
+  }
+
   // Keyboard navigation
   document.addEventListener("keydown", (event) => {
     if (event.defaultPrevented) return;
@@ -161,7 +167,7 @@
       if (dx < 0) {
         // Swipe left -> advance step
         if (currentStep < storyBlocks.length - 1) {
-          event.stopPropagation();
+          event.stopImmediatePropagation();
           setStep(currentStep + 1, { focus: true });
         }
       } else if (dx > 0) {
