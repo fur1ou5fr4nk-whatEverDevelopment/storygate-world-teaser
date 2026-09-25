@@ -36,6 +36,7 @@ function createMockElement(tag, attrs = {}) {
       listeners.get(type).push(fn);
     },
     dispatchEvent(event) {
+      if (!event.target) event.target = el;
       const fns = listeners.get(event.type) || [];
       for (const fn of fns) fn(event);
     },
@@ -70,8 +71,30 @@ function createMockElement(tag, attrs = {}) {
       match(el);
       return results;
     },
+    closest(sel) {
+      let current = el;
+      while (current) {
+        if (sel.includes("details") && current._isDetails) return current;
+        if (sel.includes("summary") && current._isSummary) return current;
+        if (sel.includes("button") && (current._isPrev || current._isNext || current._isDot || current._isButton)) return current;
+        if (sel.includes(".story-block__expanded") && current._isExpanded) return current;
+        current = current._parent || null;
+      }
+      return null;
+    },
+    getBoundingClientRect() {
+      return { left: 0, top: 0, width: 600, height: 200, right: 600, bottom: 200 };
+    },
+    contains(other) {
+      if (other === el) return true;
+      for (const child of children) {
+        if (child === other || (child.contains && child.contains(other))) return true;
+      }
+      return false;
+    },
     focus() {},
     _children: children,
+    _parent: null,
   };
 
   return el;
@@ -88,11 +111,13 @@ async function createAboutHarness() {
 
     const intro = createMockElement("p");
     intro._isIntro = true;
+    intro._parent = block;
     block._children.push(intro);
 
     const details = createMockElement("details");
     details._isDetails = true;
     details.open = false;
+    details._parent = block;
     block._children.push(details);
 
     return block;
@@ -295,3 +320,69 @@ test("skipping forward via Next or swipe left does not dispatch pointerdown or t
   assert.equal(harness.currentEl.textContent, "3");
   assert.equal(stoppedImmediate, true);
 });
+
+test("about stepped reading advances on story block click", async () => {
+  const harness = await createAboutHarness();
+  assert.equal(harness.currentEl.textContent, "1");
+
+  // Click on active story block 0 -> advances to step 1
+  harness.storyBlocks[0].dispatchEvent({
+    type: "click",
+    target: harness.storyBlocks[0],
+    clientX: 300,
+  });
+  assert.equal(harness.currentEl.textContent, "2");
+  assert.equal(harness.storyBlocks[1].dataset.active, "true");
+  assert.equal(harness.storyBlocks[1].dataset.direction, "forward");
+  assert.equal(harness.dots[0].classList.contains("is-completed"), true);
+  assert.equal(harness.dots[1].classList.contains("is-active"), true);
+});
+
+test("about stepped reading ignores click on interactive elements or text selection", async () => {
+  const harness = await createAboutHarness();
+  assert.equal(harness.currentEl.textContent, "1");
+
+  // Mock button inside block
+  const btn = createMockElement("button");
+  btn._isButton = true;
+  btn._parent = harness.storyBlocks[0];
+
+  harness.storyBlocks[0].dispatchEvent({
+    type: "click",
+    target: btn,
+    clientX: 300,
+  });
+  // Did not advance
+  assert.equal(harness.currentEl.textContent, "1");
+
+  // With selection active
+  harness.windowMock.getSelection = () => ({ toString: () => "some selected text" });
+  harness.storyBlocks[0].dispatchEvent({
+    type: "click",
+    target: harness.storyBlocks[0],
+    clientX: 300,
+  });
+  // Did not advance
+  assert.equal(harness.currentEl.textContent, "1");
+});
+
+test("about stepped reading advances with Space and retreats with Shift+Space", async () => {
+  const harness = await createAboutHarness();
+  assert.equal(harness.currentEl.textContent, "1");
+
+  const keydownFns = harness.docListeners.get("keydown") || [];
+  assert.ok(keydownFns.length > 0);
+
+  // Press Space -> step 2
+  let prevented = false;
+  keydownFns[0]({ key: " ", shiftKey: false, defaultPrevented: false, preventDefault() { prevented = true; } });
+  assert.equal(harness.currentEl.textContent, "2");
+  assert.equal(prevented, true);
+
+  // Press Shift+Space -> step 1
+  prevented = false;
+  keydownFns[0]({ key: " ", shiftKey: true, defaultPrevented: false, preventDefault() { prevented = true; } });
+  assert.equal(harness.currentEl.textContent, "1");
+  assert.equal(prevented, true);
+});
+

@@ -28,9 +28,29 @@
     return 0;
   }
 
-  function setStep(index, { focus = false, updateUrl = true } = {}) {
+  function createTapRipple(block, event) {
+    if (!document.createElement || !block.getBoundingClientRect) return;
+    try {
+      const rect = block.getBoundingClientRect();
+      const ripple = document.createElement("span");
+      ripple.className = "about-tap-ripple";
+      const x = (event.clientX || (rect.left + rect.width / 2)) - rect.left;
+      const y = (event.clientY || (rect.top + rect.height / 2)) - rect.top;
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      block.appendChild(ripple);
+      setTimeout(() => {
+        if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+      }, 500);
+    } catch {
+      // Graceful fallback if DOM methods are unavailable
+    }
+  }
+
+  function setStep(index, { focus = false, updateUrl = true, direction } = {}) {
     if (index < 0 || index >= storyBlocks.length) return;
 
+    const dir = direction || (index >= currentStep ? "forward" : "backward");
     currentStep = index;
 
     // Close any open layer popovers
@@ -39,6 +59,7 @@
     storyBlocks.forEach((block, idx) => {
       const isActive = idx === currentStep;
       block.dataset.active = isActive ? "true" : "false";
+      block.dataset.direction = dir;
       block.classList.toggle("is-active", isActive);
 
       if (isActive) {
@@ -80,7 +101,9 @@
 
     dots.forEach((dot, idx) => {
       const isActive = idx === currentStep;
+      const isCompleted = idx < currentStep;
       dot.classList.toggle("is-active", isActive);
+      dot.classList.toggle("is-completed", isCompleted);
       dot.setAttribute("aria-selected", isActive ? "true" : "false");
       dot.tabIndex = isActive ? 0 : -1;
     });
@@ -108,18 +131,48 @@
     block.addEventListener("beforematch", () => {
       setStep(idx);
     });
+
+    // Modern click-to-advance on readable story block
+    block.addEventListener("click", (event) => {
+      if (idx !== currentStep) return;
+      if (window.getSelection && window.getSelection().toString().trim().length > 0) return;
+
+      const target = event.target;
+      if (target && typeof target.closest === "function") {
+        if (target.closest("a, button, summary, input, textarea, select, [role='button'], [role='tab']")) {
+          return;
+        }
+        if (target.closest(".story-block__expanded")) {
+          return;
+        }
+      }
+
+      // Edge tap: left 20% on desktop/touch goes back if past step 0
+      if (typeof block.getBoundingClientRect === "function" && event.clientX) {
+        const rect = block.getBoundingClientRect();
+        if (event.clientX < rect.left + rect.width * 0.2 && currentStep > 0) {
+          setStep(currentStep - 1, { focus: true, direction: "backward" });
+          return;
+        }
+      }
+
+      if (currentStep < storyBlocks.length - 1) {
+        createTapRipple(block, event);
+        setStep(currentStep + 1, { focus: true, direction: "forward" });
+      }
+    });
   });
 
   if (prevBtn) {
-    prevBtn.addEventListener("click", () => setStep(currentStep - 1, { focus: true }));
+    prevBtn.addEventListener("click", () => setStep(currentStep - 1, { focus: true, direction: "backward" }));
   }
 
   if (nextBtn) {
-    nextBtn.addEventListener("click", () => setStep(currentStep + 1, { focus: true }));
+    nextBtn.addEventListener("click", () => setStep(currentStep + 1, { focus: true, direction: "forward" }));
   }
 
   dots.forEach((dot, idx) => {
-    dot.addEventListener("click", () => setStep(idx, { focus: true }));
+    dot.addEventListener("click", () => setStep(idx, { focus: true, direction: idx >= currentStep ? "forward" : "backward" }));
   });
 
   const stepper = root.querySelector(".about-stepper");
@@ -137,12 +190,22 @@
     if (event.key === "ArrowRight" || event.key === "PageDown") {
       if (currentStep < storyBlocks.length - 1) {
         event.preventDefault();
-        setStep(currentStep + 1, { focus: true });
+        setStep(currentStep + 1, { focus: true, direction: "forward" });
       }
     } else if (event.key === "ArrowLeft" || event.key === "PageUp") {
       if (currentStep > 0) {
         event.preventDefault();
-        setStep(currentStep - 1, { focus: true });
+        setStep(currentStep - 1, { focus: true, direction: "backward" });
+      }
+    } else if (event.key === " " && tag !== "button" && tag !== "summary") {
+      if (event.shiftKey) {
+        if (currentStep > 0) {
+          event.preventDefault();
+          setStep(currentStep - 1, { focus: true, direction: "backward" });
+        }
+      } else if (currentStep < storyBlocks.length - 1) {
+        event.preventDefault();
+        setStep(currentStep + 1, { focus: true, direction: "forward" });
       }
     }
   });
@@ -163,18 +226,18 @@
 
     if (window.getSelection()?.toString()) return;
 
-    if (Math.abs(dx) > 52 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+    if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.1) {
       if (dx < 0) {
         // Swipe left -> advance step
         if (currentStep < storyBlocks.length - 1) {
           event.stopImmediatePropagation();
-          setStep(currentStep + 1, { focus: true });
+          setStep(currentStep + 1, { focus: true, direction: "forward" });
         }
       } else if (dx > 0) {
-        // Swipe right
+        // Swipe right -> previous step
         if (currentStep > 0) {
           event.stopImmediatePropagation();
-          setStep(currentStep - 1, { focus: true });
+          setStep(currentStep - 1, { focus: true, direction: "backward" });
         }
       }
     }
