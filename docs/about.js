@@ -210,31 +210,81 @@
     }
   });
 
-  // Touch swipe support (captured so swipe-right on step > 0 goes back a step instead of exiting to gate)
-  let touchStart = null;
+  // Real-time touch & pointer gesture tracking with tactile drag and snap
+  let dragStart = null;
+  let isDragging = false;
+  let activeCard = null;
+
   document.addEventListener("pointerdown", (event) => {
-    if (event.pointerType && event.pointerType !== "touch") return;
     if (event.button > 0) return;
-    touchStart = { x: event.clientX, y: event.clientY };
+    const target = event.target;
+    if (target && typeof target.closest === "function") {
+      if (target.closest("a, button, summary, input, textarea, select, [role='button'], [role='tab'], .story-block__expanded")) {
+        return;
+      }
+    }
+    const currentBlock = storyBlocks[currentStep];
+    if (currentBlock && target && typeof currentBlock.contains === "function" && currentBlock.contains(target)) {
+      activeCard = currentBlock;
+    } else {
+      activeCard = currentBlock || null;
+    }
+    dragStart = { x: event.clientX, y: event.clientY, time: Date.now() };
+    isDragging = false;
+  }, { passive: true });
+
+  document.addEventListener("pointermove", (event) => {
+    if (!dragStart || !activeCard) return;
+    const dx = event.clientX - dragStart.x;
+    const dy = event.clientY - dragStart.y;
+
+    if (!isDragging) {
+      if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.1) {
+        isDragging = true;
+        if (activeCard.style) activeCard.style.transition = "none";
+      } else if (Math.abs(dy) > 16) {
+        dragStart = null;
+        activeCard = null;
+        return;
+      }
+    }
+
+    if (isDragging && activeCard.style) {
+      let appliedDx = dx;
+      if (currentStep === 0 && dx > 0) appliedDx = dx * 0.35;
+      if (currentStep === storyBlocks.length - 1 && dx < 0) appliedDx = dx * 0.35;
+      activeCard.style.transform = `translateX(${appliedDx}px) rotate(${appliedDx * 0.015}deg)`;
+      activeCard.style.opacity = String(Math.max(0.45, 1 - Math.abs(appliedDx) / 360));
+    }
   }, { passive: true });
 
   document.addEventListener("pointerup", (event) => {
-    if (!touchStart) return;
-    const dx = event.clientX - touchStart.x;
-    const dy = event.clientY - touchStart.y;
-    touchStart = null;
+    if (!dragStart) return;
+    const dx = event.clientX - dragStart.x;
+    const dy = event.clientY - dragStart.y;
+    const card = activeCard;
 
-    if (window.getSelection()?.toString()) return;
+    dragStart = null;
+    isDragging = false;
+    activeCard = null;
+
+    if (card && card.style) {
+      card.style.transition = "";
+      card.style.transform = "";
+      card.style.opacity = "";
+    }
+
+    if (window.getSelection && window.getSelection().toString().trim()) return;
 
     if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.1) {
       if (dx < 0) {
-        // Swipe left -> advance step
+        // Dragged / swiped left -> advance step
         if (currentStep < storyBlocks.length - 1) {
           event.stopImmediatePropagation();
           setStep(currentStep + 1, { focus: true, direction: "forward" });
         }
       } else if (dx > 0) {
-        // Swipe right -> previous step
+        // Dragged / swiped right -> previous step
         if (currentStep > 0) {
           event.stopImmediatePropagation();
           setStep(currentStep - 1, { focus: true, direction: "backward" });
